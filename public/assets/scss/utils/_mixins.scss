@@ -145,19 +145,39 @@
 
     // placeholder input
     @mixin placeholder {
-        &::-webkit-input-placeholder { 
+        &::-webkit-input-placeholder {
             @content;
         }
-        &::-moz-placeholder { 
+        &::-moz-placeholder {
             @content;
         }
-        &:-moz-placeholder { 
+        &:-moz-placeholder {
             @content;
         }
-        &:-ms-input-placeholder { 
+        &:-ms-input-placeholder {
             @content;
         }
         &::placeholder{
             @content;
+        }
+    }
+
+    // Noise overlay effect
+    @mixin noise-overlay($opacity: 0.15) {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='#{$opacity}'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        // Ensure content stays above noise
+        > * {
+            position: relative;
+            z-index: 2;
         }
     }

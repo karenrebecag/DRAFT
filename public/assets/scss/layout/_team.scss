@@ -280,7 +280,7 @@
     &-about{
         &-wrap{
             & .td-team-4-thumb::before {
-                background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #1c1d1f 100%);
+                background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, var(--color-black) 100%);
             }
             & .td-team-4-social a:hover {
                 color: var(--td-theme-primary);

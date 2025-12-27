@@ -66,7 +66,7 @@ const setting2 = {
 
 const Testimonial = () => {
    return (
-      <div className="td-testimonial-area grey-bg-2 pt-155 pb-120 bg-white">
+      <div className="td-testimonial-area grey-bg-2 pt-155 pb-120">
          <div className="container">
             <div className="row">
                <div className="col-lg-3 col-md-4">

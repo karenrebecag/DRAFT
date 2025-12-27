@@ -8,7 +8,7 @@
 .td-pricing{
     &-6{
         &-wrap{
-            border: 1px solid rgba(6, 50, 49, 0.15);
+            border: none;
             border-radius: 15px;
             & .package{
                 font-weight: 600;
@@ -50,6 +50,42 @@
                     border-color: var(--td-common-black);
                     background: var(--td-common-black);
                     color: var(--td-common-white);
+                }
+                &.btn-light{
+                    border-color: var(--td-common-white);
+                    background: var(--td-common-white);
+                    color: var(--td-common-black);
+                    &:hover{
+                        border-color: var(--td-theme-primary);
+                        background: var(--td-theme-primary);
+                        color: var(--td-common-black);
+                    }
+                }
+            }
+
+            // Light text variant for dark backgrounds
+            &.text-light {
+
+                & .package {
+                    color: var(--td-common-white);
+                }
+                & .para {
+                    color: rgba(255, 255, 255, 0.7);
+                }
+                & .price {
+                    color: var(--td-common-white);
+                    & span {
+                        color: rgba(255, 255, 255, 0.7);
+                    }
+                }
+                & .td-pricing-6-top {
+                    border-bottom-color: rgba(255, 255, 255, 0.15);
+                }
+                & .td-pricing-6-list ul li {
+                    color: rgba(255, 255, 255, 0.8);
+                    &::before {
+                        background: rgba(255, 255, 255, 0.5);
+                    }
                 }
             }
         }

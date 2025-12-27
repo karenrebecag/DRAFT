@@ -63,15 +63,15 @@
 .cursor-text-content {
   display: inline-block;
   padding: 8px 16px;
-  background: var(--color-white);
-  color: var(--color-dark);
-  font-family: var(--font-family-primary);
+  background: var(--color-white, #FCFCFC);
+  color: var(--color-black, #1b1e15);
+  font-family: var(--font-family-primary, 'Inter', sans-serif);
   font-size: 12px;
   font-weight: 500;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-full, 100px);
   white-space: nowrap;
-  border: 2px solid var(--color-dark);
-  box-shadow: 2px 2px 0 var(--color-dark);
+  border: 2px solid var(--color-black, #1b1e15);
+  box-shadow: 2px 2px 0 var(--color-black, #1b1e15);
   letter-spacing: 0.3px;
   transition: background-color 0.3s ease,
               color 0.3s ease,

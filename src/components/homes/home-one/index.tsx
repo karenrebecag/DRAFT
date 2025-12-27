@@ -11,12 +11,27 @@ import BlogTwo from "./BlogTwo"
 import Faq from "./Faq"
 import HeaderGlobal from "../../../layouts/headers/HeaderGlobal"
 import FooterGlobal, { FooterSpacer } from "../../../layouts/footers/FooterGlobal"
+import { FlickeringGrid } from "../../ui/FlickeringGrid"
 
 const HomeOne = () => {
    return (
       <>
          <HeaderGlobal />
          <div id="smooth-wrapper">
+            {/* Fixed background grid for all sections */}
+            <FlickeringGrid
+               style={{
+                  position: 'fixed',
+                  inset: 0,
+                  zIndex: 0,
+                  pointerEvents: 'none',
+               }}
+               squareSize={4}
+               gridGap={6}
+               flickerChance={0.3}
+               color="rgb(120, 120, 120)"
+               maxOpacity={0.07}
+            />
             <div id="smooth-content">
                <main>
                   <Hero />

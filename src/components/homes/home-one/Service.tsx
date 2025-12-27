@@ -25,13 +25,13 @@ const Service = () => {
    }
 
    return (
-      <div className="td-service-area pb-120 pt-120 bg-white">
+      <div className="td-service-area pb-120 pt-120">
          <div className="container">
             {/* Header */}
             <div className="row mb-60">
                <div className="col-12 d-flex justify-content-between align-items-center flex-wrap gap-4">
                   <div>
-                     <span style={{ ...franieLight, fontSize: '14px', letterSpacing: '0.1em', color: '#999' }}>
+                     <span style={{ ...franieLight, fontSize: '14px', letterSpacing: '0.1em', color: 'var(--color-gray)' }}>
                         // {t.services.subtitle}
                      </span>
                      <h2 className="td-section-title td-text-invert mt-10 mb-0" style={franieSemiBold}>
@@ -81,7 +81,7 @@ const Service = () => {
                                     style={{
                                        ...franieLight,
                                        fontSize: '12px',
-                                       color: isActive ? 'var(--td-theme-primary, #beff01)' : '#bbb',
+                                       color: isActive ? 'var(--color-primary)' : 'var(--color-gray)',
                                        minWidth: '24px',
                                        transition: 'color 0.3s ease',
                                     }}
@@ -94,7 +94,7 @@ const Service = () => {
                                        fontSize: 'clamp(24px, 4vw, 42px)',
                                        margin: 0,
                                        textTransform: 'uppercase',
-                                       color: isActive ? '#1c1d1f' : 'rgba(28,29,31,0.25)',
+                                       color: isActive ? 'var(--color-black)' : 'var(--color-black-lighter)',
                                        transition: 'color 0.3s ease',
                                        flex: 1,
                                     }}
@@ -106,7 +106,7 @@ const Service = () => {
                                        transform: isActive ? 'rotate(45deg)' : 'rotate(0deg)',
                                        transition: 'transform 0.3s ease',
                                        fontSize: '24px',
-                                       color: isActive ? 'var(--td-theme-primary, #beff01)' : '#ccc',
+                                       color: isActive ? 'var(--color-primary)' : 'var(--color-gray)',
                                     }}
                                  >
                                     +
@@ -129,7 +129,7 @@ const Service = () => {
                                        ...franieRegular,
                                        fontSize: '15px',
                                        lineHeight: 1.7,
-                                       color: '#555',
+                                       color: 'var(--color-gray-700)',
                                        maxWidth: '700px',
                                        margin: '0 0 12px 0',
                                     }}
@@ -140,7 +140,7 @@ const Service = () => {
                                     style={{
                                        ...franieLight,
                                        fontSize: '13px',
-                                       color: '#999',
+                                       color: 'var(--color-gray)',
                                     }}
                                  >
                                     {service.process}

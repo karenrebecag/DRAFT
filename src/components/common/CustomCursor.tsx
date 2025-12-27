@@ -317,8 +317,8 @@ const CustomCursor = () => {
           <path
             className="cursor-path"
             d="M5.5 3.21V20.79C5.5 21.85 6.78 22.41 7.54 21.65L11.93 17.26C12.09 17.1 12.3 17.01 12.52 17.01H18.5C19.56 17.01 20.12 15.73 19.36 14.97L6.36 1.97C5.6 1.21 4.32 1.77 4.32 2.83L5.5 3.21Z"
-            fill="var(--color-dark)"
-            stroke="var(--color-white)"
+            fill="#1b1e15"
+            stroke="#FCFCFC"
             strokeWidth="1.5"
           />
         </svg>

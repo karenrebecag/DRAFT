@@ -45,7 +45,7 @@ const Process = () => {
    });
 
    return (
-      <div className="td-process-area pt-130 pb-160 bg-white">
+      <div className="td-process-area pt-130 pb-160">
          <div className="container">
             <div className="row">
                <div className="col-12">

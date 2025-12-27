@@ -1,9 +1,13 @@
+import { useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import { Link } from 'react-router-dom';
-import { FlickeringGrid } from '../../components/ui/FlickeringGrid';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import { useI18n } from '../../i18n';
 import styles from './FooterGlobal.module.scss';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Navigation structure matching HeaderGlobal
 const getNavItems = (t: ReturnType<typeof useI18n>["t"]) => [
@@ -46,6 +50,7 @@ const setting = {
 // Spacer component to be placed inside smooth-content
 export const FooterSpacer = () => (
    <div
+      id="footer-spacer"
       className={styles.footerSpacer}
       aria-hidden="true"
    />
@@ -55,18 +60,63 @@ const FooterGlobal = () => {
    const { t } = useI18n();
    const navItems = getNavItems(t);
    const marqueeItems = getMarqueeItems(t);
+   const footerRef = useRef<HTMLElement>(null);
+
+   useEffect(() => {
+      const footer = footerRef.current;
+      const spacer = document.getElementById('footer-spacer');
+
+      if (!footer || !spacer) return;
+
+      // Initially hide footer
+      gsap.set(footer, { opacity: 0, visibility: 'hidden' });
+
+      // Create ScrollTrigger to show/hide footer based on spacer visibility
+      const trigger = ScrollTrigger.create({
+         trigger: spacer,
+         start: 'top bottom',
+         end: 'bottom top',
+         onEnter: () => {
+            gsap.to(footer, {
+               opacity: 1,
+               visibility: 'visible',
+               duration: 0.4,
+               ease: 'power2.out',
+            });
+         },
+         onLeave: () => {
+            gsap.to(footer, {
+               opacity: 0,
+               visibility: 'hidden',
+               duration: 0.3,
+               ease: 'power2.in',
+            });
+         },
+         onEnterBack: () => {
+            gsap.to(footer, {
+               opacity: 1,
+               visibility: 'visible',
+               duration: 0.4,
+               ease: 'power2.out',
+            });
+         },
+         onLeaveBack: () => {
+            gsap.to(footer, {
+               opacity: 0,
+               visibility: 'hidden',
+               duration: 0.3,
+               ease: 'power2.in',
+            });
+         },
+      });
+
+      return () => {
+         trigger.kill();
+      };
+   }, []);
 
    return (
-      <footer className={styles.stickyFooter}>
-         <FlickeringGrid
-            className="p-absolute"
-            style={{ position: 'absolute', inset: 0, zIndex: 0 }}
-            squareSize={4}
-            gridGap={6}
-            flickerChance={0.3}
-            color="rgb(60, 60, 60)"
-            maxOpacity={0.15}
-         />
+      <footer ref={footerRef} className={styles.stickyFooter}>
          <div className={styles.footerContent}>
             {/* Contact Section */}
             <div className="td-contact-area td-contact-2-wrap pt-85 fix pb-50">

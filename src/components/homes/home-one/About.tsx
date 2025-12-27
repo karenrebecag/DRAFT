@@ -5,7 +5,7 @@ const About = () => {
    const { t } = useI18n()
 
    return (
-      <div className="td-about-area bg-white">
+      <div className="td-about-area">
          <div className="container">
             <div className="row">
                <div className="col-lg-4">

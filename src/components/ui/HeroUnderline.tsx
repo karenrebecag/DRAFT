@@ -43,7 +43,7 @@ interface HeroUnderlineProps {
 export const HeroUnderline: React.FC<HeroUnderlineProps> = ({
   children,
   isActive = false,
-  strokeColor = '#beff01',
+  strokeColor = 'var(--color-primary)',
   strokeWidth = 10,
   className = '',
   top = '85%'
