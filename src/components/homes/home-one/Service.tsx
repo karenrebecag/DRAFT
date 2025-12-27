@@ -1,62 +1,154 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
-import Count from "../../common/Count";
-
-const service_data: string[] = ["Creative Design", "Branding Design", "Ecommerce Design", "Digital Marketing"];
+import { useI18n } from "../../../i18n"
 
 const Service = () => {
+   const { t } = useI18n()
+   const [activeId, setActiveId] = useState<string>("1")
+
+   const franieBase: React.CSSProperties = { fontFamily: "'Franie', sans-serif" }
+   const franieSemiBold: React.CSSProperties = { ...franieBase, fontWeight: 600 }
+   const franieRegular: React.CSSProperties = { ...franieBase, fontWeight: 400 }
+   const franieLight: React.CSSProperties = { ...franieBase, fontWeight: 200 }
+
+   const services = [
+      { id: "1", ...t.services.items.service1 },
+      { id: "2", ...t.services.items.service2 },
+      { id: "3", ...t.services.items.service3 },
+      { id: "4", ...t.services.items.service4 },
+      { id: "5", ...t.services.items.service5 },
+      { id: "6", ...t.services.items.service6 },
+   ]
+
+   const toggleAccordion = (id: string) => {
+      setActiveId(activeId === id ? "" : id)
+   }
+
    return (
-      <div className="td-service-area pb-100 pt-100">
+      <div className="td-service-area pb-120 pt-120 bg-white">
          <div className="container">
-            <div className="row">
-               <div className="col-lg-6">
-                  <div className="td-service-title-wrap">
-                     <h2 className="td-section-title mb-30 td-text-invert">Service</h2>
-                     <p className="td-section-text mr-200">The studio is often filled with artworks, sketches, and creative elements to foster inspiration. This could include mood boards</p>
+            {/* Header */}
+            <div className="row mb-60">
+               <div className="col-12 d-flex justify-content-between align-items-center flex-wrap gap-4">
+                  <div>
+                     <span style={{ ...franieLight, fontSize: '14px', letterSpacing: '0.1em', color: '#999' }}>
+                        // {t.services.subtitle}
+                     </span>
+                     <h2 className="td-section-title td-text-invert mt-10 mb-0" style={franieSemiBold}>
+                        {t.services.title}
+                     </h2>
+                  </div>
+                  <div className="td-btn-group">
+                     <Link className="td-btn-circle" to="/contact">
+                        <i className="fa-solid fa-arrow-right"></i>
+                     </Link>
+                     <Link className="td-btn-2 td-btn-primary" to="/contact" style={franieSemiBold}>
+                        {t.services.cta}
+                     </Link>
+                     <Link className="td-btn-circle" to="/contact">
+                        <i className="fa-solid fa-arrow-right"></i>
+                     </Link>
                   </div>
                </div>
             </div>
+
+            {/* Accordion Services */}
             <div className="row">
-               <div className="col-lg-5">
-                  <div className="td-service-btn mt-35 ml-110 mb-30">
-                     <div className="td-btn-group mb-35">
-                        <Link className="td-btn-circle" to="/service">
-                           <i className="fa-solid fa-arrow-right"></i>
-                        </Link>
-                        <Link className="td-btn-2 td-btn-primary" to="/service">Let’s talk</Link>
-                        <Link className="td-btn-circle" to="/service">
-                           <i className="fa-solid fa-arrow-right"></i>
-                        </Link>
-                     </div>
-                  </div>
-               </div>
-               <div className="col-lg-7">
-                  <div className="td-service-content">
-                     {service_data.map((item, i) => (
-                        <Link key={i} className="td-service-item" to="/service-details">
-                           {item}
-                           <span>
-                              <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                 <path d="M23.5853 0.21498C23.9612 0.160838 24.2991 0.257578 24.5256 0.48404C24.752 0.710503 24.8488 1.04839 24.7946 1.42432L22.1319 19.3631C22.068 19.7386 21.8634 20.1177 21.5604 20.4225C21.408 20.5739 21.236 20.7028 21.0532 20.8023C20.7801 20.9458 20.4931 21.0143 20.2286 20.9994C19.9642 20.9844 19.734 20.8866 19.5672 20.7184L12.7779 13.9291L2.47712 24.2298C2.17357 24.5334 1.79306 24.7351 1.41925 24.7906C1.04545 24.846 0.709012 24.7508 0.483922 24.5257C0.25885 24.3006 0.163565 23.9641 0.219059 23.5904C0.274536 23.2166 0.47625 22.836 0.779796 22.5325L11.0806 12.2317L4.29122 5.44239C4.12296 5.27556 4.0252 5.04541 4.01025 4.78096C3.9953 4.51651 4.06385 4.22958 4.20722 3.95636C4.35748 3.68382 4.5724 3.43787 4.82713 3.24697C5.08184 3.05609 5.36593 2.92807 5.64654 2.87772L23.5853 0.21498Z" fill="currentColor" />
-                              </svg>
-                           </span>
-                        </Link>
-                     ))}
-                     <div className="td-service-counter mt-80">
-                        <div className="row">
-                           <div className="col-lg-6 col-md-6">
-                              <div className="td-service-counter-item mb-30">
-                                 <h2><span className="odometer" data-count="72"> <Count number={72} /></span>+</h2>
-                                 <span>Projects Completed</span>
+               <div className="col-12">
+                  <div className="services-accordion">
+                     {services.map((service) => {
+                        const isActive = activeId === service.id
+                        return (
+                           <div
+                              key={service.id}
+                              className="service-accordion-item"
+                              style={{
+                                 borderBottom: '1px solid rgba(0,0,0,0.1)',
+                                 cursor: 'pointer',
+                              }}
+                              onClick={() => toggleAccordion(service.id)}
+                           >
+                              {/* Trigger */}
+                              <div
+                                 className="service-accordion-trigger d-flex align-items-center"
+                                 style={{
+                                    padding: '28px 0',
+                                    gap: '24px',
+                                    transition: 'all 0.3s ease',
+                                 }}
+                              >
+                                 <span
+                                    style={{
+                                       ...franieLight,
+                                       fontSize: '12px',
+                                       color: isActive ? 'var(--td-theme-primary, #beff01)' : '#bbb',
+                                       minWidth: '24px',
+                                       transition: 'color 0.3s ease',
+                                    }}
+                                 >
+                                    {service.number}
+                                 </span>
+                                 <h3
+                                    style={{
+                                       ...franieSemiBold,
+                                       fontSize: 'clamp(24px, 4vw, 42px)',
+                                       margin: 0,
+                                       textTransform: 'uppercase',
+                                       color: isActive ? '#1c1d1f' : 'rgba(28,29,31,0.25)',
+                                       transition: 'color 0.3s ease',
+                                       flex: 1,
+                                    }}
+                                 >
+                                    {service.title}
+                                 </h3>
+                                 <span
+                                    style={{
+                                       transform: isActive ? 'rotate(45deg)' : 'rotate(0deg)',
+                                       transition: 'transform 0.3s ease',
+                                       fontSize: '24px',
+                                       color: isActive ? 'var(--td-theme-primary, #beff01)' : '#ccc',
+                                    }}
+                                 >
+                                    +
+                                 </span>
+                              </div>
+
+                              {/* Content */}
+                              <div
+                                 className="service-accordion-content"
+                                 style={{
+                                    maxHeight: isActive ? '300px' : '0',
+                                    overflow: 'hidden',
+                                    transition: 'max-height 0.4s ease, padding 0.3s ease',
+                                    paddingLeft: '48px',
+                                    paddingBottom: isActive ? '32px' : '0',
+                                 }}
+                              >
+                                 <p
+                                    style={{
+                                       ...franieRegular,
+                                       fontSize: '15px',
+                                       lineHeight: 1.7,
+                                       color: '#555',
+                                       maxWidth: '700px',
+                                       margin: '0 0 12px 0',
+                                    }}
+                                 >
+                                    {service.description}
+                                 </p>
+                                 <span
+                                    style={{
+                                       ...franieLight,
+                                       fontSize: '13px',
+                                       color: '#999',
+                                    }}
+                                 >
+                                    {service.process}
+                                 </span>
                               </div>
                            </div>
-                           <div className="col-lg-6 col-md-6">
-                              <div className="td-service-counter-item mb-30">
-                                 <h2><span className="odometer" data-count="25"> <Count number={25} /></span>+</h2>
-                                 <span>Years of Experience</span>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+                        )
+                     })}
                   </div>
                </div>
             </div>

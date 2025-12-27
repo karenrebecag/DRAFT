@@ -62,9 +62,107 @@
 /*  01. Theme Default CSS
 ==============================================*/
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bellefair&family=Roboto:ital,wght@0,100..900;1,100..900&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&family=Teko:wght@300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+/* Custom Fonts from Cloudflare R2 */
+@font-face {
+  font-family: 'GC Vank';
+  src: url('https://pub-2e7dc04d482146c59f472ab28fba09a9.r2.dev/GC%20Vank.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MTRY Round';
+  src: url('https://pub-2e7dc04d482146c59f472ab28fba09a9.r2.dev/MTRY%20-%20Round.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Franie Font Family - All Weights */
+@font-face {
+  font-family: 'Franie';
+  src: url('/assets/fonts/Franie-Hair.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Franie';
+  src: url('/assets/fonts/Franie-ExtraLight.woff2') format('woff2');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Franie';
+  src: url('/assets/fonts/Franie-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Franie';
+  src: url('/assets/fonts/Franie-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Franie';
+  src: url('/assets/fonts/Franie-SemiBoldItalic.woff2') format('woff2');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Franie';
+  src: url('/assets/fonts/Franie-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* =============================================
+   Sticky Footer Layout System
+   Content scrolls over fixed footer
+   ============================================= */
+#smooth-wrapper {
+  position: relative;
+  z-index: 10;
+}
+
+#smooth-content {
+  position: relative;
+  background: var(--td-common-white, #fff);
+}
+
+#smooth-content main {
+  background: var(--td-common-white, #fff);
+}
+
+/* Ensure all content sections have solid background */
+#smooth-content main > div,
+#smooth-content main > section {
+  background: inherit;
+}
+
+/* Footer spacer must be transparent to reveal sticky footer */
+#smooth-content > [class*="footerSpacer"] {
+  background: transparent !important;
+}
+
 :root {
   --td-ff-body: "Inter", serif;
-  --td-ff-heading: "Plus Jakarta Sans", serif;
+  --td-ff-heading: "GC Vank", "Plus Jakarta Sans", serif;
+  --td-ff-vank: "GC Vank", sans-serif;
+  --td-ff-gatte: "MTRY Round", sans-serif;
   --td-ff-dm: "DM Serif Display", serif;
   --td-ff-dm-sans: "DM Sans", sans-serif;
   --td-ff-manrope: "Manrope", serif;
@@ -3764,7 +3862,8 @@ textarea {
     	15. hero
 ===============================*/
 .td-hero-title .title {
-  font-weight: 800;
+  font-family: var(--td-ff-franie, 'Franie'), sans-serif;
+  font-weight: 400;
   font-size: 130px;
   letter-spacing: -0.04em;
   color: var(--td-common-black);
@@ -3781,12 +3880,17 @@ textarea {
 }
 @media only screen and (min-width: 576px) and (max-width: 767px), (max-width: 575px) {
   .td-hero-title .title {
-    font-size: 50px;
+    font-size: 58px;
   }
 }
 @media (max-width: 575px) {
   .td-hero-title .title {
-    font-size: 40px;
+    font-size: 50px;
+  }
+}
+@media (max-width: 400px) {
+  .td-hero-title .title {
+    font-size: 42px;
   }
 }
 .td-hero-title .title img {
@@ -3805,7 +3909,8 @@ textarea {
   z-index: -1;
 }
 .td-hero-bigtext {
-  font-weight: 800;
+  font-family: var(--td-ff-franie, 'Franie'), sans-serif;
+  font-weight: 900;
   font-size: 600px;
   color: var(--td-theme-primary);
 }
@@ -3859,6 +3964,7 @@ textarea {
   }
 }
 .td-hero-feature ul li {
+  font-family: var(--td-ff-franie, 'Franie'), sans-serif;
   font-weight: 600;
   font-size: 18px;
   color: var(--td-common-black-2);

@@ -1,0 +1,182 @@
+/**
+ * Drawer Component Styles
+ * Adapted for DRAFT Studio design system
+ */
+
+// Z-index (above chatbot button but below cursor)
+$z-drawer-overlay: 9991;
+$z-drawer-content: 9992;
+
+// ============================================
+// OVERLAY
+// ============================================
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: $z-drawer-overlay;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 400ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+// ============================================
+// CONTENT (drawer principal)
+// ============================================
+.content {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: $z-drawer-content;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px 24px 0 0;
+  border: 2px solid var(--color-dark, #1c1d1f);
+  border-bottom: none;
+  overflow: hidden;
+  background-color: var(--color-white, #fff);
+
+  // Full height por defecto (para el chat)
+  height: calc(100vh - 2rem);
+  height: calc(100dvh - 2rem);
+
+  // Animación de slide
+  transition: transform 400ms cubic-bezier(0.32, 0.72, 0, 1);
+
+  // Remove vaul's default ::after spacer
+  &::after {
+    display: none !important;
+  }
+}
+
+// Variante compacta - se adapta al contenido
+.contentCompact {
+  height: auto !important;
+  max-height: 85vh;
+}
+
+// ============================================
+// HANDLE (la barra de arrastre)
+// ============================================
+.handleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  flex-shrink: 0;
+  background: var(--color-primary, #beff01);
+  border-bottom: 2px solid var(--color-dark, #1c1d1f);
+}
+
+.handle {
+  height: 5px;
+  width: 60px;
+  border-radius: 100px;
+  background-color: var(--color-dark, #1c1d1f);
+}
+
+// ============================================
+// INNER CONTAINER
+// ============================================
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+// Inner container para drawer compacto
+.contentCompact .innerContainer {
+  flex: unset;
+  overflow-y: auto;
+  max-height: calc(85vh - 60px);
+}
+
+// ============================================
+// HEADER
+// ============================================
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  text-align: center;
+  flex-shrink: 0;
+  background: var(--color-primary, #beff01);
+  border-bottom: 2px solid var(--color-dark, #1c1d1f);
+}
+
+// ============================================
+// FOOTER
+// ============================================
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  flex-shrink: 0;
+  background-color: var(--color-white, #fff);
+  border-top: 2px solid var(--color-dark, #1c1d1f);
+}
+
+// ============================================
+// TITLE
+// ============================================
+.title {
+  font-family: 'Franie', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: var(--color-dark, #1c1d1f);
+  margin: 0;
+}
+
+// ============================================
+// DESCRIPTION
+// ============================================
+.description {
+  font-family: 'Franie', sans-serif;
+  font-size: 10px;
+  color: rgba(28, 29, 31, 0.7);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-green, #85ee00);
+    border: 1px solid var(--color-dark, #1c1d1f);
+  }
+}
+
+// ============================================
+// BODY (scrollable content)
+// ============================================
+.body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.25);
+  }
+}

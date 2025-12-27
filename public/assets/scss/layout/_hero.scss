@@ -8,7 +8,8 @@
 .td-hero{
     &-title{
         & .title{
-            font-weight: 800;
+            font-family: var(--td-ff-franie, 'Franie'), sans-serif;
+            font-weight: 400;
             font-size: 130px;
             letter-spacing: -0.04em;
             color: var(--td-common-black);
@@ -40,7 +41,8 @@
         z-index: -1;
     }
     &-bigtext{
-        font-weight: 800;
+        font-family: var(--td-ff-franie, 'Franie'), sans-serif;
+        font-weight: 900;
         font-size: 600px;
         color: var(--td-theme-primary);
         @media #{$lg,$md,$sm,$xs} {
@@ -86,6 +88,7 @@
                 justify-content: flex-start;
             }
             & li{
+                font-family: var(--td-ff-franie, 'Franie'), sans-serif;
                 font-weight: 600;
                 font-size: 18px;
                 color: var(--td-common-black-2);

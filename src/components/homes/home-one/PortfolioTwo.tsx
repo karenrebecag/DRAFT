@@ -143,7 +143,7 @@ const setting2 = {
 
 const Portfolio = () => {
    return (
-      <div className="td-portfolio-area pt-125">
+      <div className="td-portfolio-area pt-125 bg-white">
          <h2 className="td-portfolio-2-bigtitle td-split-text td-split-in-right">Work</h2>
          <div className="td-portfolio-2-slider-wrap mb-10">
             <Swiper {...setting} modules={[Autoplay]} onSwiper={(swiper) => {

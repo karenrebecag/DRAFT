@@ -22,7 +22,7 @@ const setting = {
 
 const Feature = () => {
    return (
-      <div className="td-feature-area fix">
+      <div className="td-feature-area fix bg-white">
          <div className="fix">
             <img data-speed=".9" className="w-100" src="/assets/img/bigimage/thumb.jpg" alt="" />
          </div>

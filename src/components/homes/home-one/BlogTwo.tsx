@@ -42,7 +42,7 @@ const blog_data: DataType[] = [
 
 const Blog = () => {
    return (
-      <div className="td-blog-area pt-155">
+      <div className="td-blog-area pt-155 bg-white">
          <div className="container">
             <div className="row align-items-end">
                <div className="col-lg-7">

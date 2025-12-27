@@ -7,9 +7,15 @@ const ScrollToTop = () => {
    const [showScroll, setShowScroll] = useState(false);
 
    const checkScrollTop = useCallback(() => {
-      if (window.pageYOffset > 400 && !showScroll) {
+      const scrollTop = window.pageYOffset;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const distanceFromBottom = documentHeight - (scrollTop + windowHeight);
+
+      // Show only when near bottom (within 300px of the end)
+      if (distanceFromBottom < 300 && !showScroll) {
          setShowScroll(true);
-      } else if (window.pageYOffset <= 400 && showScroll) {
+      } else if (distanceFromBottom >= 300 && showScroll) {
          setShowScroll(false);
       }
    }, [showScroll]);

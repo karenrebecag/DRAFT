@@ -1,32 +1,59 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { useState, useEffect, useCallback, useRef } from "react"
 import gsap from "gsap"
 import Offcanvas from "./Menu/Offcanvas"
-import menu_data from "../../data/MenuData"
+import { useI18n, type LanguageCode } from "../../i18n"
+import { DrawUnderline } from "../../components/ui/DrawRandomUnderline"
 import styles from "./HeaderGlobal.module.scss"
 
-// Language options (starting with Spanish and English, more to come)
-const languages = [
-   { code: 'es', name: 'Español' },
-   { code: 'en', name: 'English' },
-   // Future languages:
-   // { code: 'hi', name: 'Hindi' },
-   // { code: 'ja', name: 'Japanese' },
-   // { code: 'zh', name: 'Mandarin' },
+// Navigation structure with translation keys
+const getNavItems = (t: ReturnType<typeof useI18n>["t"]) => [
+   {
+      id: 1,
+      title: t.nav.aboutUs,
+      link: "/about",
+   },
+   {
+      id: 2,
+      title: t.nav.services,
+      link: "/service",
+   },
+   {
+      id: 3,
+      title: t.nav.portfolio,
+      link: "/portfolio",
+   },
+   {
+      id: 4,
+      title: t.nav.blog,
+      link: "/blog",
+   },
 ]
 
 const HeaderGlobal = () => {
+   const { t, locale, setLocale, languages, currentLanguage } = useI18n()
+   const location = useLocation()
+
    const [offCanvas, setOffCanvas] = useState<boolean>(false)
-   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
    const [langDropdownOpen, setLangDropdownOpen] = useState<boolean>(false)
-   const [currentLang, setCurrentLang] = useState(languages[0]) // Spanish as default
    const [lastScrollY, setLastScrollY] = useState<number>(0)
 
    const headerRef = useRef<HTMLElement>(null)
-   const dropdownRefs = useRef<Map<number, HTMLUListElement>>(new Map())
-   const arrowRefs = useRef<Map<number, HTMLSpanElement>>(new Map())
    const langDropdownRef = useRef<HTMLUListElement>(null)
    const langArrowRef = useRef<HTMLSpanElement>(null)
+
+   // Get navigation items with current translations
+   const navItems = getNavItems(t)
+
+   // Check if current route matches a link
+   const isActiveRoute = (link: string) => {
+      if (link === '/') {
+         return location.pathname === '/'
+      }
+      return location.pathname.startsWith(link)
+   }
+
+   const isHomePage = location.pathname === '/'
 
    // Header show/hide animation with GSAP
    const animateHeader = useCallback((show: boolean) => {
@@ -38,41 +65,6 @@ const HeaderGlobal = () => {
          duration: 0.4,
          ease: "power3.out"
       })
-   }, [])
-
-   // Dropdown animation with GSAP
-   const animateDropdown = useCallback((id: number, show: boolean) => {
-      const dropdown = dropdownRefs.current.get(id)
-      const arrow = arrowRefs.current.get(id)
-
-      if (dropdown) {
-         if (show) {
-            gsap.set(dropdown, { visibility: "visible", pointerEvents: "auto" })
-            gsap.fromTo(dropdown,
-               { opacity: 0, y: -10, scale: 0.95 },
-               { opacity: 1, y: 0, scale: 1, duration: 0.25, ease: "power2.out" }
-            )
-         } else {
-            gsap.to(dropdown, {
-               opacity: 0,
-               y: -10,
-               scale: 0.95,
-               duration: 0.2,
-               ease: "power2.in",
-               onComplete: () => {
-                  gsap.set(dropdown, { visibility: "hidden", pointerEvents: "none" })
-               }
-            })
-         }
-      }
-
-      if (arrow) {
-         gsap.to(arrow, {
-            rotation: show ? 180 : 0,
-            duration: 0.25,
-            ease: "power2.out"
-         })
-      }
    }, [])
 
    // Handle scroll
@@ -88,48 +80,18 @@ const HeaderGlobal = () => {
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
          // Scrolling down - hide header
          animateHeader(false)
-         // Close any open dropdown
-         if (activeDropdown !== null) {
-            animateDropdown(activeDropdown, false)
-            setActiveDropdown(null)
-         }
       } else {
          // Scrolling up - show header
          animateHeader(true)
       }
 
       setLastScrollY(currentScrollY)
-   }, [lastScrollY, animateHeader, animateDropdown, activeDropdown])
+   }, [lastScrollY, animateHeader])
 
    useEffect(() => {
       window.addEventListener('scroll', handleScroll, { passive: true })
       return () => window.removeEventListener('scroll', handleScroll)
    }, [handleScroll])
-
-   // Handle dropdown toggle
-   const handleDropdownEnter = (id: number) => {
-      if (activeDropdown !== null && activeDropdown !== id) {
-         animateDropdown(activeDropdown, false)
-      }
-      setActiveDropdown(id)
-      animateDropdown(id, true)
-   }
-
-   const handleDropdownLeave = (id: number) => {
-      if (activeDropdown === id) {
-         animateDropdown(id, false)
-         setActiveDropdown(null)
-      }
-   }
-
-   // Set refs
-   const setDropdownRef = (id: number, el: HTMLUListElement | null) => {
-      if (el) dropdownRefs.current.set(id, el)
-   }
-
-   const setArrowRef = (id: number, el: HTMLSpanElement | null) => {
-      if (el) arrowRefs.current.set(id, el)
-   }
 
    // Language dropdown animation
    const animateLangDropdown = useCallback((show: boolean) => {
@@ -169,57 +131,40 @@ const HeaderGlobal = () => {
       animateLangDropdown(newState)
    }
 
-   const handleLangSelect = (lang: typeof languages[0]) => {
-      setCurrentLang(lang)
+   const handleLangSelect = (langCode: LanguageCode) => {
+      setLocale(langCode)
       setLangDropdownOpen(false)
       animateLangDropdown(false)
-      // TODO: Implement actual language change logic
    }
 
    return (
       <>
          <header ref={headerRef} className={styles.header}>
             <nav className={styles.nav}>
-               {/* Logo */}
+               {/* Logo - links to home */}
                <Link to="/" className={styles.logo}>
-                  <span>Parody</span>
+                  <DrawUnderline
+                     isActive={isHomePage}
+                     strokeColor="var(--color-primary, #beff01)"
+                     strokeWidth={6}
+                  >
+                     <span>DRAFT</span>
+                  </DrawUnderline>
                </Link>
 
                {/* Desktop Menu */}
                <ul className={styles.menuList}>
-                  {menu_data.map((item) => (
-                     <li
-                        key={item.id}
-                        className={`${styles.menuItem} ${item.has_dropdown ? styles.hasDropdown : ''}`}
-                        onMouseEnter={() => item.has_dropdown && handleDropdownEnter(item.id)}
-                        onMouseLeave={() => item.has_dropdown && handleDropdownLeave(item.id)}
-                     >
-                        {item.has_dropdown ? (
-                           <span className={styles.menuLink}>
-                              {item.title}
-                              <span
-                                 ref={(el) => setArrowRef(item.id, el)}
-                                 className={styles.dropdownArrow}
-                              />
-                           </span>
-                        ) : (
-                           <Link to={item.link} className={styles.menuLink}>
-                              {item.title}
-                           </Link>
-                        )}
-
-                        {item.has_dropdown && item.sub_menus && (
-                           <ul
-                              ref={(el) => setDropdownRef(item.id, el)}
-                              className={styles.dropdown}
+                  {navItems.map((item) => (
+                     <li key={item.id} className={styles.menuItem}>
+                        <Link to={item.link} className={styles.menuLink}>
+                           <DrawUnderline
+                              isActive={isActiveRoute(item.link)}
+                              strokeColor="var(--color-primary, #beff01)"
+                              strokeWidth={6}
                            >
-                              {item.sub_menus.map((sub, index) => (
-                                 <li key={index}>
-                                    <Link to={sub.link}>{sub.title}</Link>
-                                 </li>
-                              ))}
-                           </ul>
-                        )}
+                              {item.title}
+                           </DrawUnderline>
+                        </Link>
                      </li>
                   ))}
                </ul>
@@ -245,9 +190,10 @@ const HeaderGlobal = () => {
                               animateLangDropdown(true)
                            }
                         }}
+                        aria-label={`${t.common.menu}: ${currentLanguage.name}`}
                      >
                         <i className="fa-solid fa-globe"></i>
-                        <span>{currentLang.code.toUpperCase()}</span>
+                        <span>{locale.toUpperCase()}</span>
                         <span ref={langArrowRef} className={styles.langArrow} />
                      </button>
                      <ul
@@ -256,7 +202,10 @@ const HeaderGlobal = () => {
                      >
                         {languages.map((lang) => (
                            <li key={lang.code}>
-                              <button onClick={() => handleLangSelect(lang)}>
+                              <button
+                                 onClick={() => handleLangSelect(lang.code)}
+                                 aria-current={lang.code === locale ? "true" : undefined}
+                              >
                                  <span>{lang.name}</span>
                               </button>
                            </li>
@@ -265,7 +214,7 @@ const HeaderGlobal = () => {
                   </div>
 
                   <Link to="/contact" className={styles.ctaButton}>
-                     Let's Talk
+                     {t.header.letsTalk}
                      <i className="fa-solid fa-arrow-right"></i>
                   </Link>
 
@@ -273,7 +222,7 @@ const HeaderGlobal = () => {
                   <button
                      onClick={() => setOffCanvas(true)}
                      className={`${styles.menuToggle} ${offCanvas ? styles.active : ''}`}
-                     aria-label="Open menu"
+                     aria-label={t.common.menu}
                   >
                      <span></span>
                      <span></span>

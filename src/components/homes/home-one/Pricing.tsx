@@ -36,7 +36,7 @@ const pricing_data: DataType[] = [
 
 const Pricing = () => {
    return (
-      <div className="td-pricing-area pt-100 pb-100">
+      <div className="td-pricing-area pt-100 pb-100 bg-white">
          <div className="container">
             <div className="row mb-50">
                <div className="col-lg-6">

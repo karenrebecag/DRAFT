@@ -31,7 +31,7 @@ const Faq = () => {
    };
 
    return (
-      <div className="td-faq-2-area pt-100 pb-100">
+      <div className="td-faq-2-area pt-100 pb-100 bg-white">
          <div className="container">
             <div className="row mb-50">
                <div className="col-lg-6">

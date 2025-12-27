@@ -10,7 +10,7 @@ import FeatureTwo from "./FeatureTwo"
 import BlogTwo from "./BlogTwo"
 import Faq from "./Faq"
 import HeaderGlobal from "../../../layouts/headers/HeaderGlobal"
-import FooterGlobal from "../../../layouts/footers/FooterGlobal"
+import FooterGlobal, { FooterSpacer } from "../../../layouts/footers/FooterGlobal"
 
 const HomeOne = () => {
    return (
@@ -20,21 +20,23 @@ const HomeOne = () => {
             <div id="smooth-content">
                <main>
                   <Hero />
-                  <AboutTwo />
                   <About />
+                  <AboutTwo />
                   <Service />
-                 
                   <PortfolioTwo />
                   <Process />
                   <Testimonial />
                   <FeatureTwo />
-                   <Pricing />
+                  <Pricing />
                   <BlogTwo />
                   <Faq />
                </main>
-               <FooterGlobal />
+               {/* FooterSpacer creates transparent space to reveal sticky footer */}
+               <FooterSpacer />
             </div>
          </div>
+         {/* Footer is outside smooth-content, fixed at bottom with z-index: -1 */}
+         <FooterGlobal />
       </>
    )
 }
