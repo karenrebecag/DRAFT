@@ -1,0 +1,75 @@
+.morphing-text-reveal {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+}
+
+.morphing-text-content {
+  font-family: inherit;
+  color: var(--color-black);
+  transition: all 0.3s ease;
+  letter-spacing: 0.02em;
+}
+
+.morphing-text-content:hover {
+  color: var(--color-black);
+}
+
+.morphing-char {
+  display: inline-block;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.morph-char {
+  animation: morphCharacter 0.4s ease-out forwards;
+}
+
+@keyframes morphCharacter {
+  0% {
+    opacity: 0.3;
+    transform: translateY(8px) scale(0.8);
+    filter: blur(2px);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-2px) scale(1.05);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Glitch effect on hover */
+.glitch-effect {
+  animation: glitch 0.3s ease-in-out;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+    text-shadow: 2px 0 var(--color-primary), -2px 0 var(--color-secondary);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+    text-shadow: -2px 0 var(--color-primary), 2px 0 var(--color-secondary);
+  }
+  60% {
+    transform: translate(2px, 2px);
+    text-shadow: 2px 0 var(--color-secondary), -2px 0 var(--color-primary);
+  }
+  80% {
+    transform: translate(2px, -2px);
+    text-shadow: -2px 0 var(--color-secondary), 2px 0 var(--color-primary);
+  }
+  100% {
+    transform: translate(0);
+    text-shadow: none;
+  }
+}

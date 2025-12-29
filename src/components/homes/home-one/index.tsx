@@ -1,4 +1,5 @@
 import Hero from "./Hero"
+import SplineStrip from "./SplineStrip"
 import About from "./About"
 import AboutTwo from "./AboutTwo"
 import Service from "./Service"
@@ -24,17 +25,18 @@ const HomeOne = () => {
                   position: 'fixed',
                   inset: 0,
                   zIndex: 0,
-                  pointerEvents: 'none',
                }}
                squareSize={4}
                gridGap={6}
                flickerChance={0.3}
                color="rgb(120, 120, 120)"
-               maxOpacity={0.07}
+               maxOpacity={0.08}
+               interactive={false}
             />
             <div id="smooth-content">
                <main>
-                  <Hero />
+                  <SplineStrip />
+                  {/* <Hero /> */}
                   <About />
                   <AboutTwo />
                   <Service />
