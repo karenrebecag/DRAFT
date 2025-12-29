@@ -1,8 +1,23 @@
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
 import { useInView } from 'react-intersection-observer';
 import { useI18n } from '../../../i18n';
-import { MorphingTextReveal } from '../../ui/MorphingTextReveal';
+import { LoopingWords } from '../../ui/LoopingWords';
 import { HeroUnderline } from '../../ui/HeroUnderline';
-import { WireframeMarquee } from '../../ui/WireframeMarquee';
+
+const setting = {
+   loop: true,
+   freeMode: true,
+   slidesPerView: 'auto' as const,
+   spaceBetween: 30,
+   centeredSlides: true,
+   allowTouchMove: false,
+   speed: 30000,
+   autoplay: {
+      delay: 1,
+      disableOnInteraction: true,
+   },
+};
 
 const Hero = () => {
    const { t } = useI18n();
@@ -21,7 +36,7 @@ const Hero = () => {
                     
                       
 
-                        <h2 className="title" style={{ position: 'relative', zIndex: 1, lineHeight: 1.1, whiteSpace: 'nowrap', fontWeight: 600 }}>
+                        <h2 className="title" style={{ position: 'relative', zIndex: 1, lineHeight: 1.1, whiteSpace: 'nowrap' }}>
                            {t.hero.titleLine1Prefix && <span>{t.hero.titleLine1Prefix} </span>}
                            <HeroUnderline
                               isActive={inView}
@@ -34,23 +49,34 @@ const Hero = () => {
                            </HeroUnderline>
                            <span className="d-md-none">{t.hero.titleLine1Highlight}</span>
                         </h2>
-                        <h2 className="title mb-0" style={{ position: 'relative', marginTop: 'clamp(-5px, -1.5vw, -30px)', zIndex: 1, lineHeight: 1.1, fontWeight: 600 }}>
+                        <h2 className="title mb-0" style={{ position: 'relative', marginTop: 'clamp(-5px, -1.5vw, -30px)', zIndex: 1, lineHeight: 1.1 }}>
                            {t.hero.titleLine2}
                         </h2>
-                        <h2 className="title" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '0.25em', whiteSpace: 'nowrap', position: 'relative', zIndex: 1, marginTop: 'clamp(0px, -0.5vw, -15px)', lineHeight: 1.1, fontWeight: 600 }}>
+                        <h2 className="title" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '0.25em', whiteSpace: 'nowrap', position: 'relative', zIndex: 1, marginTop: 'clamp(0px, -0.5vw, -15px)', lineHeight: 1.1 }}>
                            <span>{t.hero.titleLine3Prefix}</span>
-                           <MorphingTextReveal texts={[...t.hero.rotatingWords]} interval={3000} glitchOnHover={true} />
+                           <LoopingWords words={[...t.hero.rotatingWords]} />
                         </h2>
                      </div>
                   </div>
                </div>
             </div>
          </div>
-         <div className="td-hero-text-slide wow fadeInUp" data-wow-delay=".7s" data-wow-duration="1s" style={{ position: 'relative', zIndex: 2, paddingBottom: '80px', marginTop: '-280px' }}>
-            <WireframeMarquee
-               words={t.hero.sliderWords}
-               speed={60}
-            />
+         <div className="td-hero-text-slide  wow fadeInUp" data-wow-delay=".7s" data-wow-duration="1s" style={{ position: 'relative', zIndex: 2 }}>
+            <div className="container-fluid">
+               <div className="row">
+                  <Swiper {...setting} modules={[Autoplay]} onSwiper={(swiper) => {
+                     swiper.wrapperEl.classList.add("slide-transition");
+                  }} className="swiper-container td-hero-text-slide-active">
+                     {t.hero.sliderWords.map((item, i) => (
+                        <SwiperSlide key={i} className="swiper-slide">
+                           <div>
+                              <h2 className="td-hero-bigtext">{item}</h2>
+                           </div>
+                        </SwiperSlide>
+                     ))}
+                  </Swiper>
+               </div>
+            </div>
          </div>
          <div className="pb-60" style={{ position: 'relative', zIndex: 2 }}>
             <div className="container">
