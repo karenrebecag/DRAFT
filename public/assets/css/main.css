@@ -80,51 +80,12 @@
   font-display: swap;
 }
 
-/* Franie Font Family - All Weights */
+/* Inter Tight is loaded via Google Fonts in _typography.scss */
+/* Glitz Font for Logo */
 @font-face {
-  font-family: 'Franie';
-  src: url('/assets/fonts/Franie-Hair.woff2') format('woff2');
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Franie';
-  src: url('/assets/fonts/Franie-ExtraLight.woff2') format('woff2');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Franie';
-  src: url('/assets/fonts/Franie-Regular.woff2') format('woff2');
+  font-family: 'Glitz';
+  src: url('/assets/fonts/Glitz.woff2') format('woff2');
   font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Franie';
-  src: url('/assets/fonts/Franie-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Franie';
-  src: url('/assets/fonts/Franie-SemiBoldItalic.woff2') format('woff2');
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Franie';
-  src: url('/assets/fonts/Franie-Black.woff2') format('woff2');
-  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
@@ -3862,7 +3823,7 @@ textarea {
     	15. hero
 ===============================*/
 .td-hero-title .title {
-  font-family: var(--td-ff-franie, 'Franie'), sans-serif;
+  font-family: var(--td-ff-inter-tight, 'Inter Tight'), sans-serif;
   font-weight: 400;
   font-size: 130px;
   letter-spacing: -0.04em;
@@ -3909,7 +3870,7 @@ textarea {
   z-index: -1;
 }
 .td-hero-bigtext {
-  font-family: var(--td-ff-franie, 'Franie'), sans-serif;
+  font-family: var(--td-ff-inter-tight, 'Inter Tight'), sans-serif;
   font-weight: 900;
   font-size: 600px;
   color: var(--td-theme-primary);
@@ -3964,7 +3925,7 @@ textarea {
   }
 }
 .td-hero-feature ul li {
-  font-family: var(--td-ff-franie, 'Franie'), sans-serif;
+  font-family: var(--td-ff-inter-tight, 'Inter Tight'), sans-serif;
   font-weight: 600;
   font-size: 18px;
   color: var(--td-common-black-2);

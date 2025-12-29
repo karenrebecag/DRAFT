@@ -21,10 +21,6 @@ export interface FlickeringGridProps {
   interactive?: boolean;
   mouseRadius?: number;
   magnetStrength?: number;
-  /** Enable radial reveal animation on mount */
-  revealAnimation?: boolean;
-  /** Speed of the reveal animation (lower = faster) */
-  revealSpeed?: number;
 }
 
 interface DotState {
@@ -40,10 +36,6 @@ interface DotState {
   dirty: boolean;
   col: number;
   row: number;
-  /** Distance from center for reveal animation */
-  distFromCenter: number;
-  /** Whether the dot has been revealed */
-  revealed: boolean;
 }
 
 export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
@@ -60,8 +52,6 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
   interactive = true,
   mouseRadius = 150,
   magnetStrength = 0.4,
-  revealAnimation = false,
-  revealSpeed = 0.012,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -96,55 +86,35 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     const cols = Math.floor(w / cellSize);
     const rows = Math.floor(h / cellSize);
 
-    // Calculate center point
-    const centerX = (w * dpr) / 2;
-    const centerY = (h * dpr) / 2;
-
     const dots: DotState[] = [];
-    let maxDist = 0;
-
     for (let col = 0; col < cols; col++) {
       for (let row = 0; row < rows; row++) {
         const baseX = col * cellSize * dpr;
         const baseY = row * cellSize * dpr;
         const baseOpacity = Math.random() * maxOpacity;
-
-        // Calculate distance from center
-        const dx = baseX - centerX;
-        const dy = baseY - centerY;
-        const distFromCenter = Math.sqrt(dx * dx + dy * dy);
-        maxDist = Math.max(maxDist, distFromCenter);
-
         dots.push({
           baseX,
           baseY,
           currentX: baseX,
           currentY: baseY,
           baseOpacity,
-          currentOpacity: revealAnimation ? 0 : baseOpacity,
+          currentOpacity: baseOpacity,
           currentR: baseColor.r,
           currentG: baseColor.g,
           currentB: baseColor.b,
           dirty: true,
           col,
           row,
-          distFromCenter,
-          revealed: !revealAnimation,
         });
       }
     }
-
-    // Normalize distances and add random offset for organic feel
-    dots.forEach(dot => {
-      dot.distFromCenter = (dot.distFromCenter / maxDist) + (Math.random() * 0.15);
-    });
 
     dotsRef.current = dots;
     gridInfoRef.current = { cols, rows, dpr, cellSize: cellSize * dpr };
     affectedDotsRef.current.clear();
 
     return { cols, rows, dpr };
-  }, [squareSize, gridGap, maxOpacity, baseColor, revealAnimation]);
+  }, [squareSize, gridGap, maxOpacity, baseColor]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -162,7 +132,6 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     let lastFrame = 0;
     let mouseMoving = false;
     let mouseStillFrames = 0;
-    let revealProgress = 0;
 
     const scaledSize = squareSize * gridInfoRef.current.dpr;
 
@@ -233,9 +202,8 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     const animate = (time: number) => {
       animationId = requestAnimationFrame(animate);
 
-      // Adaptive framerate: 60fps when mouse moving or revealing, 30fps when still
-      const isRevealing = revealAnimation && revealProgress < 1.5;
-      const frameInterval = (mouseMoving || isRevealing) ? 16.67 : 33.33;
+      // Adaptive framerate: 60fps when mouse moving, 30fps when still
+      const frameInterval = mouseMoving ? 16.67 : 33.33;
       if (time - lastFrame < frameInterval) return;
       lastFrame = time;
 
@@ -249,26 +217,6 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
       if (mouseMoving) {
         mouseStillFrames++;
         if (mouseStillFrames > 5) mouseMoving = false;
-      }
-
-      // Radial reveal animation
-      if (revealAnimation && revealProgress < 1.5) {
-        revealProgress += revealSpeed;
-
-        dots.forEach((dot) => {
-          if (!dot.revealed && dot.distFromCenter < revealProgress) {
-            dot.revealed = true;
-            // Start with a bright flash (3x the base opacity)
-            dot.currentOpacity = Math.min(dot.baseOpacity * 3, 0.8);
-            dot.dirty = true;
-          }
-
-          // Fade down from bright flash to base opacity
-          if (dot.revealed && dot.currentOpacity > dot.baseOpacity) {
-            dot.currentOpacity += (dot.baseOpacity - dot.currentOpacity) * 0.08;
-            dot.dirty = true;
-          }
-        });
       }
 
       // Random flickering - reduced frequency
@@ -435,7 +383,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
         document.removeEventListener("mouseleave", handleMouseLeave);
       }
     };
-  }, [setupCanvas, baseColor, targetHoverColor, squareSize, gridGap, flickerChance, maxOpacity, width, height, interactive, mouseRadius, magnetStrength, revealAnimation, revealSpeed]);
+  }, [setupCanvas, baseColor, targetHoverColor, squareSize, gridGap, flickerChance, maxOpacity, width, height, interactive, mouseRadius, magnetStrength]);
 
   return (
     <div ref={containerRef} className={`w-full h-full ${className || ''}`} style={style}>

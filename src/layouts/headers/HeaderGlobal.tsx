@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import gsap from "gsap"
 import Offcanvas from "./Menu/Offcanvas"
 import { useI18n, type LanguageCode } from "../../i18n"
-import { DrawUnderline } from "../../components/ui/DrawRandomUnderline"
 import styles from "./HeaderGlobal.module.scss"
 
 // Navigation structure with translation keys
@@ -52,8 +51,6 @@ const HeaderGlobal = () => {
       }
       return location.pathname.startsWith(link)
    }
-
-   const isHomePage = location.pathname === '/'
 
    // Header show/hide animation with GSAP
    const animateHeader = useCallback((show: boolean) => {
@@ -143,27 +140,18 @@ const HeaderGlobal = () => {
             <nav className={styles.nav}>
                {/* Logo - links to home */}
                <Link to="/" className={styles.logo}>
-                  <DrawUnderline
-                     isActive={isHomePage}
-                     strokeColor="var(--color-primary, #beff01)"
-                     strokeWidth={6}
-                  >
-                     <span>DRAFT</span>
-                  </DrawUnderline>
+                  <span>DRAFT</span>
                </Link>
 
                {/* Desktop Menu */}
                <ul className={styles.menuList}>
                   {navItems.map((item) => (
                      <li key={item.id} className={styles.menuItem}>
-                        <Link to={item.link} className={styles.menuLink}>
-                           <DrawUnderline
-                              isActive={isActiveRoute(item.link)}
-                              strokeColor="var(--color-primary, #beff01)"
-                              strokeWidth={6}
-                           >
-                              {item.title}
-                           </DrawUnderline>
+                        <Link
+                           to={item.link}
+                           className={`${styles.menuLink} ${isActiveRoute(item.link) ? styles.active : ''}`}
+                        >
+                           {item.title}
                         </Link>
                      </li>
                   ))}

@@ -114,14 +114,6 @@ export const DrawUnderline: React.FC<DrawUnderlineProps> = ({
     }
   }, [isActive]);
 
-  const handleEnter = useCallback(() => {
-    if (enterTweenRef.current && enterTweenRef.current.isActive()) return;
-    if (isActive) return; // Don't change if already active
-
-    const newSvgData = getNextVariant();
-    setCurrentSvg(newSvgData);
-  }, [isActive]);
-
   const handleLeave = useCallback(() => {
     if (isActive) return; // Don't hide if active
 
@@ -183,8 +175,6 @@ export const DrawUnderline: React.FC<DrawUnderlineProps> = ({
       ref={containerRef as React.RefObject<HTMLSpanElement & HTMLDivElement>}
       className={className}
       style={containerStyles}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
     >
       {children}
       <div style={svgContainerStyles}>

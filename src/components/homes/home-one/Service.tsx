@@ -6,10 +6,10 @@ const Service = () => {
    const { t } = useI18n()
    const [activeId, setActiveId] = useState<string>("1")
 
-   const franieBase: React.CSSProperties = { fontFamily: "'Franie', sans-serif" }
-   const franieSemiBold: React.CSSProperties = { ...franieBase, fontWeight: 600 }
-   const franieRegular: React.CSSProperties = { ...franieBase, fontWeight: 400 }
-   const franieLight: React.CSSProperties = { ...franieBase, fontWeight: 200 }
+   const interTightBase: React.CSSProperties = { fontFamily: "'Inter Tight', sans-serif" }
+   const interTightSemiBold: React.CSSProperties = { ...interTightBase, fontWeight: 600 }
+   const interTightRegular: React.CSSProperties = { ...interTightBase, fontWeight: 400 }
+   const interTightLight: React.CSSProperties = { ...interTightBase, fontWeight: 200 }
 
    const services = [
       { id: "1", ...t.services.items.service1 },
@@ -31,10 +31,10 @@ const Service = () => {
             <div className="row mb-60">
                <div className="col-12 d-flex justify-content-between align-items-center flex-wrap gap-4">
                   <div>
-                     <span style={{ ...franieLight, fontSize: '14px', letterSpacing: '0.1em', color: 'var(--color-gray)' }}>
+                     <span style={{ ...interTightLight, fontSize: '14px', letterSpacing: '0.1em', color: '#fff' }}>
                         // {t.services.subtitle}
                      </span>
-                     <h2 className="td-section-title td-text-invert mt-10 mb-0" style={franieSemiBold}>
+                     <h2 className="td-section-title td-text-invert mt-10 mb-0" style={interTightSemiBold}>
                         {t.services.title}
                      </h2>
                   </div>
@@ -42,7 +42,7 @@ const Service = () => {
                      <Link className="td-btn-circle" to="/contact">
                         <i className="fa-solid fa-arrow-right"></i>
                      </Link>
-                     <Link className="td-btn-2 td-btn-primary" to="/contact" style={franieSemiBold}>
+                     <Link className="td-btn-2 td-btn-primary" to="/contact" style={interTightSemiBold}>
                         {t.services.cta}
                      </Link>
                      <Link className="td-btn-circle" to="/contact">
@@ -63,7 +63,7 @@ const Service = () => {
                               key={service.id}
                               className="service-accordion-item"
                               style={{
-                                 borderBottom: '1px solid rgba(0,0,0,0.1)',
+                                 borderBottom: '1px solid rgba(255,255,255,0.15)',
                                  cursor: 'pointer',
                               }}
                               onClick={() => toggleAccordion(service.id)}
@@ -79,9 +79,9 @@ const Service = () => {
                               >
                                  <span
                                     style={{
-                                       ...franieLight,
+                                       ...interTightLight,
                                        fontSize: '12px',
-                                       color: isActive ? 'var(--color-primary)' : 'var(--color-gray)',
+                                       color: isActive ? 'var(--color-primary)' : 'rgba(255,255,255,0.6)',
                                        minWidth: '24px',
                                        transition: 'color 0.3s ease',
                                     }}
@@ -90,11 +90,11 @@ const Service = () => {
                                  </span>
                                  <h3
                                     style={{
-                                       ...franieSemiBold,
+                                       ...interTightSemiBold,
                                        fontSize: 'clamp(24px, 4vw, 42px)',
                                        margin: 0,
                                        textTransform: 'uppercase',
-                                       color: isActive ? 'var(--color-black)' : 'var(--color-black-lighter)',
+                                       color: isActive ? '#fff' : 'rgba(255,255,255,0.7)',
                                        transition: 'color 0.3s ease',
                                        flex: 1,
                                     }}
@@ -106,7 +106,7 @@ const Service = () => {
                                        transform: isActive ? 'rotate(45deg)' : 'rotate(0deg)',
                                        transition: 'transform 0.3s ease',
                                        fontSize: '24px',
-                                       color: isActive ? 'var(--color-primary)' : 'var(--color-gray)',
+                                       color: isActive ? 'var(--color-primary)' : 'rgba(255,255,255,0.6)',
                                     }}
                                  >
                                     +
@@ -126,10 +126,10 @@ const Service = () => {
                               >
                                  <p
                                     style={{
-                                       ...franieRegular,
+                                       ...interTightRegular,
                                        fontSize: '15px',
                                        lineHeight: 1.7,
-                                       color: 'var(--color-gray-700)',
+                                       color: 'rgba(255,255,255,0.85)',
                                        maxWidth: '700px',
                                        margin: '0 0 12px 0',
                                     }}
@@ -138,9 +138,9 @@ const Service = () => {
                                  </p>
                                  <span
                                     style={{
-                                       ...franieLight,
+                                       ...interTightLight,
                                        fontSize: '13px',
-                                       color: 'var(--color-gray)',
+                                       color: 'rgba(255,255,255,0.6)',
                                     }}
                                  >
                                     {service.process}

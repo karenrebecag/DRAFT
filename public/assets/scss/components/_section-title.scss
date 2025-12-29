@@ -7,7 +7,7 @@
 	&-subtitle{
 		font-weight: 600;
 		font-size: 18px;
-		color: var(--td-common-black);
+		color: var(--color-app-text-secondary, #a1a1aa);
 	}
 	&-title{
 		font-weight: 800;
@@ -50,13 +50,14 @@
 			font-weight: 600;
 			font-size: 18px;
 			letter-spacing: -0.04em;
-			color: #595c61;
+			color: var(--color-app-text-muted, #71717a);
 		}
 		&-title{
 			font-family: var(--td-ff-dm-sans);
 			font-weight: 600;
 			font-size: 70px;
 			line-height: 1;
+			color: var(--color-app-text, #fafafa);
 			@media #{$xl,$lg} {
 				font-size: 60px;
 			}
@@ -70,7 +71,7 @@
 				}
 			}
 			& span{
-				color: rgba(10, 17, 25, 0.6);
+				color: var(--color-app-text-muted, #71717a);
 				font-weight: 600;
 				font-size: 60px;
 				line-height: 1;
@@ -322,7 +323,7 @@
 	font-weight: 600;
     font-size: 18px;
     letter-spacing: -0.04em;
-    color: #595c61;
+    color: var(--color-app-text-muted, #71717a);
 }
 
 
@@ -335,7 +336,7 @@
     color: transparent;
     background-clip: text;
     -webkit-background-clip: text;
-    background-image: linear-gradient(to right, rgba(28, 29, 31, 1) 50%, rgb(168, 169, 169) 50%);
+    background-image: linear-gradient(to right, var(--color-app-text, #fafafa) 50%, var(--color-app-text-muted, #71717a) 50%);
 }
 .td-text-opacity{
     line-height: 0.94;

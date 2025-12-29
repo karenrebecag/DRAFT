@@ -10,7 +10,7 @@ const About = () => {
             <div className="row">
                <div className="col-lg-4">
                   <div className="td-about-left mb-30">
-                     <span style={{ fontFamily: "'Franie', sans-serif", fontWeight: 400 }}>{t.about.subtitle}</span>
+                     <span style={{ fontFamily: "'Inter Tight', sans-serif", fontWeight: 400, color: '#fff' }}>{t.about.subtitle}</span>
                      <div className="td-about-left-thumb ml-60 fix td-rounded-10">
                         <img data-speed=".9" src="/assets/img/about/thumb.jpg" alt="" />
                      </div>
@@ -18,13 +18,13 @@ const About = () => {
                </div>
                <div className="col-lg-8">
                   <div className="td-about-content mb-30">
-                     <h2 className="td-about-title mb-30" style={{ fontFamily: "'Franie', sans-serif", fontWeight: 600 }}>{t.about.title}</h2>
-                     <p className="mb-45" style={{ fontFamily: "'Franie', sans-serif", fontWeight: 400 }}>{t.about.description}</p>
+                     <h2 className="td-about-title mb-30" style={{ fontFamily: "'Inter Tight', sans-serif", fontWeight: 600 }}>{t.about.title}</h2>
+                     <p className="mb-45" style={{ fontFamily: "'Inter Tight', sans-serif", fontWeight: 400 }}>{t.about.description}</p>
                      <div className="td-btn-group mb-35">
                         <Link className="td-btn-circle" to="/about">
                            <i className="fa-solid fa-arrow-right"></i>
                         </Link>
-                        <Link className="td-btn-2 td-btn-primary" to="/about" style={{ fontFamily: "'Franie', sans-serif", fontWeight: 600 }}>{t.about.cta}</Link>
+                        <Link className="td-btn-2 td-btn-primary" to="/about" style={{ fontFamily: "'Inter Tight', sans-serif", fontWeight: 600 }}>{t.about.cta}</Link>
                         <Link className="td-btn-circle" to="/about">
                            <i className="fa-solid fa-arrow-right"></i>
                         </Link>

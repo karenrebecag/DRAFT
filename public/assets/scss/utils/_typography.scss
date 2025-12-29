@@ -1,9 +1,9 @@
 
 
 
-// font url
+// font url (added Inter Tight)
 
-$font-url: 'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bellefair&family=Roboto:ital,wght@0,100..900;1,100..900&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&family=Teko:wght@300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap';
+$font-url: 'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bellefair&family=Roboto:ital,wght@0,100..900;1,100..900&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Manrope:wght@200..800&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&family=Teko:wght@300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Syne:wght@400..800&display=swap';
 
 
 // font family
@@ -20,7 +20,11 @@ $font-family: (
         'bellefair': '"Bellefair", serif',
         'roboto': '"Roboto", serif',
         'fontawesome': '"Font Awesome 6 Pro"',
-        'franie': '"Franie", sans-serif',
+        'franie': '"Inter Tight", sans-serif',
+        'inter-tight': '"Inter Tight", sans-serif',
+        'glitz': '"Glitz", sans-serif',
         'gatte': '"GC Vank", sans-serif',
+        'playfair': '"Playfair Display", serif',
+        'syne': '"Syne", sans-serif',
     )
 );

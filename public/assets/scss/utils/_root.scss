@@ -118,6 +118,47 @@
     --color-border-accent: rgba(189, 251, 6, 0.30);
 
     // =============================================
+    // App Theme Colors (Dark Mode Native - shadcn style)
+    // =============================================
+    // Neutral dark grays for modern dark UI
+
+    // shadcn-style dark palette
+    --color-dark-950: #09090b;
+    --color-dark-900: #18181b;
+    --color-dark-800: #27272a;
+    --color-dark-700: #3f3f46;
+    --color-dark-600: #52525b;
+    --color-dark-500: #71717a;
+    --color-dark-400: #a1a1aa;
+    --color-dark-300: #d4d4d8;
+    --color-dark-200: #e4e4e7;
+    --color-dark-100: #f4f4f5;
+    --color-dark-50: #fafafa;
+
+    // App backgrounds - shadcn dark
+    --color-app-bg: var(--color-dark-950);
+    --color-app-bg-alt: var(--color-dark-900);
+    --color-app-bg-elevated: var(--color-dark-800);
+    --color-app-bg-subtle: var(--color-dark-900);
+    --color-app-bg-muted: var(--color-dark-800);
+    --color-app-bg-card: var(--color-dark-900);
+
+    // App text - using light palette for contrast on dark
+    --color-app-text: var(--color-dark-50);
+    --color-app-text-secondary: var(--color-dark-400);
+    --color-app-text-muted: var(--color-dark-500);
+    --color-app-text-accent: var(--color-primary);
+
+    // App borders - subtle borders for dark mode
+    --color-app-border: var(--color-dark-800);
+    --color-app-border-strong: var(--color-dark-700);
+    --color-app-border-accent: var(--color-border-accent);
+
+    // Inverse colors (for elements that need opposite treatment)
+    --color-inverse-bg: var(--color-dark-50);
+    --color-inverse-text: var(--color-dark-950);
+
+    // =============================================
     // CSS Standards - Typography
     // =============================================
 

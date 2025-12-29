@@ -36,16 +36,16 @@ $footer-height-small: 1200px;
       height: $footer-height-small;
    }
 
-   // Franie font family for entire footer
-   font-family: 'Franie', sans-serif;
+   // Inter Tight font family for entire footer
+   font-family: 'Inter Tight', sans-serif;
 
    // All text black
    color: var(--td-common-black, #1c1d1f);
 
-   // All text elements - Franie font family + black color
+   // All text elements - Inter Tight font family + black color
    h1, h2, h3, h4, h5, h6,
    p, span, a, li {
-      font-family: 'Franie', sans-serif;
+      font-family: 'Inter Tight', sans-serif;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
@@ -71,56 +71,56 @@ $footer-height-small: 1200px;
       font-weight: 400; // Regular
    }
 
-   // Marquee text - Franie Black
+   // Marquee text - Inter Tight Black
    :global(.td-contact-7-slide-text) {
-      font-family: 'Franie', sans-serif !important;
+      font-family: 'Inter Tight', sans-serif !important;
       font-weight: 900 !important;
       color: var(--td-common-black, #1c1d1f) !important;
       -webkit-text-stroke-color: var(--td-common-black, #1c1d1f) !important;
    }
 
    :global(.td-contact-7-slide-text.yellows) {
-      font-family: 'Franie', sans-serif !important;
+      font-family: 'Inter Tight', sans-serif !important;
       font-weight: 900 !important;
       color: var(--td-common-black, #1c1d1f) !important;
       -webkit-text-stroke-color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Footer big title - Franie SemiBold (lighter than marquee)
+   // Footer big title - Inter Tight SemiBold (lighter than marquee)
    :global(.td-footer-2-bigtitle) {
-      font-family: 'Franie', sans-serif !important;
+      font-family: 'Inter Tight', sans-serif !important;
       font-weight: 600 !important;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Footer section titles - Franie Regular
+   // Footer section titles - Inter Tight Regular
    :global(.td-footer-3-title) {
-      font-family: 'Franie', sans-serif !important;
+      font-family: 'Inter Tight', sans-serif !important;
       font-weight: 400 !important;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Footer links - Franie Regular
+   // Footer links - Inter Tight Regular
    :global(.td-footer-3-widget .links),
    :global(.td-footer-3-widget .links-2),
    :global(.td-footer-3-widget .links-3) {
-      font-family: 'Franie', sans-serif !important;
+      font-family: 'Inter Tight', sans-serif !important;
       font-weight: 400 !important;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Footer menu - Franie Regular
+   // Footer menu - Inter Tight Regular
    :global(.td-footer-3-menu ul li a) {
-      font-family: 'Franie', sans-serif !important;
+      font-family: 'Inter Tight', sans-serif !important;
       font-weight: 400 !important;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Copyright - Franie ExtraLight
+   // Copyright - Inter Tight ExtraLight
    :global(.td-footer-3-copyright),
    :global(.td-footer-3-copyright p),
    :global(.td-footer-3-copyright a) {
-      font-family: 'Franie', sans-serif !important;
+      font-family: 'Inter Tight', sans-serif !important;
       font-weight: 200 !important;
       color: var(--td-common-black, #1c1d1f) !important;
    }

@@ -69,43 +69,11 @@
 
 @import url($font-url);
 
-/* Custom Local Fonts - Franie Family */
+/* Custom Local Fonts - Glitz (Logo) */
 @font-face {
-	font-family: 'Franie';
-	src: url('/assets/fonts/Franie-Hair.woff2') format('woff2');
-	font-weight: 100;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Franie';
-	src: url('/assets/fonts/Franie-ExtraLight.woff2') format('woff2');
-	font-weight: 200;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Franie';
-	src: url('/assets/fonts/Franie-Regular.woff2') format('woff2');
+	font-family: 'Glitz';
+	src: url('/assets/fonts/Glitz.woff2') format('woff2');
 	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Franie';
-	src: url('/assets/fonts/Franie-SemiBold.woff2') format('woff2');
-	font-weight: 600;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Franie';
-	src: url('/assets/fonts/Franie-Black.woff2') format('woff2');
-	font-weight: 900;
 	font-style: normal;
 	font-display: swap;
 }
@@ -125,7 +93,8 @@ body {
 	font-family: var(--td-ff-body);
 	font-size: 16px;
 	font-weight: 400;
-	color: var(--td-grey-1);
+	color: var(--color-app-text);
+	background-color: var(--color-app-bg);
 	line-height: 26px;
 }
 img,
@@ -152,7 +121,7 @@ a:focus,
 }
 a:hover,
 button:hover {
-	color: var(--td-common-black);
+	color: var(--color-app-text-accent);
 	text-decoration: none;
 }
 ul {
@@ -216,7 +185,7 @@ h3,
 h4,
 h5,
 h6 {
-	color: var(--td-common-black);
+	color: var(--color-app-text);
 	font-weight: 700;
 	font-family: var(--td-ff-heading);
 	line-height: 1.1;
@@ -254,7 +223,7 @@ p {
 	line-height: 32px;
 }
 label {
-	color: var(--td-common-black);
+	color: var(--color-app-text);
 	cursor: pointer;
 }
 
@@ -272,18 +241,18 @@ input[type="color"] {
 }
 
 *::-moz-selection {
-	background: var(--td-common-black);
-	color: var(--td-common-white);
+	background: var(--color-app-text-accent);
+	color: var(--color-app-bg);
 	text-shadow: none;
 }
 ::-moz-selection {
-	background: var(--td-common-black);
-	color: var(--td-common-white);
+	background: var(--color-app-text-accent);
+	color: var(--color-app-bg);
 	text-shadow: none;
 }
 ::selection {
-	background: var(--td-common-black);
-	color: var(--td-common-white);
+	background: var(--color-app-text-accent);
+	color: var(--color-app-bg);
 	text-shadow: none;
 }
 

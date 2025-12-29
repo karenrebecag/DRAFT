@@ -24,7 +24,7 @@ const Offcanvas = ({ offCanvas, setOffCanvas }: MobileSidebarProps) => {
                <div className="nav-logo">
                   <Link to="/" onClick={() => setOffCanvas(false)}>
                      <span style={{
-                        fontFamily: "var(--td-ff-franie, 'Franie'), sans-serif",
+                        fontFamily: "var(--td-ff-glitz, 'Glitz'), sans-serif",
                         fontSize: '24px',
                         fontWeight: 900,
                         letterSpacing: '0.02em',

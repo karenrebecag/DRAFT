@@ -1,7 +1,7 @@
 @use '../utils' as *;
 
 /*=============================
-    02. background
+    02. background (Dark Mode Native - shadcn style)
 ===============================*/
 .blue-bg{
     background: var(--td-common-blue);
@@ -12,18 +12,39 @@
 .green-bg-2{
     background: var(--td-common-green);
 }
+// Dark mode backgrounds using shadcn palette
 .grey-bg{
-    background: #f2f7f7;
+    background: var(--color-app-bg-alt, #18181b);
 }
 .grey-bg-2{
-    background: var(--td-grey-2);
+    background: var(--color-app-bg-elevated, #27272a);
 }
 .grey-bg-3{
-    background: #eee;
+    background: var(--color-app-bg-muted, #27272a);
 }
 .black-bg{
-    background: var(--td-common-black);
+    background: var(--color-app-bg, #09090b);
 }
 .theme-bg{
     background: var(--td-theme-1);
+}
+// Additional dark mode utility classes
+.dark-bg{
+    background: var(--color-app-bg, #09090b);
+}
+.dark-bg-alt{
+    background: var(--color-app-bg-alt, #18181b);
+}
+.dark-bg-card{
+    background: var(--color-app-bg-card, #18181b);
+}
+
+// Override Bootstrap/utility bg-white for dark mode
+.bg-white{
+    background: var(--color-app-bg-alt, #18181b) !important;
+}
+
+// White background sections that need dark treatment
+.white-bg{
+    background: var(--color-app-bg-alt, #18181b);
 }

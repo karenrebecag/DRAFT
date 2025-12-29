@@ -13,7 +13,7 @@ $fallback-dark: #1b1e15;
 $fallback-white: #fff;
 
 // Font families
-$font-franie: 'Franie', sans-serif;
+$font-primary: 'Inter Tight', sans-serif;
 $font-inter: 'Inter', sans-serif;
 
 // Animations
@@ -93,7 +93,7 @@ $font-inter: 'Inter', sans-serif;
   height: 20px;
   background: var(--color-secondary, #ff481f);
   color: var(--color-white, $fallback-white);
-  font-family: $font-franie;
+  font-family: $font-primary;
   font-size: var(--font-size-xs, 12px);
   font-weight: var(--font-weight-semibold, 600);
   border-radius: var(--radius-full, 100px);
@@ -179,7 +179,7 @@ $font-inter: 'Inter', sans-serif;
 .titleContainer {
   h3 {
     margin: 0;
-    font-family: $font-franie;
+    font-family: $font-primary;
     font-size: 14px;
     font-weight: 600;
     color: var(--color-dark, $fallback-dark);
@@ -187,7 +187,7 @@ $font-inter: 'Inter', sans-serif;
   }
 
   span {
-    font-family: $font-franie;
+    font-family: $font-primary;
     font-size: 10px;
     font-weight: 400;
     color: var(--color-dark-light, rgba(28, 29, 31, 0.7));
@@ -299,7 +299,7 @@ $font-inter: 'Inter', sans-serif;
 
 .bubble {
   padding: 6px 10px;
-  font-family: $font-franie;
+  font-family: $font-primary;
   font-size: 11px;
   line-height: 1.4;
   word-wrap: break-word;
@@ -322,7 +322,7 @@ $font-inter: 'Inter', sans-serif;
 
   // Markdown styles
   :global(.markdown-content) {
-    font-family: $font-franie;
+    font-family: $font-primary;
     font-size: 11px;
     line-height: 1.4;
 
@@ -400,7 +400,7 @@ $font-inter: 'Inter', sans-serif;
 }
 
 .timestamp {
-  font-family: $font-franie;
+  font-family: $font-primary;
   font-size: 9px;
   color: var(--color-gray-200, #6f7071);
   margin-top: 3px;
@@ -454,7 +454,7 @@ $font-inter: 'Inter', sans-serif;
 
   p {
     margin: 0;
-    font-family: $font-franie;
+    font-family: $font-primary;
     font-size: var(--font-size-xs, 12px);
     font-weight: var(--font-weight-medium, 500);
     white-space: nowrap;
@@ -607,7 +607,7 @@ $font-inter: 'Inter', sans-serif;
 
   span {
     display: block;
-    font-family: $font-franie;
+    font-family: $font-primary;
     font-size: var(--font-size-xs, 12px);
     font-weight: var(--font-weight-medium, 500);
     white-space: nowrap;
@@ -651,7 +651,7 @@ $font-inter: 'Inter', sans-serif;
     padding-left: 48px;
     border: none;
     background: transparent;
-    font-family: $font-franie;
+    font-family: $font-primary;
     font-size: 12px;
     line-height: 1.4;
     resize: none;
@@ -663,7 +663,7 @@ $font-inter: 'Inter', sans-serif;
     }
 
     &::placeholder {
-      font-family: $font-franie;
+      font-family: $font-primary;
       font-size: 12px;
       color: var(--color-gray-200, #6f7071);
     }
@@ -695,7 +695,7 @@ $font-inter: 'Inter', sans-serif;
 }
 
 .recordingText {
-  font-family: $font-franie;
+  font-family: $font-primary;
   font-size: 10px;
   font-weight: 500;
   color: var(--color-dark, $fallback-dark);
@@ -715,7 +715,7 @@ $font-inter: 'Inter', sans-serif;
 }
 
 .recordingTimer, .timer {
-  font-family: $font-franie;
+  font-family: $font-primary;
   font-size: 10px;
   font-weight: 600;
   color: var(--color-secondary, #ff481f);
@@ -843,7 +843,7 @@ $font-inter: 'Inter', sans-serif;
   }
 
   .label {
-    font-family: $font-franie;
+    font-family: $font-primary;
     font-size: 11px;
     font-weight: var(--font-weight-medium, 500);
     color: var(--color-dark, $fallback-dark);
@@ -937,7 +937,7 @@ $font-inter: 'Inter', sans-serif;
   background: var(--color-white, $fallback-white);
   border: 2px solid var(--color-dark, $fallback-dark);
   border-radius: 100px;
-  font-family: $font-franie;
+  font-family: $font-primary;
   font-size: 10px;
   font-weight: 500;
   color: var(--color-dark, $fallback-dark);
@@ -981,13 +981,13 @@ $font-inter: 'Inter', sans-serif;
 
   p {
     margin: 0;
-    font-family: $font-franie;
+    font-family: $font-primary;
     font-weight: var(--font-weight-semibold, 600);
     color: var(--color-dark, $fallback-dark);
   }
 
   span {
-    font-family: $font-franie;
+    font-family: $font-primary;
     font-size: var(--font-size-xs, 12px);
     color: var(--color-gray-200, #6f7071);
   }

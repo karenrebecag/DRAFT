@@ -112,7 +112,7 @@ export const WireframeMarquee: React.FC<WireframeMarqueeProps> = ({
         }
 
         .wireframe-text {
-          font-family: var(--td-ff-franie, 'Franie'), sans-serif;
+          font-family: var(--td-ff-inter-tight, 'Inter Tight'), sans-serif;
           font-weight: 900;
           font-size: clamp(150px, 25vw, 400px);
           color: var(--td-theme-primary, #a3e635);

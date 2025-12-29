@@ -8,22 +8,22 @@
 .td-hero{
     &-title{
         & .title{
-            font-family: var(--td-ff-franie, 'Franie'), sans-serif;
-            font-weight: 400;
-            font-size: 130px;
-            letter-spacing: -0.04em;
-            color: var(--td-common-black);
+            font-family: var(--td-ff-inter-tight, 'Inter Tight'), sans-serif;
+            font-weight: 300;
+            font-size: 78px;
+            letter-spacing: -0.02em;
+            color: var(--color-app-text);
             @media #{$xl} {
-                font-size: 120px;
+                font-size: 72px;
             }
             @media #{$lg,$md,$sm,$xs} {
-                font-size: 80px;
+                font-size: 48px;
             }
             @media #{$sm,$xs} {
-                font-size: 50px;
+                font-size: 36px;
             }
             @media #{$xs} {
-                font-size: 40px;
+                font-size: 28px;
             }
             & img{
                 border-radius: 16px;
@@ -41,7 +41,7 @@
         z-index: -1;
     }
     &-bigtext{
-        font-family: var(--td-ff-franie, 'Franie'), sans-serif;
+        font-family: var(--td-ff-inter-tight, 'Inter Tight'), sans-serif;
         font-weight: 900;
         font-size: 600px;
         color: var(--td-theme-primary);
@@ -88,10 +88,10 @@
                 justify-content: flex-start;
             }
             & li{
-                font-family: var(--td-ff-franie, 'Franie'), sans-serif;
+                font-family: var(--td-ff-inter-tight, 'Inter Tight'), sans-serif;
                 font-weight: 600;
                 font-size: 18px;
-                color: var(--td-common-black-2);
+                color: var(--color-app-text);
                 display: flex;
                 align-items: center;
                 margin-bottom: 20px;
@@ -101,7 +101,7 @@
                 &.td-border{
                     width: 120px;
                     height: 1px;
-                    background: var(--td-common-black);
+                    background: var(--color-app-border-strong);
                     display: inline-block;
                     @media #{$md,$sm,$xs} {
                         display: none;

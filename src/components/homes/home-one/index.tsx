@@ -1,5 +1,5 @@
-import Hero from "./Hero"
 import SplineStrip from "./SplineStrip"
+import LogoMarquee from "./LogoMarquee"
 import About from "./About"
 import AboutTwo from "./AboutTwo"
 import Service from "./Service"
@@ -18,22 +18,38 @@ const HomeOne = () => {
    return (
       <>
          <HeaderGlobal />
+         <LogoMarquee />
          <div id="smooth-wrapper">
             {/* Fixed background grid for all sections */}
+            {/* Almost black background */}
+            <div
+               style={{
+                  position: 'fixed',
+                  inset: 0,
+                  zIndex: -2,
+                  backgroundColor: 'rgb(8, 8, 8)',
+               }}
+            />
             <FlickeringGrid
                style={{
                   position: 'fixed',
                   inset: 0,
-                  zIndex: 0,
+                  zIndex: -1,
+                  pointerEvents: 'none',
                }}
                squareSize={4}
                gridGap={6}
                flickerChance={0.3}
                color="rgb(120, 120, 120)"
+               hoverColor="rgb(180, 180, 180)"
                maxOpacity={0.08}
-               interactive={false}
+               interactive={true}
+               mouseRadius={200}
+               magnetStrength={0.3}
+               revealAnimation={true}
+               revealSpeed={0.015}
             />
-            <div id="smooth-content">
+            <div id="smooth-content" style={{ position: 'relative', zIndex: 1 }}>
                <main>
                   <SplineStrip />
                   {/* <Hero /> */}

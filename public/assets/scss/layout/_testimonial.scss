@@ -9,7 +9,7 @@
         font-weight: 800;
         font-size: 80px;
         letter-spacing: -0.03em;
-        color: var(--td-common-black);
+        color: var(--color-app-text, #fafafa);
         line-height: 1;
         @media #{$lg} {
             font-size: 60px;
@@ -37,14 +37,14 @@
             font-size: 18px;
             line-height: 30px;
             letter-spacing: -0.02em;
-            color: var(--td-common-black);
+            color: var(--color-app-text, #fafafa);
         }
     }
     &-navigation{
         & span{
             transition: all .4s ease;
             &:hover{
-                color: var(--td-common-black);
+                color: var(--color-app-text-accent, #bdfb06);
             }
         }
     }
@@ -57,11 +57,12 @@
                 font-weight: 600;
                 font-size: 24px;
                 letter-spacing: -0.02em;
+                color: var(--color-app-text, #fafafa);
             }
             & span{
                 font-weight: 400;
                 font-size: 18px;
-                color: var(--td-grey-1);
+                color: var(--color-app-text-muted, #71717a);
             }
         }
     }
