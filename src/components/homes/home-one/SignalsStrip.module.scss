@@ -1,0 +1,293 @@
+/**
+ * SignalsStrip - Draggable Marquee Cards Section Styles
+ * Osmo Scaling System: all sizes in em for fluid scaling
+ */
+
+.signalsStrip {
+   position: relative;
+   padding: 5em 0;
+
+   @media (min-width: 768px) {
+      padding: 6em 0;
+   }
+}
+
+/* Section Header */
+.header {
+   margin-bottom: 3em;
+   padding-left: 1em;
+   padding-right: 1em;
+
+   @media (min-width: 768px) {
+      margin-bottom: 4em;
+      padding-left: 7rem;
+      padding-right: 2em;
+   }
+}
+
+.label {
+   display: inline-block;
+   font-family: 'Inter Tight', var(--font-family-primary, sans-serif);
+   font-size: 0.75em; /* 12px at base */
+   font-weight: 500;
+   text-transform: uppercase;
+   letter-spacing: 0.15em;
+   color: rgba(255, 255, 255, 0.6);
+   background: rgba(255, 255, 255, 0.06);
+   padding: 0.375em 0.875em;
+   border-radius: 100px;
+   border: 1px solid rgba(255, 255, 255, 0.08);
+   margin-bottom: 1.5em;
+}
+
+.title {
+   font-family: 'Inter Tight', var(--font-family-primary, sans-serif);
+   font-weight: 700;
+   font-size: 2.5em; /* ~40px at base, scales fluidly */
+   letter-spacing: -0.02em;
+   line-height: 1.25;
+   color: var(--color-white, #fafafa);
+   margin: 0 0 1em 0;
+}
+
+.subtitle {
+   max-width: 28rem;
+   font-family: 'Inter Tight', var(--font-family-primary, sans-serif);
+   font-size: 0.875em; /* 14px at base */
+   font-weight: 400;
+   line-height: 1.75;
+   color: rgba(255, 255, 255, 0.5);
+}
+
+/* Draggable Marquee Structure */
+.marqueeWrapper {
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   flex: none;
+   width: 100%;
+   overflow: hidden;
+   cursor: grab;
+   user-select: none;
+   -webkit-user-select: none;
+   touch-action: pan-y;
+   padding: 1em 0;
+
+   &:active {
+      cursor: grabbing;
+   }
+}
+
+.marqueeCollection {
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   flex: none;
+   will-change: transform;
+}
+
+.marqueeList {
+   display: flex;
+   justify-content: flex-start;
+   align-items: stretch;
+   flex: none;
+   gap: 1.5em;
+   padding-left: 1em;
+
+   @media (min-width: 768px) {
+      gap: 2em;
+      padding-left: 7rem;
+   }
+}
+
+/* Card Styles - Glassmorphism */
+.card {
+   position: relative;
+   flex-shrink: 0;
+   width: 18.75em; /* 300px at base */
+   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+   pointer-events: none; /* Prevent card from interfering with drag */
+
+   &:hover {
+      transform: translateY(-0.5em);
+   }
+
+   @media (min-width: 768px) {
+      width: 21.25em; /* 340px at base */
+   }
+}
+
+.cardInner {
+   position: relative;
+   height: 100%;
+   background: rgba(31, 31, 31, 0.62);
+   backdrop-filter: saturate(180%) blur(12px);
+   -webkit-backdrop-filter: saturate(180%) blur(12px);
+   border: 1px solid rgba(51, 51, 51, 1);
+   border-radius: 1em;
+   padding: 2em;
+   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+   .card:hover & {
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0.5em 2.5em rgba(0, 0, 0, 0.4), 0 0 2.5em rgba(255, 255, 255, 0.05);
+   }
+
+   @media (min-width: 768px) {
+      padding: 2.5em;
+   }
+}
+
+.tornEdge {
+   display: none;
+}
+
+.cardHeader {
+   display: flex;
+   align-items: baseline;
+   justify-content: space-between;
+   margin-bottom: 1.5em;
+}
+
+.cardNumber {
+   font-family: 'Inter Tight', var(--font-family-primary, sans-serif);
+   font-size: 0.625em; /* 10px at base */
+   font-weight: 500;
+   text-transform: uppercase;
+   letter-spacing: 0.2em;
+   color: rgba(255, 255, 255, 0.35);
+}
+
+.cardDate {
+   font-family: 'Inter Tight', var(--font-family-primary, sans-serif);
+   font-size: 0.625em; /* 10px at base */
+   color: rgba(255, 255, 255, 0.25);
+}
+
+.cardTag {
+   display: inline-block;
+   font-family: 'Inter Tight', var(--font-family-primary, sans-serif);
+   font-size: 0.5625em; /* 9px at base */
+   font-weight: 500;
+   text-transform: uppercase;
+   letter-spacing: 0.15em;
+   color: rgba(255, 255, 255, 0.7);
+   background: rgba(255, 255, 255, 0.06);
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   padding: 0.25em 0.625em;
+   border-radius: 100px;
+   margin-bottom: 1em;
+}
+
+.cardTitle {
+   font-family: 'Inter Tight', var(--font-family-primary, sans-serif);
+   font-weight: 700;
+   font-size: 1.375em; /* ~22px at base */
+   letter-spacing: -0.02em;
+   line-height: 1.25;
+   color: var(--color-white, #fafafa);
+   margin: 0 0 1em 0;
+   transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+   .card:hover & {
+      color: rgba(255, 255, 255, 1);
+   }
+}
+
+.cardDivider {
+   width: 3rem;
+   height: 1px;
+   background: rgba(255, 255, 255, 0.2);
+   border-radius: 1px;
+   margin-bottom: 1.25em;
+   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+   .card:hover & {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.5);
+   }
+}
+
+.cardDescription {
+   font-family: 'Inter Tight', var(--font-family-primary, sans-serif);
+   font-size: 0.875em; /* 14px at base */
+   font-weight: 400;
+   line-height: 1.75;
+   color: rgba(255, 255, 255, 0.5);
+   margin: 0;
+}
+
+/* Corner Fold Effect - Hidden for glass style */
+.cornerFold {
+   display: none;
+}
+
+.cornerFoldInner {
+   display: none;
+}
+
+/* Shadow Layer - Subtle white glow effect */
+.cardShadow {
+   position: absolute;
+   inset: 0;
+   z-index: -1;
+   border-radius: 1em;
+   background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+   opacity: 0;
+   filter: blur(20px);
+   transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+   .card:hover & {
+      opacity: 1;
+   }
+}
+
+/* Drag Hint */
+.dragHint {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 0.5em;
+   margin-top: 2em;
+   opacity: 0.4;
+   transition: opacity 0.3s ease;
+
+   &:hover {
+      opacity: 0.6;
+   }
+}
+
+.dragHintText {
+   font-family: 'Inter Tight', var(--font-family-primary, sans-serif);
+   font-size: 0.75em;
+   font-weight: 400;
+   text-transform: uppercase;
+   letter-spacing: 0.15em;
+   color: rgba(255, 255, 255, 0.6);
+}
+
+.dragHintIcon {
+   width: 1em;
+   height: 1em;
+   color: rgba(255, 255, 255, 0.6);
+   transform: rotate(90deg);
+}
+
+/* Legacy container - keeping for compatibility */
+.cardsContainer {
+   display: flex;
+   gap: 1.5em;
+   overflow-x: auto;
+   padding-bottom: 1.5em;
+   padding-right: 2em;
+   scrollbar-width: none;
+   -ms-overflow-style: none;
+
+   &::-webkit-scrollbar {
+      display: none;
+   }
+
+   @media (min-width: 768px) {
+      gap: 2em;
+   }
+}

@@ -64,6 +64,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
   const gridInfoRef = useRef({ cols: 0, rows: 0, cellSize: 0 });
   const isVisibleRef = useRef(true);
   const animationIdRef = useRef<number>(0);
+  const affectedDotsRef = useRef<Set<number>>(new Set()); // Track dots that need return-to-base
 
   const parseColor = useCallback((colorStr: string) => {
     if (colorCache.has(colorStr)) return colorCache.get(colorStr)!;
@@ -154,30 +155,48 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     let revealProgress = 0;
     let frameCount = 0;
 
-    // Throttled mouse handler - 30fps max
+    // Throttled mouse handler at window level - works with pointerEvents: none
     let lastMouseUpdate = 0;
+    let lastRectUpdate = 0;
+    let cachedRect = canvas.getBoundingClientRect();
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isVisibleRef.current) return;
+      if (!isVisibleRef.current || !interactive) return;
 
       const now = performance.now();
-      if (now - lastMouseUpdate < 33) return;
+      if (now - lastMouseUpdate < 32) return; // Throttle to ~30fps for mouse
+
       lastMouseUpdate = now;
 
-      const rect = canvas.getBoundingClientRect();
+      // Update rect every 500ms (handles scroll/resize)
+      if (now - lastRectUpdate > 500) {
+        cachedRect = canvas.getBoundingClientRect();
+        lastRectUpdate = now;
+      }
+
+      // For fixed position canvas, use clientX/Y directly relative to viewport
+      const x = e.clientX - cachedRect.left;
+      const y = e.clientY - cachedRect.top;
+
+      // Check if mouse is within canvas bounds
+      const isInBounds = x >= 0 && x <= cachedRect.width && y >= 0 && y <= cachedRect.height;
+
       mouseRef.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-        active: true,
+        x,
+        y,
+        active: isInBounds,
       };
     };
 
-    const handleMouseLeave = () => {
-      mouseRef.current.active = false;
+    // Handle scroll to update rect
+    const handleScroll = () => {
+      cachedRect = canvas.getBoundingClientRect();
     };
 
+    // Use window-level mouse tracking (works with pointerEvents: none)
     if (interactive) {
-      canvas.addEventListener("mousemove", handleMouseMove, { passive: true });
-      canvas.addEventListener("mouseleave", handleMouseLeave);
+      window.addEventListener("mousemove", handleMouseMove, { passive: true });
+      window.addEventListener("scroll", handleScroll, { passive: true });
     }
 
     // Draw all dots
@@ -203,8 +222,8 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
         return;
       }
 
-      // Adaptive framerate: 20fps idle, 30fps when interactive
-      const frameInterval = mouseRef.current.active ? 33 : 50;
+      // Adaptive framerate: 12fps idle, 24fps when interactive (optimized)
+      const frameInterval = mouseRef.current.active ? 42 : 83;
       if (time - lastFrame < frameInterval) {
         animationIdRef.current = requestAnimationFrame(animate);
         return;
@@ -235,14 +254,14 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
         }
       }
 
-      // Random flickering - very reduced (every 3rd frame, fewer dots)
-      if (frameCount % 3 === 0 && Math.random() < 0.4) {
-        const flickerCount = Math.max(1, Math.floor(dots.length * flickerChance * 0.05));
+      // Random flickering - heavily reduced (every 6th frame, fewer dots)
+      if (frameCount % 6 === 0 && Math.random() < 0.3) {
+        const flickerCount = Math.max(1, Math.floor(dots.length * flickerChance * 0.02));
         for (let u = 0; u < flickerCount; u++) {
           const i = Math.floor(Math.random() * dots.length);
           const dot = dots[i];
           const newOpacity = Math.random() * maxOpacity;
-          if (Math.abs(newOpacity - dot.baseOpacity) > 0.05) {
+          if (Math.abs(newOpacity - dot.baseOpacity) > 0.08) {
             dot.baseOpacity = newOpacity;
             dot.currentOpacity = newOpacity;
             dot.dirty = true;
@@ -250,7 +269,9 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
         }
       }
 
-      // Mouse interaction - simplified
+      // Mouse interaction - optimized with affected dots tracking
+      const affectedDots = affectedDotsRef.current;
+
       if (interactive && mouse.active) {
         const minCol = Math.max(0, Math.floor((mouse.x - mouseRadius) / cellSize));
         const maxCol = Math.min(cols - 1, Math.ceil((mouse.x + mouseRadius) / cellSize));
@@ -279,25 +300,46 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
               const targetY = dot.baseY + (dy / distance) * pullStrength;
               const targetOpacity = Math.min(0.8, dot.baseOpacity + easeInfluence * 0.5);
 
-              dot.currentX += (targetX - dot.currentX) * 0.15;
-              dot.currentY += (targetY - dot.currentY) * 0.15;
-              dot.currentOpacity += (targetOpacity - dot.currentOpacity) * 0.15;
+              dot.currentX += (targetX - dot.currentX) * 0.12;
+              dot.currentY += (targetY - dot.currentY) * 0.12;
+              dot.currentOpacity += (targetOpacity - dot.currentOpacity) * 0.12;
               dot.dirty = true;
-            } else if (dot.currentX !== dot.baseX || dot.currentY !== dot.baseY) {
-              // Return to base
-              dot.currentX += (dot.baseX - dot.currentX) * 0.08;
-              dot.currentY += (dot.baseY - dot.currentY) * 0.08;
-              dot.currentOpacity += (dot.baseOpacity - dot.currentOpacity) * 0.08;
-
-              if (Math.abs(dot.currentX - dot.baseX) < 0.5 && Math.abs(dot.currentY - dot.baseY) < 0.5) {
-                dot.currentX = dot.baseX;
-                dot.currentY = dot.baseY;
-                dot.currentOpacity = dot.baseOpacity;
-              }
-              dot.dirty = true;
+              affectedDots.add(idx); // Track this dot
             }
           }
         }
+      }
+
+      // Return affected dots to base (only process tracked dots)
+      if (affectedDots.size > 0) {
+        const toRemove: number[] = [];
+        affectedDots.forEach((idx) => {
+          const dot = dots[idx];
+          if (!dot) {
+            toRemove.push(idx);
+            return;
+          }
+
+          const dx = dot.currentX - dot.baseX;
+          const dy = dot.currentY - dot.baseY;
+
+          if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+            dot.currentX += (dot.baseX - dot.currentX) * 0.06;
+            dot.currentY += (dot.baseY - dot.currentY) * 0.06;
+            dot.currentOpacity += (dot.baseOpacity - dot.currentOpacity) * 0.06;
+            dot.dirty = true;
+          } else {
+            // Snap to base and remove from tracking
+            dot.currentX = dot.baseX;
+            dot.currentY = dot.baseY;
+            dot.currentOpacity = dot.baseOpacity;
+            dot.dirty = true;
+            toRemove.push(idx);
+          }
+        });
+
+        // Clean up dots that returned to base
+        toRemove.forEach((idx) => affectedDots.delete(idx));
       }
 
       // Check if any dot needs redraw
@@ -346,9 +388,10 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
       resizeObserver.disconnect();
       clearTimeout(resizeTimeout);
       if (interactive) {
-        canvas.removeEventListener("mousemove", handleMouseMove);
-        canvas.removeEventListener("mouseleave", handleMouseLeave);
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("scroll", handleScroll);
       }
+      affectedDotsRef.current.clear();
     };
   }, [setupCanvas, baseColor, targetHoverColor, squareSize, flickerChance, maxOpacity, width, height, interactive, mouseRadius, magnetStrength, revealAnimation, revealSpeed]);
 

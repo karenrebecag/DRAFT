@@ -1,82 +1,90 @@
 import { Link, useLocation } from "react-router-dom"
 import { useState, useEffect, useCallback, useRef } from "react"
 import gsap from "gsap"
-import { Globe, ArrowRight } from "lucide-react"
-import Offcanvas from "./Menu/Offcanvas"
 import { useI18n, type LanguageCode } from "../../i18n"
 import styles from "./HeaderGlobal.module.scss"
 
-// Navigation structure with translation keys
+// Navigation items
 const getNavItems = (t: ReturnType<typeof useI18n>["t"]) => [
-   {
-      id: 1,
-      title: t.nav.aboutUs,
-      link: "/about",
-   },
-   {
-      id: 2,
-      title: t.nav.services,
-      link: "/service",
-   },
-   {
-      id: 3,
-      title: t.nav.portfolio,
-      link: "/portfolio",
-   },
-   {
-      id: 4,
-      title: t.nav.blog,
-      link: "/blog",
-   },
+   { id: 1, title: t.nav.home || "Home", link: "/" },
+   { id: 2, title: t.nav.aboutUs, link: "/about" },
+   { id: 3, title: t.nav.services, link: "/service" },
+   { id: 4, title: t.nav.portfolio, link: "/portfolio" },
+   { id: 5, title: t.nav.blog, link: "/blog" },
 ]
 
+// Menu Icon SVG
+const MenuIcon = () => (
+   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 12H21" stroke="currentColor" strokeMiterlimit="10" />
+      <path d="M3 6H21" stroke="currentColor" strokeMiterlimit="10" />
+      <path d="M3 18H21" stroke="currentColor" strokeMiterlimit="10" />
+   </svg>
+)
+
+// Contact/Send Icon SVG
+const SendIcon = () => (
+   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22 2L11 13" stroke="currentColor" strokeMiterlimit="10" />
+      <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeMiterlimit="10" />
+   </svg>
+)
+
 const HeaderGlobal = () => {
-   const { t, locale, setLocale, languages, currentLanguage } = useI18n()
+   const { t, locale, setLocale, languages } = useI18n()
    const location = useLocation()
 
-   const [offCanvas, setOffCanvas] = useState<boolean>(false)
-   const [langDropdownOpen, setLangDropdownOpen] = useState<boolean>(false)
+   const [isNavOpen, setIsNavOpen] = useState<boolean>(false)
    const [lastScrollY, setLastScrollY] = useState<number>(0)
+   const navItemsRef = useRef<HTMLDivElement[]>([])
+   const centeredNavRef = useRef<HTMLDivElement>(null)
 
-   const headerRef = useRef<HTMLElement>(null)
-   const langDropdownRef = useRef<HTMLUListElement>(null)
-   const langArrowRef = useRef<HTMLSpanElement>(null)
-
-   // Get navigation items with current translations
    const navItems = getNavItems(t)
 
-   // Check if current route matches a link
+   // Check if current route matches
    const isActiveRoute = (link: string) => {
-      if (link === '/') {
-         return location.pathname === '/'
-      }
+      if (link === '/') return location.pathname === '/'
       return location.pathname.startsWith(link)
    }
 
-   // Header show/hide animation with GSAP
-   const animateHeader = useCallback((show: boolean) => {
-      if (!headerRef.current) return
+   // Handle navigation toggle
+   const toggleNav = useCallback(() => {
+      setIsNavOpen(prev => !prev)
+   }, [])
 
-      gsap.to(headerRef.current, {
-         y: show ? 0 : -100,
+   // Close navigation
+   const closeNav = useCallback(() => {
+      setIsNavOpen(false)
+   }, [])
+
+   // Animate header show/hide
+   const animateHeader = useCallback((show: boolean) => {
+      if (!centeredNavRef.current) return
+
+      gsap.to(centeredNavRef.current, {
+         y: show ? 0 : -120,
          opacity: show ? 1 : 0,
          duration: 0.4,
          ease: "power3.out"
       })
    }, [])
 
-   // Handle scroll
+   // Handle scroll - hide on scroll down, show on scroll up
    const handleScroll = useCallback(() => {
+      // Don't hide when nav menu is open
+      if (isNavOpen) return
+
       const currentScrollY = window.scrollY
 
+      // Always show at top
       if (currentScrollY < 50) {
          animateHeader(true)
          setLastScrollY(currentScrollY)
          return
       }
 
+      // Scrolling down - hide header
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
-         // Scrolling down - hide header
          animateHeader(false)
       } else {
          // Scrolling up - show header
@@ -84,146 +92,147 @@ const HeaderGlobal = () => {
       }
 
       setLastScrollY(currentScrollY)
-   }, [lastScrollY, animateHeader])
+   }, [lastScrollY, animateHeader, isNavOpen])
 
+   // Scroll listener
    useEffect(() => {
       window.addEventListener('scroll', handleScroll, { passive: true })
       return () => window.removeEventListener('scroll', handleScroll)
    }, [handleScroll])
 
-   // Language dropdown animation
-   const animateLangDropdown = useCallback((show: boolean) => {
-      if (langDropdownRef.current) {
-         if (show) {
-            gsap.set(langDropdownRef.current, { visibility: "visible", pointerEvents: "auto" })
-            gsap.fromTo(langDropdownRef.current,
-               { opacity: 0, y: -10, scale: 0.95 },
-               { opacity: 1, y: 0, scale: 1, duration: 0.25, ease: "power2.out" }
-            )
-         } else {
-            gsap.to(langDropdownRef.current, {
-               opacity: 0,
-               y: -10,
-               scale: 0.95,
-               duration: 0.2,
-               ease: "power2.in",
-               onComplete: () => {
-                  gsap.set(langDropdownRef.current, { visibility: "hidden", pointerEvents: "none" })
-               }
-            })
+   // Handle ESC key
+   useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+         if (e.key === 'Escape' && isNavOpen) {
+            closeNav()
          }
       }
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+   }, [isNavOpen, closeNav])
 
-      if (langArrowRef.current) {
-         gsap.to(langArrowRef.current, {
-            rotation: show ? 180 : 0,
-            duration: 0.25,
-            ease: "power2.out"
-         })
-      }
+   // Apply stagger delay to nav items
+   useEffect(() => {
+      navItemsRef.current.forEach((item, index) => {
+         if (item) {
+            item.style.transitionDelay = `${index * 0.05}s`
+         }
+      })
    }, [])
 
-   const handleLangToggle = () => {
-      const newState = !langDropdownOpen
-      setLangDropdownOpen(newState)
-      animateLangDropdown(newState)
-   }
-
+   // Handle language change
    const handleLangSelect = (langCode: LanguageCode) => {
       setLocale(langCode)
-      setLangDropdownOpen(false)
-      animateLangDropdown(false)
    }
 
    return (
-      <>
-         <header ref={headerRef} className={styles.header}>
-            <nav className={styles.nav}>
-               {/* Logo - links to home */}
-               <Link to="/" className={styles.logo}>
+      <nav
+         data-navigation-status={isNavOpen ? "active" : "not-active"}
+         className={styles.navigation}
+      >
+         {/* Dark overlay */}
+         <div
+            className={styles.darkBg}
+            onClick={closeNav}
+         />
+
+         {/* Centered Navigation */}
+         <div ref={centeredNavRef} className={styles.centeredNav}>
+            {/* Background */}
+            <div className={styles.navBg} />
+
+            {/* Header Bar */}
+            <div className={styles.navHeader}>
+               {/* Menu Toggle */}
+               <button
+                  className={styles.menuToggle}
+                  onClick={toggleNav}
+                  aria-label={t.common.menu}
+               >
+                  <div className={styles.toggleBar} />
+                  <div className={styles.toggleBar} />
+               </button>
+
+               {/* Logo */}
+               <Link to="/" className={styles.logo} onClick={closeNav}>
                   <span>DRAFT</span>
                </Link>
 
-               {/* Desktop Menu */}
-               <ul className={styles.menuList}>
-                  {navItems.map((item) => (
-                     <li key={item.id} className={styles.menuItem}>
-                        <Link
-                           to={item.link}
-                           className={`${styles.menuLink} ${isActiveRoute(item.link) ? styles.active : ''}`}
-                        >
-                           {item.title}
-                        </Link>
-                     </li>
-                  ))}
-               </ul>
+               {/* Contact Button */}
+               <Link to="/contact" className={styles.contactBtn} onClick={closeNav}>
+                  <SendIcon />
+               </Link>
+            </div>
 
-               {/* Actions */}
-               <div className={styles.actions}>
+            {/* Expandable Content */}
+            <div className={styles.navContent}>
+               <div className={styles.navInner}>
+                  {/* Navigation Links */}
+                  <ul className={styles.navList}>
+                     {navItems.map((item, index) => (
+                        <div
+                           key={item.id}
+                           className={styles.navItem}
+                           ref={el => { if (el) navItemsRef.current[index] = el }}
+                        >
+                           <Link
+                              to={item.link}
+                              className={`${styles.navLink} ${isActiveRoute(item.link) ? styles.active : ''}`}
+                              onClick={closeNav}
+                           >
+                              <p className={styles.navText}>{item.title}</p>
+                           </Link>
+                        </div>
+                     ))}
+                  </ul>
+
                   {/* Language Selector */}
                   <div
-                     className={styles.langSelector}
-                     onMouseLeave={() => {
-                        if (langDropdownOpen) {
-                           setLangDropdownOpen(false)
-                           animateLangDropdown(false)
-                        }
-                     }}
+                     className={styles.langSection}
+                     ref={el => { if (el) navItemsRef.current[navItems.length] = el }}
                   >
-                     <button
-                        className={styles.langButton}
-                        onClick={handleLangToggle}
-                        onMouseEnter={() => {
-                           if (!langDropdownOpen) {
-                              setLangDropdownOpen(true)
-                              animateLangDropdown(true)
-                           }
-                        }}
-                        aria-label={`${t.common.menu}: ${currentLanguage.name}`}
-                     >
-                        <Globe size={16} />
-                        <span>{locale.toUpperCase()}</span>
-                        <span ref={langArrowRef} className={styles.langArrow} />
-                     </button>
-                     <ul
-                        ref={langDropdownRef}
-                        className={`${styles.langDropdown} ${langDropdownOpen ? styles.active : ''}`}
-                     >
+                     <div className={styles.langButtons}>
                         {languages.map((lang) => (
-                           <li key={lang.code}>
-                              <button
-                                 onClick={() => handleLangSelect(lang.code)}
-                                 aria-current={lang.code === locale ? "true" : undefined}
-                              >
-                                 <span>{lang.name}</span>
-                              </button>
-                           </li>
+                           <button
+                              key={lang.code}
+                              className={`${styles.langBtn} ${lang.code === locale ? styles.active : ''}`}
+                              onClick={() => handleLangSelect(lang.code)}
+                           >
+                              {lang.code.toUpperCase()}
+                           </button>
                         ))}
-                     </ul>
+                     </div>
                   </div>
 
-                  <Link to="/contact" className={styles.ctaButton}>
-                     {t.header.letsTalk}
-                     <ArrowRight size={16} />
-                  </Link>
-
-                  {/* Mobile Menu Toggle */}
-                  <button
-                     onClick={() => setOffCanvas(true)}
-                     className={`${styles.menuToggle} ${offCanvas ? styles.active : ''}`}
-                     aria-label={t.common.menu}
+                  {/* Contact Banner with Marquee */}
+                  <div
+                     className={styles.bannerWrapper}
+                     ref={el => { if (el) navItemsRef.current[navItems.length + 1] = el }}
                   >
-                     <span></span>
-                     <span></span>
-                     <span></span>
-                  </button>
+                     <Link to="/contact" className={styles.banner} onClick={closeNav}>
+                        <div className={styles.bannerRow}>
+                           <div className={styles.bannerTrack}>
+                              {[...Array(5)].map((_, i) => (
+                                 <div key={i} className={styles.bannerItem}>
+                                    <p className={styles.bannerText}>{t.header.letsTalk}</p>
+                                 </div>
+                              ))}
+                           </div>
+                           <div className={styles.bannerTrack} aria-hidden="true">
+                              {[...Array(5)].map((_, i) => (
+                                 <div key={i} className={styles.bannerItem}>
+                                    <p className={styles.bannerText}>{t.header.letsTalk}</p>
+                                 </div>
+                              ))}
+                           </div>
+                        </div>
+                     </Link>
+                  </div>
                </div>
-            </nav>
-         </header>
+            </div>
 
-         {/* Mobile Offcanvas Menu */}
-         <Offcanvas offCanvas={offCanvas} setOffCanvas={setOffCanvas} />
-      </>
+         </div>
+      </nav>
    )
 }
 

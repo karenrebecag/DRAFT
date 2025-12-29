@@ -1,51 +1,33 @@
 /* =============================================
-   FooterGlobal - Sticky Footer Effect
-   Footer stays fixed behind content and reveals
-   as you scroll to the bottom. Content has higher
-   z-index and scrolls over the footer.
+   FooterGlobal - Parallax Footer Effect
+   Footer reveals with parallax as you scroll.
+   Based on osmo.supply pattern with original design.
    ============================================= */
 
-// Responsive footer heights
-$footer-height-desktop: 800px;
-$footer-height-tablet: 900px;
-$footer-height-mobile: 1100px;
-$footer-height-small: 1200px;
+// Wrapper contains the parallax effect
+.footerWrap {
+   position: relative;
+   overflow: hidden;
+}
 
-.stickyFooter {
-   position: fixed;
-   bottom: 0;
-   left: 0;
-   right: 0;
+// Main footer content - parallax inner
+.footer {
+   position: relative;
    width: 100%;
-   z-index: -1; // Negative to ensure it's behind smooth-wrapper content
+   min-height: 100svh;
    background: var(--td-theme-primary, #beff01);
    overflow: hidden;
 
-   // Responsive heights
-   height: $footer-height-desktop;
-
-   @media (max-width: 991px) {
-      height: $footer-height-tablet;
-   }
-
-   @media (max-width: 767px) {
-      height: $footer-height-mobile;
-   }
-
-   @media (max-width: 575px) {
-      height: $footer-height-small;
-   }
-
-   // Inter Tight font family for entire footer
-   font-family: 'Inter Tight', sans-serif;
+   // Franie font family for entire footer
+   font-family: 'Franie', sans-serif;
 
    // All text black
    color: var(--td-common-black, #1c1d1f);
 
-   // All text elements - Inter Tight font family + black color
+   // All text elements - Franie font family + black color
    h1, h2, h3, h4, h5, h6,
    p, span, a, li {
-      font-family: 'Inter Tight', sans-serif;
+      font-family: 'Franie', sans-serif;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
@@ -71,56 +53,56 @@ $footer-height-small: 1200px;
       font-weight: 400; // Regular
    }
 
-   // Marquee text - Inter Tight Black
+   // Marquee text - Franie Black
    :global(.td-contact-7-slide-text) {
-      font-family: 'Inter Tight', sans-serif !important;
+      font-family: 'Franie', sans-serif !important;
       font-weight: 900 !important;
       color: var(--td-common-black, #1c1d1f) !important;
       -webkit-text-stroke-color: var(--td-common-black, #1c1d1f) !important;
    }
 
    :global(.td-contact-7-slide-text.yellows) {
-      font-family: 'Inter Tight', sans-serif !important;
+      font-family: 'Franie', sans-serif !important;
       font-weight: 900 !important;
       color: var(--td-common-black, #1c1d1f) !important;
       -webkit-text-stroke-color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Footer big title - Inter Tight SemiBold (lighter than marquee)
+   // Footer big title - Franie SemiBold (lighter than marquee)
    :global(.td-footer-2-bigtitle) {
-      font-family: 'Inter Tight', sans-serif !important;
+      font-family: 'Franie', sans-serif !important;
       font-weight: 600 !important;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Footer section titles - Inter Tight Regular
+   // Footer section titles - Franie Regular
    :global(.td-footer-3-title) {
-      font-family: 'Inter Tight', sans-serif !important;
+      font-family: 'Franie', sans-serif !important;
       font-weight: 400 !important;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Footer links - Inter Tight Regular
+   // Footer links - Franie Regular
    :global(.td-footer-3-widget .links),
    :global(.td-footer-3-widget .links-2),
    :global(.td-footer-3-widget .links-3) {
-      font-family: 'Inter Tight', sans-serif !important;
+      font-family: 'Franie', sans-serif !important;
       font-weight: 400 !important;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Footer menu - Inter Tight Regular
+   // Footer menu - Franie Regular
    :global(.td-footer-3-menu ul li a) {
-      font-family: 'Inter Tight', sans-serif !important;
+      font-family: 'Franie', sans-serif !important;
       font-weight: 400 !important;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Copyright - Inter Tight ExtraLight
+   // Copyright - Franie ExtraLight
    :global(.td-footer-3-copyright),
    :global(.td-footer-3-copyright p),
    :global(.td-footer-3-copyright a) {
-      font-family: 'Inter Tight', sans-serif !important;
+      font-family: 'Franie', sans-serif !important;
       font-weight: 200 !important;
       color: var(--td-common-black, #1c1d1f) !important;
    }
@@ -131,7 +113,7 @@ $footer-height-small: 1200px;
       color: var(--td-common-black, #1c1d1f) !important;
    }
 
-   // Social icons
+   // Social icons border
    :global(.td-footer-3-social a) {
       border-color: var(--td-common-black, #1c1d1f) !important;
 
@@ -150,33 +132,14 @@ $footer-height-small: 1200px;
    }
 }
 
-.footerContent {
-   position: absolute;
-   bottom: 0;
-   left: 0;
-   right: 0;
-   width: 100%;
-}
-
-// Spacer creates transparent gap to reveal footer behind
-.footerSpacer {
-   position: relative;
-   width: 100%;
+// Dark overlay for parallax depth effect
+.darkOverlay {
+   opacity: 0;
    pointer-events: none;
-   background: transparent !important; // Must be transparent to see footer
-
-   // Responsive heights matching footer
-   height: $footer-height-desktop;
-
-   @media (max-width: 991px) {
-      height: $footer-height-tablet;
-   }
-
-   @media (max-width: 767px) {
-      height: $footer-height-mobile;
-   }
-
-   @media (max-width: 575px) {
-      height: $footer-height-small;
-   }
+   background-color: #201d1d;
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   top: 0;
+   left: 0;
 }

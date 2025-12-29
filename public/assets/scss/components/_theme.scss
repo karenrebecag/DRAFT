@@ -91,11 +91,11 @@
 ===============================*/
 body {
 	font-family: var(--td-ff-body);
-	font-size: 16px;
+	font-size: var(--size-font); /* Osmo Scaling System */
 	font-weight: 400;
 	color: var(--color-app-text);
 	background-color: var(--color-app-bg);
-	line-height: 26px;
+	line-height: 1.625; /* Using unitless line-height for better scaling */
 }
 img,
 .img {

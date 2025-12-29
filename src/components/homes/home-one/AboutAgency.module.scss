@@ -1,0 +1,969 @@
+/**
+ * AboutAgency - Editorial-style reveal-on-scroll section
+ * Osmo Scaling System: all sizes in em for fluid scaling
+ */
+
+.aboutAgency {
+  position: relative;
+  width: 100%;
+  max-width: 87.5em; /* 1400px at base */
+  margin: 0 auto;
+  padding: 4em 1.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5em;
+
+  @media (min-width: 768px) {
+    padding: 4em 3em;
+    gap: 2em;
+  }
+
+  @media (min-width: 1200px) {
+    padding: 5em 4em;
+    gap: 2em;
+  }
+}
+
+/* ============================================
+   HERO ROW (Header + Spline)
+   ============================================ */
+.heroRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2em;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 2em;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  max-width: 48em;
+}
+
+/* Hero Image */
+.heroImageWrapper {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 1em;
+    overflow: hidden;
+  }
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+
+  .heroImageWrapper:hover & {
+    transform: scale(1.03);
+  }
+}
+
+/* ============================================
+   NAV STRIP (moved from header)
+   ============================================ */
+.navStrip {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 1em 0;
+}
+
+.navStripBg {
+  background-color: #0f0e0e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 520px;
+  height: 56px;
+  border-radius: 14px;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+
+  @media (max-width: 997px) {
+    max-width: calc(100% - 32px);
+    height: 52px;
+    border-radius: 12px;
+  }
+
+  @media (max-width: 767px) {
+    max-width: calc(100% - 24px);
+    height: 48px;
+  }
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.75em; /* 12px at base */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.5em 1em;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.title {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-weight: 600;
+  font-size: 2.5em; /* ~40px at base, scales fluidly */
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--color-white, #fafafa);
+  margin: 0;
+}
+
+.subtitle {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 1.125em; /* 18px at base */
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+  max-width: 38em;
+
+  @media (min-width: 768px) {
+    font-size: 1.25em; /* 20px at base */
+  }
+}
+
+/* ============================================
+   DRAGGABLE MARQUEE
+   ============================================ */
+.marqueeWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  flex: none;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  padding: 1em 0;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.marqueeCollection {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  flex: none;
+  will-change: transform;
+}
+
+.marqueeList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex: none;
+  gap: 1em;
+  padding-left: 1.5em;
+
+  @media (min-width: 768px) {
+    gap: 1.5em;
+    padding-left: 3em;
+  }
+}
+
+.marqueeCard {
+  position: relative;
+  flex-shrink: 0;
+  width: 16em;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (min-width: 768px) {
+    width: 18em;
+  }
+}
+
+.marqueeCardInner {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1em;
+  padding: 1.75em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (min-width: 768px) {
+    padding: 2em;
+  }
+}
+
+.marqueeCardIcon {
+  font-size: 1.5em;
+  color: var(--color-primary, #beff01);
+  opacity: 0.8;
+}
+
+.marqueeCardTag {
+  display: inline-block;
+  width: fit-content;
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.625em;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.375em 0.75em;
+  border-radius: 100px;
+}
+
+.marqueeCardTitle {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-weight: 600;
+  font-size: 1.125em;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--color-white, #fafafa);
+  margin: 0;
+}
+
+.marqueeCardDesc {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.8125em;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}
+
+/* Drag Hint */
+.dragHint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  margin-top: 1em;
+  margin-bottom: -2em;
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.dragHintText {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.6875em;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dragHintIcon {
+  width: 0.875em;
+  height: 0.875em;
+  color: rgba(255, 255, 255, 0.6);
+  transform: rotate(90deg);
+}
+
+/* ============================================
+   STATS ROW
+   ============================================ */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2em;
+  background: var(--color-primary, #beff01);
+  padding: 3em 2em;
+  border-radius: 1em;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3em;
+    padding: 4em 3em;
+  }
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.statNumber {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 3em; /* ~48px at base, scales fluidly */
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #0a0a0a;
+}
+
+.statLabel {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.875em; /* 14px at base */
+  font-weight: 400;
+  color: rgba(10, 10, 10, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   TWO COLUMN LAYOUT
+   ============================================ */
+.twoColumn {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3em;
+
+  @media (min-width: 992px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 4em;
+  }
+}
+
+.imageColumn {
+  position: relative;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 0.75em;
+  overflow: hidden;
+
+  @media (min-width: 992px) {
+    aspect-ratio: 3/4;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5em;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+
+  span {
+    font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+    font-size: 0.875em; /* 14px at base */
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.02em;
+  }
+}
+
+.contentColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  justify-content: center;
+
+  @media (min-width: 992px) {
+    padding: 2em 0;
+  }
+}
+
+.sectionTitle {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-weight: 600;
+  font-size: 1.5em; /* ~24px at base */
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--color-white, #fafafa);
+  margin: 0;
+}
+
+.paragraph {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 1em; /* 16px at base */
+  font-weight: 400;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 1.0625em; /* 17px at base */
+  }
+}
+
+/* ============================================
+   CAPABILITIES
+   ============================================ */
+.capabilities {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin-top: 1em;
+}
+
+.capabilitiesLabel {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.75em; /* 12px at base */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.capabilitiesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.capability {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.875em; /* 14px at base */
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.5em 1em;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* ============================================
+   PRINCIPLES SECTION
+   ============================================ */
+.principlesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
+}
+
+.principlesHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  max-width: 32em;
+}
+
+.principlesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2em;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5em;
+  }
+}
+
+.principleCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 2em;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.75em;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--color-primary, #beff01);
+  }
+
+  @media (min-width: 768px) {
+    padding: 2.5em;
+  }
+}
+
+.principleNumber {
+  font-family: "Inter Tight", monospace;
+  font-size: 0.875em; /* 14px at base */
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.principleTitle {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-weight: 500;
+  font-size: 1.25em; /* 20px at base */
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--color-white, #fafafa);
+  margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 1.375em; /* 22px at base */
+  }
+}
+
+.principleDescription {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.9375em; /* 15px at base */
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.principleLine {
+  width: 3em;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin-top: auto;
+  transition: all 0.3s ease;
+}
+
+.principleCard:hover .principleLine {
+  width: 5em;
+  background: var(--color-primary, #beff01);
+}
+
+/* ============================================
+   CLIENTS SECTION
+   ============================================ */
+.clientsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+}
+
+.clientsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  max-width: 28em;
+}
+
+.clientsText {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 1em; /* 16px at base */
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.clientsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1em;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5em;
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.clientLogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5em 1em;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.5em;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.clientName {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.9375em; /* 15px at base */
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: -0.01em;
+}
+
+/* ============================================
+   CTA SECTION
+   ============================================ */
+.ctaSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5em;
+  padding: 4em 2em;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1em;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: var(--color-primary, #beff01);
+  }
+
+  @media (min-width: 768px) {
+    padding: 5em 3em;
+  }
+}
+
+.ctaTitle {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-weight: 600;
+  font-size: 1.75em; /* ~28px at base, scales fluidly */
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--color-white, #fafafa);
+  margin: 0;
+}
+
+.ctaText {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 1.0625em; /* 17px at base */
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+  max-width: 28em;
+}
+
+.ctaButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin-top: 0.5em;
+  justify-content: center;
+}
+
+.ctaButtonPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625em;
+  padding: 0.875em 1.75em;
+  background: var(--color-primary, #beff01);
+  color: #0a0a0a;
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.9375em; /* 15px at base */
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #d4ff4d;
+    transform: translateY(-1px);
+    box-shadow: 0 0.5em 1.5625em -0.5em rgba(190, 255, 1, 0.4);
+  }
+
+  svg {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover svg {
+    transform: translateX(3px);
+  }
+}
+
+.ctaButtonSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.875em 1.75em;
+  background: transparent;
+  color: var(--color-white, #fafafa);
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.9375em; /* 15px at base */
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(190, 255, 1, 0.05);
+    border-color: var(--color-primary, #beff01);
+    color: var(--color-primary, #beff01);
+  }
+
+  svg {
+    opacity: 0.6;
+    transition: all 0.2s ease;
+  }
+
+  &:hover svg {
+    opacity: 1;
+    transform: translate(2px, -2px);
+  }
+}
+
+/* ============================================
+   LOGO WALL CYCLE
+   ============================================ */
+.logoWall {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.logoWallCollection {
+  width: 100%;
+}
+
+.logoWallList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.logoWallItem {
+  width: 25%;
+  position: relative;
+
+  // Hide extra items on desktop (show first 8)
+  &:nth-child(n + 9) {
+    display: none;
+  }
+
+  @media (max-width: 991px) {
+    width: 33.333%;
+
+    // Hide extra items on tablet (show first 6)
+    &:nth-child(n + 7) {
+      display: none;
+    }
+
+    &:nth-child(-n + 6) {
+      display: block;
+    }
+  }
+
+  @media (max-width: 767px) {
+    width: 50%;
+
+    // Hide extra items on mobile (show first 4)
+    &:nth-child(n + 5) {
+      display: none;
+    }
+
+    &:nth-child(-n + 4) {
+      display: block;
+    }
+  }
+}
+
+.logoWallLogo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.5em;
+  margin: 0.375em;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--color-primary, #beff01);
+  }
+}
+
+.logoWallLogoBefore {
+  padding-top: 66.66%;
+}
+
+.logoWallLogoTarget {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 66.66%;
+  height: 40%;
+  position: absolute;
+}
+
+.logoWallLogoImg {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+
+  .logoWallLogo:hover & {
+    opacity: 0.8;
+  }
+}
+
+/* ============================================
+   STACKING CARDS PARALLAX
+   ============================================ */
+.stackingCardsCollection {
+  width: 100%;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  width: 100vw;
+}
+
+.stackingCardsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.stackingCardsItem {
+  color: #fff;
+  border-top-left-radius: 1.5em;
+  border-top-right-radius: 1.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  margin-top: -1.5em;
+  padding: 5em 2em;
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  @media (min-width: 768px) {
+    padding: 6em 4em;
+  }
+}
+
+// Sober dark palette (Vercel-style)
+.isGreen1 {
+  background: #0a0a0a;
+}
+
+.isGreen2 {
+  background: #0c0c0c;
+}
+
+.isGreen3 {
+  background: #0e0e0e;
+}
+
+.isGreen4 {
+  background: #101010;
+}
+
+.isGreen5 {
+  background: #121212;
+}
+
+.isGreen6 {
+  background: #141414;
+}
+
+.stackingCardsItemTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 2em;
+  left: 2em;
+  right: 2em;
+
+  @media (min-width: 768px) {
+    top: 2.5em;
+    left: 3em;
+    right: 3em;
+  }
+}
+
+.stackingCardTopSpan {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.75em; /* 12px at base */
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.stackingCardsContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 48em;
+  gap: 1.5em;
+  z-index: 1;
+}
+
+.stackingCardsItemH {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 4em; /* ~64px at base, scales fluidly */
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.85;
+  margin: 0;
+  text-align: center;
+  letter-spacing: -0.02em;
+
+  @media (min-width: 768px) {
+    font-size: 5em; /* ~80px at base */
+  }
+}
+
+.stackingCardHeadingFaded {
+  opacity: 0.3;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.stackingCardsItemP {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 1em; /* 16px at base */
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  max-width: 32em;
+
+  @media (min-width: 768px) {
+    font-size: 1.125em; /* 18px at base */
+  }
+}
+

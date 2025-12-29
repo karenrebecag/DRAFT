@@ -86,6 +86,9 @@ export interface Translations {
       phone: string;
     };
     copyright: string;
+    pages: string;
+    socials: string;
+    tagline: string;
   };
 }
 
@@ -249,5 +252,8 @@ export const es: Translations = {
       phone: "+52 55 1234 5678",
     },
     copyright: "Todos los derechos reservados.",
+    pages: "Páginas",
+    socials: "Redes",
+    tagline: "No somos un studio típico",
   },
 };

@@ -1,0 +1,71 @@
+.loadingContainer {
+   z-index: 500; // Below cursor (9999) but above content
+   pointer-events: none;
+   position: fixed;
+   inset: 0;
+   overflow: hidden;
+}
+
+.loadingScreen {
+   pointer-events: none; // Allow cursor to work
+   color: #fff;
+   background-color: #080808;
+   justify-content: center;
+   align-items: center;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   position: absolute;
+   top: 0;
+   left: 0;
+}
+
+.loadingWords {
+   gap: 1.5em;
+   align-items: center;
+   display: flex;
+   opacity: 0;
+}
+
+.loadingWordsDot {
+   background-color: #a3e635; // Lime accent to match brand
+   border-radius: 50%;
+   width: 0.65em;
+   height: 0.65em;
+   animation: pulse 1.5s ease-in-out infinite;
+}
+
+.loadingWordsWord {
+   font-family: var(--td-ff-body), system-ui, sans-serif;
+   font-size: clamp(2.5rem, 8vw, 5rem);
+   font-weight: 500;
+   line-height: 1;
+   margin: 0;
+   letter-spacing: -0.02em;
+   color: #fff;
+   min-width: 5ch; // Prevent layout shift
+}
+
+@keyframes pulse {
+   0%,
+   100% {
+      opacity: 1;
+      transform: scale(1);
+   }
+   50% {
+      opacity: 0.6;
+      transform: scale(0.85);
+   }
+}
+
+// Responsive adjustments
+@media screen and (max-width: 767px) {
+   .loadingWords {
+      gap: 1em;
+   }
+
+   .loadingWordsDot {
+      width: 0.5em;
+      height: 0.5em;
+   }
+}

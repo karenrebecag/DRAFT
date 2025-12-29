@@ -43,7 +43,7 @@
    z-index: 2;
    width: 100%;
    text-align: center;
-   padding: 0 16px;
+   padding: 0 1em;
    pointer-events: none;
 
    a, button {
@@ -55,19 +55,19 @@
    display: flex;
    flex-direction: column;
    align-items: center;
-   gap: var(--spacing-4, 16px);
+   gap: 1em;
 }
 
 /* Subtitle Badge */
 .badge {
    display: inline-block;
-   padding: 6px 16px;
+   padding: 0.375em 1em;
    border-radius: 100px;
    border: 1px solid rgba(255, 255, 255, 0.15);
    background: rgba(255, 255, 255, 0.05);
    backdrop-filter: blur(10px);
    font-family: 'Inter Tight', sans-serif;
-   font-size: 11px;
+   font-size: 0.6875em; /* 11px at base */
    font-weight: 500;
    letter-spacing: 0.1em;
    text-transform: uppercase;
@@ -88,7 +88,7 @@
    display: block;
    font-family: 'Inter Tight', sans-serif;
    font-weight: 800;
-   font-size: var(--font-size-5xl, 48px);
+   font-size: 2em; /* 32px at base - scales with Osmo */
    letter-spacing: -0.03em;
    color: var(--color-app-text, #fafafa);
    text-transform: uppercase;
@@ -101,7 +101,7 @@
    font-family: 'Playfair Display', 'DM Serif Display', serif;
    font-weight: 500;
    font-style: italic;
-   font-size: var(--font-size-5xl, 48px);
+   font-size: 2em; /* 32px at base - scales with Osmo */
    letter-spacing: -0.01em;
    color: var(--color-app-text, #fafafa);
    line-height: 1.05;
@@ -118,7 +118,7 @@
 .prefix {
    font-family: 'Inter Tight', sans-serif;
    font-weight: 400;
-   font-size: var(--font-size-5xl, 48px);
+   font-size: 2em; /* 32px at base - scales with Osmo */
    color: var(--color-app-text, #fafafa);
    letter-spacing: -0.02em;
    text-transform: lowercase;
@@ -128,45 +128,20 @@
    font-family: 'Playfair Display', serif;
    font-weight: 500;
    font-style: italic;
-   font-size: var(--font-size-5xl, 48px);
+   font-size: 2em; /* 32px at base - scales with Osmo */
    color: var(--color-app-text, #fafafa);
    letter-spacing: -0.01em;
-}
-
-/* Responsive Typography */
-@media (max-width: 1280px) {
-   .titleSans, .titleSerif, .prefix, .rotatingWord {
-      font-size: var(--font-size-4xl, 36px);
-   }
-}
-
-@media (max-width: 992px) {
-   .titleSans, .titleSerif, .prefix, .rotatingWord {
-      font-size: var(--font-size-3xl, 30px);
-   }
-}
-
-@media (max-width: 768px) {
-   .titleSans, .titleSerif, .prefix, .rotatingWord {
-      font-size: var(--font-size-2xl, 24px);
-   }
-}
-
-@media (max-width: 480px) {
-   .titleSans, .titleSerif, .prefix, .rotatingWord {
-      font-size: var(--font-size-xl, 20px);
-   }
 }
 
 /* Description */
 .description {
    font-family: 'Inter Tight', sans-serif;
    font-weight: 400;
-   font-size: clamp(14px, 2vw, 16px);
+   font-size: 1em; /* 16px at base */
    line-height: 1.6;
    color: var(--color-app-text-secondary, rgba(255, 255, 255, 0.5));
-   max-width: 500px;
-   margin: 8px 0 0 0;
+   max-width: 31.25em; /* 500px at base */
+   margin: 0.5em 0 0 0;
 }
 
 /* CTA Group */
@@ -174,12 +149,12 @@
    display: flex;
    flex-direction: column;
    align-items: center;
-   gap: 16px;
-   margin-top: 24px;
+   gap: 1em;
+   margin-top: 1.5em;
 
    @media (min-width: 576px) {
       flex-direction: row;
-      gap: 24px;
+      gap: 1.5em;
    }
 }
 
@@ -187,19 +162,19 @@
    display: inline-flex;
    align-items: center;
    justify-content: center;
-   padding: 14px 32px;
+   padding: 0.875em 2em;
    border-radius: 100px;
    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
    border: 1px solid rgba(255, 255, 255, 0.1);
    backdrop-filter: blur(10px);
    font-family: 'Inter Tight', sans-serif;
-   font-size: 14px;
+   font-size: 0.875em; /* 14px at base */
    font-weight: 500;
    color: var(--color-app-text, #fafafa);
    text-decoration: none;
    transition: all 0.3s ease;
    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-   min-width: 160px;
+   min-width: 10em;
 
    &:hover {
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.1) 100%);
@@ -212,9 +187,9 @@
 .ctaSecondary {
    display: inline-flex;
    align-items: center;
-   gap: 8px;
+   gap: 0.5em;
    font-family: 'Inter Tight', sans-serif;
-   font-size: 14px;
+   font-size: 0.875em; /* 14px at base */
    font-weight: 400;
    color: var(--color-app-text-secondary, rgba(255, 255, 255, 0.6));
    text-decoration: none;
@@ -240,6 +215,6 @@
 
 /* AI Prompt Box */
 .aiPromptBox {
-   margin-top: var(--spacing-6, 24px);
+   margin-top: 1.5em;
    pointer-events: auto;
 }

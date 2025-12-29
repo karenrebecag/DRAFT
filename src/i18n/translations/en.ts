@@ -160,5 +160,8 @@ export const en: Translations = {
       phone: "+52 55 1234 5678",
     },
     copyright: "All Rights Reserved.",
+    pages: "Pages",
+    socials: "Socials",
+    tagline: "Not your typical studio",
   },
 };
