@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
+import { ArrowRight } from "lucide-react"
 import { useI18n } from "../../../i18n"
 
 // Vertical Marquee Component
@@ -80,7 +81,7 @@ const AboutTwo = () => {
                   </p>
                   <Link to="/about" className="td-culture-cta">
                      {t.aboutTwo.cta}
-                     <i className="fa-solid fa-arrow-right"></i>
+                     <ArrowRight size={16} />
                   </Link>
                </div>
 

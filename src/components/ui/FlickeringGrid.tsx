@@ -21,9 +21,7 @@ export interface FlickeringGridProps {
   interactive?: boolean;
   mouseRadius?: number;
   magnetStrength?: number;
-  /** Enable radial reveal animation on mount */
   revealAnimation?: boolean;
-  /** Speed of the reveal animation (lower = faster) */
   revealSpeed?: number;
 }
 
@@ -34,17 +32,13 @@ interface DotState {
   currentY: number;
   baseOpacity: number;
   currentOpacity: number;
-  currentR: number;
-  currentG: number;
-  currentB: number;
   dirty: boolean;
-  col: number;
-  row: number;
-  /** Distance from center for reveal animation */
   distFromCenter: number;
-  /** Whether the dot has been revealed */
   revealed: boolean;
 }
+
+// Parse color once at module level for common colors
+const colorCache = new Map<string, { r: number; g: number; b: number }>();
 
 export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
   squareSize = 4,
@@ -65,12 +59,15 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const mouseRef = useRef({ x: -1000, y: -1000, active: false, lastX: -1000, lastY: -1000 });
+  const mouseRef = useRef({ x: -1000, y: -1000, active: false });
   const dotsRef = useRef<DotState[]>([]);
-  const gridInfoRef = useRef({ cols: 0, rows: 0, dpr: 1, cellSize: 0 });
-  const affectedDotsRef = useRef<Set<number>>(new Set());
+  const gridInfoRef = useRef({ cols: 0, rows: 0, cellSize: 0 });
+  const isVisibleRef = useRef(true);
+  const animationIdRef = useRef<number>(0);
 
   const parseColor = useCallback((colorStr: string) => {
+    if (colorCache.has(colorStr)) return colorCache.get(colorStr)!;
+
     if (typeof window === "undefined") return { r: 0, g: 0, b: 0 };
     const canvas = document.createElement("canvas");
     canvas.width = canvas.height = 1;
@@ -79,16 +76,18 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     ctx.fillStyle = colorStr;
     ctx.fillRect(0, 0, 1, 1);
     const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-    return { r, g, b };
+    const result = { r, g, b };
+    colorCache.set(colorStr, result);
+    return result;
   }, []);
 
   const baseColor = useMemo(() => parseColor(color), [color, parseColor]);
   const targetHoverColor = useMemo(() => parseColor(hoverColor), [hoverColor, parseColor]);
 
   const setupCanvas = useCallback((canvas: HTMLCanvasElement, w: number, h: number) => {
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
+    // Use DPR of 1 for performance (no retina scaling)
+    canvas.width = w;
+    canvas.height = h;
     canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
 
@@ -96,20 +95,18 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     const cols = Math.floor(w / cellSize);
     const rows = Math.floor(h / cellSize);
 
-    // Calculate center point
-    const centerX = (w * dpr) / 2;
-    const centerY = (h * dpr) / 2;
+    const centerX = w / 2;
+    const centerY = h / 2;
 
     const dots: DotState[] = [];
     let maxDist = 0;
 
     for (let col = 0; col < cols; col++) {
       for (let row = 0; row < rows; row++) {
-        const baseX = col * cellSize * dpr;
-        const baseY = row * cellSize * dpr;
+        const baseX = col * cellSize;
+        const baseY = row * cellSize;
         const baseOpacity = Math.random() * maxOpacity;
 
-        // Calculate distance from center
         const dx = baseX - centerX;
         const dy = baseY - centerY;
         const distFromCenter = Math.sqrt(dx * dx + dy * dy);
@@ -122,29 +119,24 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
           currentY: baseY,
           baseOpacity,
           currentOpacity: revealAnimation ? 0 : baseOpacity,
-          currentR: baseColor.r,
-          currentG: baseColor.g,
-          currentB: baseColor.b,
           dirty: true,
-          col,
-          row,
           distFromCenter,
           revealed: !revealAnimation,
         });
       }
     }
 
-    // Normalize distances and add random offset for organic feel
-    dots.forEach(dot => {
-      dot.distFromCenter = (dot.distFromCenter / maxDist) + (Math.random() * 0.15);
-    });
+    // Normalize distances
+    const invMaxDist = 1 / maxDist;
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].distFromCenter = dots[i].distFromCenter * invMaxDist + Math.random() * 0.15;
+    }
 
     dotsRef.current = dots;
-    gridInfoRef.current = { cols, rows, dpr, cellSize: cellSize * dpr };
-    affectedDotsRef.current.clear();
+    gridInfoRef.current = { cols, rows, cellSize };
 
-    return { cols, rows, dpr };
-  }, [squareSize, gridGap, maxOpacity, baseColor, revealAnimation]);
+    return { cols, rows };
+  }, [squareSize, gridGap, maxOpacity, revealAnimation]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -158,290 +150,214 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     const h = height || container.clientHeight;
     setupCanvas(canvas, w, h);
 
-    let animationId: number;
     let lastFrame = 0;
-    let mouseMoving = false;
-    let mouseStillFrames = 0;
     let revealProgress = 0;
+    let frameCount = 0;
 
-    const scaledSize = squareSize * gridInfoRef.current.dpr;
-
-    // Throttled mouse handler
+    // Throttled mouse handler - 30fps max
     let lastMouseUpdate = 0;
     const handleMouseMove = (e: MouseEvent) => {
+      if (!isVisibleRef.current) return;
+
       const now = performance.now();
-      if (now - lastMouseUpdate < 16) return; // ~60fps max for mouse
+      if (now - lastMouseUpdate < 33) return;
       lastMouseUpdate = now;
 
       const rect = canvas.getBoundingClientRect();
-      const newX = (e.clientX - rect.left) * gridInfoRef.current.dpr;
-      const newY = (e.clientY - rect.top) * gridInfoRef.current.dpr;
-
       mouseRef.current = {
-        x: newX,
-        y: newY,
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
         active: true,
-        lastX: mouseRef.current.x,
-        lastY: mouseRef.current.y,
       };
-      mouseMoving = true;
-      mouseStillFrames = 0;
     };
 
     const handleMouseLeave = () => {
       mouseRef.current.active = false;
-      mouseMoving = false;
     };
 
     if (interactive) {
-      window.addEventListener("mousemove", handleMouseMove, { passive: true });
-      document.addEventListener("mouseleave", handleMouseLeave);
+      canvas.addEventListener("mousemove", handleMouseMove, { passive: true });
+      canvas.addEventListener("mouseleave", handleMouseLeave);
     }
 
-    // Get dots in radius using spatial lookup
-    const getDotsInRadius = (mx: number, my: number, radius: number): number[] => {
-      const { cols, rows, cellSize } = gridInfoRef.current;
-      const indices: number[] = [];
-
-      const minCol = Math.max(0, Math.floor((mx - radius) / cellSize));
-      const maxCol = Math.min(cols - 1, Math.ceil((mx + radius) / cellSize));
-      const minRow = Math.max(0, Math.floor((my - radius) / cellSize));
-      const maxRow = Math.min(rows - 1, Math.ceil((my + radius) / cellSize));
-
-      for (let col = minCol; col <= maxCol; col++) {
-        for (let row = minRow; row <= maxRow; row++) {
-          indices.push(col * rows + row);
-        }
-      }
-      return indices;
-    };
-
-    // Initial full draw
-    const drawFull = () => {
+    // Draw all dots
+    const drawAll = () => {
       const dots = dotsRef.current;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      dots.forEach((dot) => {
-        ctx.fillStyle = `rgba(${dot.currentR},${dot.currentG},${dot.currentB},${dot.currentOpacity})`;
-        ctx.fillRect(dot.currentX, dot.currentY, scaledSize, scaledSize);
+      for (let i = 0; i < dots.length; i++) {
+        const dot = dots[i];
+        if (dot.currentOpacity < 0.01) continue;
+
+        ctx.fillStyle = `rgba(${baseColor.r},${baseColor.g},${baseColor.b},${dot.currentOpacity})`;
+        ctx.fillRect(dot.currentX, dot.currentY, squareSize, squareSize);
         dot.dirty = false;
-      });
+      }
     };
 
-    drawFull();
+    drawAll();
 
     const animate = (time: number) => {
-      animationId = requestAnimationFrame(animate);
+      if (!isVisibleRef.current) {
+        animationIdRef.current = requestAnimationFrame(animate);
+        return;
+      }
 
-      // Adaptive framerate: 60fps when mouse moving or revealing, 30fps when still
-      const isRevealing = revealAnimation && revealProgress < 1.5;
-      const frameInterval = (mouseMoving || isRevealing) ? 16.67 : 33.33;
-      if (time - lastFrame < frameInterval) return;
+      // Adaptive framerate: 20fps idle, 30fps when interactive
+      const frameInterval = mouseRef.current.active ? 33 : 50;
+      if (time - lastFrame < frameInterval) {
+        animationIdRef.current = requestAnimationFrame(animate);
+        return;
+      }
       lastFrame = time;
+      frameCount++;
 
-      const { dpr } = gridInfoRef.current;
       const dots = dotsRef.current;
       const mouse = mouseRef.current;
-      const scaledRadius = mouseRadius * dpr;
-      const affected = affectedDotsRef.current;
-
-      // Track if mouse stopped moving
-      if (mouseMoving) {
-        mouseStillFrames++;
-        if (mouseStillFrames > 5) mouseMoving = false;
-      }
+      const { cellSize, cols, rows } = gridInfoRef.current;
 
       // Radial reveal animation
       if (revealAnimation && revealProgress < 1.5) {
         revealProgress += revealSpeed;
 
-        dots.forEach((dot) => {
+        for (let i = 0; i < dots.length; i++) {
+          const dot = dots[i];
           if (!dot.revealed && dot.distFromCenter < revealProgress) {
             dot.revealed = true;
-            // Start with a bright flash (3x the base opacity)
-            dot.currentOpacity = Math.min(dot.baseOpacity * 3, 0.8);
+            dot.currentOpacity = Math.min(dot.baseOpacity * 2.5, 0.6);
             dot.dirty = true;
           }
 
-          // Fade down from bright flash to base opacity
           if (dot.revealed && dot.currentOpacity > dot.baseOpacity) {
-            dot.currentOpacity += (dot.baseOpacity - dot.currentOpacity) * 0.08;
+            dot.currentOpacity += (dot.baseOpacity - dot.currentOpacity) * 0.1;
             dot.dirty = true;
           }
-        });
+        }
       }
 
-      // Random flickering - reduced frequency
-      if (Math.random() < 0.3) {
-        const flickerCount = Math.floor(dots.length * flickerChance * 0.15);
+      // Random flickering - very reduced (every 3rd frame, fewer dots)
+      if (frameCount % 3 === 0 && Math.random() < 0.4) {
+        const flickerCount = Math.max(1, Math.floor(dots.length * flickerChance * 0.05));
         for (let u = 0; u < flickerCount; u++) {
           const i = Math.floor(Math.random() * dots.length);
           const dot = dots[i];
           const newOpacity = Math.random() * maxOpacity;
-          if (Math.abs(newOpacity - dot.baseOpacity) > 0.03) {
+          if (Math.abs(newOpacity - dot.baseOpacity) > 0.05) {
             dot.baseOpacity = newOpacity;
-            if (!affected.has(i)) {
-              dot.currentOpacity = newOpacity;
+            dot.currentOpacity = newOpacity;
+            dot.dirty = true;
+          }
+        }
+      }
+
+      // Mouse interaction - simplified
+      if (interactive && mouse.active) {
+        const minCol = Math.max(0, Math.floor((mouse.x - mouseRadius) / cellSize));
+        const maxCol = Math.min(cols - 1, Math.ceil((mouse.x + mouseRadius) / cellSize));
+        const minRow = Math.max(0, Math.floor((mouse.y - mouseRadius) / cellSize));
+        const maxRow = Math.min(rows - 1, Math.ceil((mouse.y + mouseRadius) / cellSize));
+
+        const radiusSq = mouseRadius * mouseRadius;
+
+        for (let col = minCol; col <= maxCol; col++) {
+          for (let row = minRow; row <= maxRow; row++) {
+            const idx = col * rows + row;
+            const dot = dots[idx];
+            if (!dot) continue;
+
+            const dx = mouse.x - dot.baseX;
+            const dy = mouse.y - dot.baseY;
+            const distSq = dx * dx + dy * dy;
+
+            if (distSq < radiusSq) {
+              const distance = Math.sqrt(distSq);
+              const influence = 1 - (distance / mouseRadius);
+              const easeInfluence = influence * influence;
+
+              const pullStrength = magnetStrength * easeInfluence * 15;
+              const targetX = dot.baseX + (dx / distance) * pullStrength;
+              const targetY = dot.baseY + (dy / distance) * pullStrength;
+              const targetOpacity = Math.min(0.8, dot.baseOpacity + easeInfluence * 0.5);
+
+              dot.currentX += (targetX - dot.currentX) * 0.15;
+              dot.currentY += (targetY - dot.currentY) * 0.15;
+              dot.currentOpacity += (targetOpacity - dot.currentOpacity) * 0.15;
+              dot.dirty = true;
+            } else if (dot.currentX !== dot.baseX || dot.currentY !== dot.baseY) {
+              // Return to base
+              dot.currentX += (dot.baseX - dot.currentX) * 0.08;
+              dot.currentY += (dot.baseY - dot.currentY) * 0.08;
+              dot.currentOpacity += (dot.baseOpacity - dot.currentOpacity) * 0.08;
+
+              if (Math.abs(dot.currentX - dot.baseX) < 0.5 && Math.abs(dot.currentY - dot.baseY) < 0.5) {
+                dot.currentX = dot.baseX;
+                dot.currentY = dot.baseY;
+                dot.currentOpacity = dot.baseOpacity;
+              }
               dot.dirty = true;
             }
           }
         }
       }
 
-      // Get previously affected dots that need to animate back
-      const previouslyAffected = new Set(affected);
-      affected.clear();
-
-      // Only process dots near mouse
-      if (interactive && mouse.active) {
-        const nearbyIndices = getDotsInRadius(mouse.x, mouse.y, scaledRadius);
-
-        for (const i of nearbyIndices) {
-          const dot = dots[i];
-          if (!dot) continue;
-
-          const dx = mouse.x - dot.baseX;
-          const dy = mouse.y - dot.baseY;
-          const distSq = dx * dx + dy * dy;
-          const radiusSq = scaledRadius * scaledRadius;
-
-          if (distSq < radiusSq) {
-            affected.add(i);
-            const distance = Math.sqrt(distSq);
-            const influence = 1 - (distance / scaledRadius);
-            const easeInfluence = influence * influence;
-
-            const pullStrength = magnetStrength * easeInfluence * 20 * dpr;
-            const targetX = dot.baseX + (dx / distance) * pullStrength;
-            const targetY = dot.baseY + (dy / distance) * pullStrength;
-            const targetOpacity = Math.min(1, dot.baseOpacity + easeInfluence * 0.7);
-            const targetR = baseColor.r + (targetHoverColor.r - baseColor.r) * easeInfluence;
-            const targetG = baseColor.g + (targetHoverColor.g - baseColor.g) * easeInfluence;
-            const targetB = baseColor.b + (targetHoverColor.b - baseColor.b) * easeInfluence;
-
-            const lerpSpeed = 0.2;
-            dot.currentX += (targetX - dot.currentX) * lerpSpeed;
-            dot.currentY += (targetY - dot.currentY) * lerpSpeed;
-            dot.currentOpacity += (targetOpacity - dot.currentOpacity) * lerpSpeed;
-            dot.currentR += (targetR - dot.currentR) * lerpSpeed;
-            dot.currentG += (targetG - dot.currentG) * lerpSpeed;
-            dot.currentB += (targetB - dot.currentB) * lerpSpeed;
-            dot.dirty = true;
-          }
+      // Check if any dot needs redraw
+      let needsRedraw = false;
+      for (let i = 0; i < dots.length; i++) {
+        if (dots[i].dirty) {
+          needsRedraw = true;
+          break;
         }
       }
 
-      // Animate previously affected dots back to base
-      for (const i of previouslyAffected) {
-        if (affected.has(i)) continue;
-        const dot = dots[i];
-
-        const lerpSpeed = 0.1;
-        const threshold = 0.01;
-
-        const dX = Math.abs(dot.currentX - dot.baseX);
-        const dY = Math.abs(dot.currentY - dot.baseY);
-        const dO = Math.abs(dot.currentOpacity - dot.baseOpacity);
-        const dR = Math.abs(dot.currentR - baseColor.r);
-
-        if (dX > threshold || dY > threshold || dO > threshold || dR > threshold) {
-          dot.currentX += (dot.baseX - dot.currentX) * lerpSpeed;
-          dot.currentY += (dot.baseY - dot.currentY) * lerpSpeed;
-          dot.currentOpacity += (dot.baseOpacity - dot.currentOpacity) * lerpSpeed;
-          dot.currentR += (baseColor.r - dot.currentR) * lerpSpeed;
-          dot.currentG += (baseColor.g - dot.currentG) * lerpSpeed;
-          dot.currentB += (baseColor.b - dot.currentB) * lerpSpeed;
-          dot.dirty = true;
-          affected.add(i); // Keep tracking until settled
-        }
+      if (needsRedraw) {
+        drawAll();
       }
 
-      // Only redraw dirty dots
-      let hasGlow = false;
-      dots.forEach((dot) => {
-        if (!dot.dirty) return;
-
-        // Clear previous position
-        ctx.clearRect(
-          dot.currentX - 20,
-          dot.currentY - 20,
-          scaledSize + 40,
-          scaledSize + 40
-        );
-      });
-
-      // Redraw dirty dots and their neighbors that might have been cleared
-      const dirtySet = new Set<number>();
-      dots.forEach((dot, i) => {
-        if (dot.dirty) {
-          dirtySet.add(i);
-          // Add neighbors
-          const { rows } = gridInfoRef.current;
-          if (i > 0) dirtySet.add(i - 1);
-          if (i < dots.length - 1) dirtySet.add(i + 1);
-          if (i >= rows) dirtySet.add(i - rows);
-          if (i < dots.length - rows) dirtySet.add(i + rows);
-        }
-      });
-
-      for (const i of dirtySet) {
-        const dot = dots[i];
-        if (!dot) continue;
-
-        const glowIntensity = (dot.currentOpacity - dot.baseOpacity) / 0.7;
-        if (glowIntensity > 0.15) {
-          ctx.shadowBlur = glowIntensity * 12;
-          ctx.shadowColor = `rgba(${Math.round(dot.currentR)},${Math.round(dot.currentG)},${Math.round(dot.currentB)},${glowIntensity * 0.4})`;
-          hasGlow = true;
-        } else if (hasGlow) {
-          ctx.shadowBlur = 0;
-          hasGlow = false;
-        }
-
-        ctx.fillStyle = `rgba(${Math.round(dot.currentR)},${Math.round(dot.currentG)},${Math.round(dot.currentB)},${dot.currentOpacity})`;
-        ctx.fillRect(dot.currentX, dot.currentY, scaledSize, scaledSize);
-        dot.dirty = false;
-      }
-
-      if (hasGlow) ctx.shadowBlur = 0;
+      animationIdRef.current = requestAnimationFrame(animate);
     };
 
+    // Visibility observer - pause when not visible
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          animationId = requestAnimationFrame(animate);
-        } else {
-          cancelAnimationFrame(animationId);
-        }
+        isVisibleRef.current = entry.isIntersecting;
       },
       { threshold: 0 }
     );
     observer.observe(canvas);
 
+    animationIdRef.current = requestAnimationFrame(animate);
+
+    // Debounced resize
+    let resizeTimeout: ReturnType<typeof setTimeout>;
     const resizeObserver = new ResizeObserver(() => {
-      const newW = width || container.clientWidth;
-      const newH = height || container.clientHeight;
-      setupCanvas(canvas, newW, newH);
-      drawFull();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const newW = width || container.clientWidth;
+        const newH = height || container.clientHeight;
+        setupCanvas(canvas, newW, newH);
+        drawAll();
+      }, 100);
     });
     resizeObserver.observe(container);
 
     return () => {
-      cancelAnimationFrame(animationId);
+      cancelAnimationFrame(animationIdRef.current);
       observer.disconnect();
       resizeObserver.disconnect();
+      clearTimeout(resizeTimeout);
       if (interactive) {
-        window.removeEventListener("mousemove", handleMouseMove);
-        document.removeEventListener("mouseleave", handleMouseLeave);
+        canvas.removeEventListener("mousemove", handleMouseMove);
+        canvas.removeEventListener("mouseleave", handleMouseLeave);
       }
     };
-  }, [setupCanvas, baseColor, targetHoverColor, squareSize, gridGap, flickerChance, maxOpacity, width, height, interactive, mouseRadius, magnetStrength, revealAnimation, revealSpeed]);
+  }, [setupCanvas, baseColor, targetHoverColor, squareSize, flickerChance, maxOpacity, width, height, interactive, mouseRadius, magnetStrength, revealAnimation, revealSpeed]);
 
   return (
     <div ref={containerRef} className={`w-full h-full ${className || ''}`} style={style}>
       <canvas
         ref={canvasRef}
         className="pointer-events-none"
+        style={{ imageRendering: 'pixelated' }}
       />
     </div>
   );

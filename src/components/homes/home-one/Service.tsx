@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { ArrowRight } from "lucide-react"
 import { useI18n } from "../../../i18n"
 
 const Service = () => {
@@ -40,13 +41,13 @@ const Service = () => {
                   </div>
                   <div className="td-btn-group">
                      <Link className="td-btn-circle" to="/contact">
-                        <i className="fa-solid fa-arrow-right"></i>
+                        <ArrowRight size={16} />
                      </Link>
                      <Link className="td-btn-2 td-btn-primary" to="/contact" style={interTightSemiBold}>
                         {t.services.cta}
                      </Link>
                      <Link className="td-btn-circle" to="/contact">
-                        <i className="fa-solid fa-arrow-right"></i>
+                        <ArrowRight size={16} />
                      </Link>
                   </div>
                </div>

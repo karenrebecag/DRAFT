@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 interface DataType {
    id: number;
@@ -55,11 +56,11 @@ const Blog = () => {
                   <div className="td-blog-2-btn text-lg-end td-title-anim">
                      <div className="td-btn-group  td-btn-group-black">
                         <Link className="td-btn-circle" to="/blog">
-                           <i className="fa-solid fa-arrow-right"></i>
+                           <ArrowRight size={16} />
                         </Link>
                         <Link className="td-btn-2 td-btn-primary" to="/blog">VIEW ALL POST</Link>
                         <Link className="td-btn-circle" to="/blog">
-                           <i className="fa-solid fa-arrow-right"></i>
+                           <ArrowRight size={16} />
                         </Link>
                      </div>
                   </div>

@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom"
 import { useState, useEffect, useCallback, useRef } from "react"
 import gsap from "gsap"
+import { Globe, ArrowRight } from "lucide-react"
 import Offcanvas from "./Menu/Offcanvas"
 import { useI18n, type LanguageCode } from "../../i18n"
 import styles from "./HeaderGlobal.module.scss"
@@ -180,7 +181,7 @@ const HeaderGlobal = () => {
                         }}
                         aria-label={`${t.common.menu}: ${currentLanguage.name}`}
                      >
-                        <i className="fa-solid fa-globe"></i>
+                        <Globe size={16} />
                         <span>{locale.toUpperCase()}</span>
                         <span ref={langArrowRef} className={styles.langArrow} />
                      </button>
@@ -203,7 +204,7 @@ const HeaderGlobal = () => {
 
                   <Link to="/contact" className={styles.ctaButton}>
                      {t.header.letsTalk}
-                     <i className="fa-solid fa-arrow-right"></i>
+                     <ArrowRight size={16} />
                   </Link>
 
                   {/* Mobile Menu Toggle */}

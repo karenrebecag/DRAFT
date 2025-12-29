@@ -4,6 +4,7 @@ import { Autoplay } from 'swiper/modules';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { Facebook, Linkedin, Instagram } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import styles from './FooterGlobal.module.scss';
 
@@ -162,14 +163,14 @@ const FooterGlobal = () => {
                               <span key={i}>{line}{i === 0 && <br />}</span>
                            ))}</span>
                            <div className="td-footer-3-social">
-                              <Link to="#"><i className="fa-brands fa-facebook-f"></i></Link>
+                              <Link to="#"><Facebook size={16} /></Link>
                               <Link to="#">
                                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M9.33161 6.77486L15.1688 0H13.7856L8.71722 5.8826L4.66907 0H0L6.12155 8.89546L0 16H1.38336L6.73581 9.78785L11.0109 16H15.68L9.33148 6.77486H9.33187H9.33161ZM7.43696 8.97374L6.81669 8.088L1.88171 1.03969H4.00634L7.98902 6.72789L8.60929 7.61362L13.7863 15.0074H11.6616L7.43709 8.974V8.97361L7.43696 8.97374Z" fill="currentColor" />
                                  </svg>
                               </Link>
-                              <Link to="#"><i className="fa-brands fa-linkedin-in"></i></Link>
-                              <Link to="#"><i className="fa-brands fa-instagram"></i></Link>
+                              <Link to="#"><Linkedin size={16} /></Link>
+                              <Link to="#"><Instagram size={16} /></Link>
                            </div>
                         </div>
                      </div>

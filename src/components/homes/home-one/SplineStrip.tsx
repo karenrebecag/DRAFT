@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
-import { Application } from '@splinetool/runtime';
 import { useI18n } from '../../../i18n';
 import { MorphingTextReveal } from '../../ui/MorphingTextReveal';
 import { AIPromptBox } from '../../ui/AIPromptBox';
@@ -10,6 +9,16 @@ import styles from './SplineStrip.module.scss';
 const SplineStrip = () => {
    const { t } = useI18n();
    const canvasRef = useRef<HTMLCanvasElement>(null);
+   const appRef = useRef<import('@splinetool/runtime').Application | null>(null);
+   const [isLoaded, setIsLoaded] = useState(false);
+   const [hasStartedLoading, setHasStartedLoading] = useState(false);
+
+   // Observe visibility for lazy loading and pause/resume
+   const { ref: containerRef, inView } = useInView({
+      threshold: 0.1,
+      triggerOnce: false,
+   });
+
    const { ref: heroRef } = useInView({
       threshold: 0.3,
       triggerOnce: false,
@@ -21,22 +30,47 @@ const SplineStrip = () => {
       console.log('AI Files:', files);
    };
 
+   // Lazy load Spline only when visible
+   const loadSpline = useCallback(async () => {
+      if (!canvasRef.current || hasStartedLoading) return;
+      setHasStartedLoading(true);
 
+      try {
+         const { Application } = await import('@splinetool/runtime');
+         const app = new Application(canvasRef.current);
+         appRef.current = app;
+
+         await app.load('/assets/models/Banner.splinecode');
+         setIsLoaded(true);
+      } catch (error) {
+         console.error('Failed to load Spline scene:', error);
+      }
+   }, [hasStartedLoading]);
+
+   // Load when first visible
    useEffect(() => {
-      if (!canvasRef.current) return;
+      if (inView && !hasStartedLoading) {
+         loadSpline();
+      }
+   }, [inView, loadSpline, hasStartedLoading]);
 
-      const app = new Application(canvasRef.current);
-      app.load('/assets/models/Banner.splinecode');
-
+   // Cleanup on unmount
+   useEffect(() => {
       return () => {
-         app.dispose();
+         if (appRef.current) {
+            appRef.current.dispose();
+         }
       };
    }, []);
 
    return (
-      <div className={`td-hero-area p-relative fix z-index-1 ${styles.splineStrip}`}>
+      <div ref={containerRef} className={`td-hero-area p-relative fix z-index-1 ${styles.splineStrip}`}>
          <div className={styles.container}>
-            <canvas ref={canvasRef} className={styles.canvas} />
+            <canvas
+               ref={canvasRef}
+               className={styles.canvas}
+               style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 0.5s ease-in-out' }}
+            />
             <div className={styles.overlay} />
 
             {/* Hero Content - Artistic Typography Layout */}

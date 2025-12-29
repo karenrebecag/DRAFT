@@ -1,10 +1,16 @@
+/* Tailwind CSS v4 */
+@import "tailwindcss";
+
+/* Essential third-party CSS */
 @import "react-toastify/dist/ReactToastify.css";
-@import "swiper/css/bundle";
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
 @import "react-responsive-modal/styles.css";
 
-@import "../../public/assets/css/animate.css";
+/* Bootstrap Grid Only - TODO: migrate to Tailwind */
 @import "../../public/assets/css/bootstrap.min.css";
 @import "../../public/assets/css/defauls-spacing.css";
-@import "../../public/assets/css/effect-slicer.css";
-@import "../../public/assets/css/fontawesome-all.min.css";
+
+/* Custom styles */
 @import "../../public/assets/scss/main.scss";

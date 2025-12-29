@@ -9,7 +9,7 @@
     &-left{
         & span{
             font-weight: 600;
-            font-size: 18px;
+            font-size: 16px;
             color: var(--td-common-black);
             margin-bottom: 320px;
             display: inline-block;
@@ -31,15 +31,15 @@
     }
     &-title{
         font-weight: 600;
-        font-size: 50px;
+        font-size: 36px;
         letter-spacing: -0.03em;
-        line-height: 60px;
+        line-height: 48px;
         @media #{$lg,$md,$sm,$xs} {
-            font-size: 40px;
+            font-size: 30px;
             line-height: 1.2;
         }
         @media #{$sm,$xs} {
-            font-size: 30px;
+            font-size: 24px;
         }
     }
     &-shape{

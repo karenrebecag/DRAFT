@@ -10,4 +10,20 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-animation': ['gsap', 'framer-motion'],
+          'vendor-ui': ['swiper', 'lucide-react'],
+          // Spline is loaded dynamically, keep it separate
+          'spline': ['@splinetool/runtime'],
+        },
+      },
+    },
+    // Increase chunk size warning limit
+    chunkSizeWarningLimit: 600,
+  },
 })
