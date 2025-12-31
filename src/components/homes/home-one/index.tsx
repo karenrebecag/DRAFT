@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from "react"
 import SplineStrip from "./SplineStrip"
 import ScalingMediaStrip from "./ScalingMediaStrip"
-import AboutAgency from "./AboutAgency"
-import SignalsStrip from "./SignalsStrip"
+import AboutSplineStrip from "./AboutSplineStrip"
+import ServicesStrip from "./ServicesStrip"
 import Pricing from "./Pricing"
 import PortfolioTwo from "./PortfolioTwo"
 import Process from "./Process"
@@ -10,6 +10,7 @@ import Testimonial from "./Testimonial"
 import FeatureTwo from "./FeatureTwo"
 import BlogTwo from "./BlogTwo"
 import Faq from "./Faq"
+import ContactStrip from "./ContactStrip"
 import HeaderGlobal from "../../../layouts/headers/HeaderGlobal"
 import FooterGlobal from "../../../layouts/footers/FooterGlobal"
 import WelcomeLoader from "../../ui/WelcomeLoader"
@@ -95,9 +96,10 @@ const HomeOne = () => {
                <main>
                   <SplineStrip onLoaded={handleSplineLoaded} isLoading={isLoaderVisible} />
                   <ScalingMediaStrip />
-                  {/* Editorial strips inspired by interface project */}
-                  <AboutAgency />
-                  <SignalsStrip />
+                  {/* About Section with Spline Background */}
+                  <AboutSplineStrip />
+                  {/* Team & Services Stacking Cards */}
+                  <ServicesStrip />
                   {/* Original sections */}
                   <PortfolioTwo />
                   <Process />
@@ -105,6 +107,7 @@ const HomeOne = () => {
                   <FeatureTwo />
                   <Pricing />
                   <BlogTwo />
+                  <ContactStrip />
                   <Faq />
                </main>
                {/* Footer with parallax effect */}

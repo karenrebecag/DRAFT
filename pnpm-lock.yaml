@@ -29,9 +29,18 @@ importers:
       gsap:
         specifier: ^3.14.2
         version: 3.14.2
+      gsap-trial:
+        specifier: ^3.13.0
+        version: 3.13.0
+      hls.js:
+        specifier: ^1.6.15
+        version: 1.6.15
       isotope-layout:
         specifier: ^3.0.6
         version: 3.0.6
+      lenis:
+        specifier: ^1.3.17
+        version: 1.3.17(react@19.2.3)
       lucide-react:
         specifier: ^0.562.0
         version: 0.562.0(react@19.2.3)
@@ -1602,6 +1611,10 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
+  gsap-trial@3.13.0:
+    resolution: {integrity: sha512-EBaAv7AsgzOIi7E5ny+0YAn0qgz/lX+0B8efrr4su/dhpdihSVHLktoX+RMQj8dNrBJBj/5ASXeUDKx1bEP9aA==}
+    deprecated: This package has been deprecated in favor of the standard 'gsap' package available in the public npmjs repository which now includes all bonus plugins.
+
   gsap@3.14.2:
     resolution: {integrity: sha512-P8/mMxVLU7o4+55+1TCnQrPmgjPKnwkzkXOK1asnR9Jg2lna4tEY5qBJjMmAaOBDDZWtlRjBXjLa0w53G/uBLA==}
 
@@ -1727,6 +1740,20 @@ packages:
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
+
+  lenis@1.3.17:
+    resolution: {integrity: sha512-k9T9rgcxne49ggJOvXCraWn5dt7u2mO+BNkhyu6yxuEnm9c092kAW5Bus5SO211zUvx7aCCEtzy9UWr0RB+oJw==}
+    peerDependencies:
+      '@nuxt/kit': '>=3.0.0'
+      react: '>=17.0.0'
+      vue: '>=3.0.0'
+    peerDependenciesMeta:
+      '@nuxt/kit':
+        optional: true
+      react:
+        optional: true
+      vue:
+        optional: true
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -3841,6 +3868,8 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
+  gsap-trial@3.13.0: {}
+
   gsap@3.14.2: {}
 
   has-flag@4.0.0: {}
@@ -3961,6 +3990,10 @@ snapshots:
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
+
+  lenis@1.3.17(react@19.2.3):
+    optionalDependencies:
+      react: 19.2.3
 
   levn@0.4.1:
     dependencies:

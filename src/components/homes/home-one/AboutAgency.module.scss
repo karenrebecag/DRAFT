@@ -8,100 +8,239 @@
   width: 100%;
   max-width: 87.5em; /* 1400px at base */
   margin: 0 auto;
-  padding: 4em 1.5em;
+  padding: 5em 1.5em;
   display: flex;
   flex-direction: column;
-  gap: 2.5em;
+  gap: 3.5em;
 
   @media (min-width: 768px) {
-    padding: 4em 3em;
-    gap: 2em;
+    padding: 6em 3em;
+    gap: 4em;
   }
 
   @media (min-width: 1200px) {
-    padding: 5em 4em;
-    gap: 2em;
+    padding: 7em 4em;
+    gap: 5em;
   }
 }
 
 /* ============================================
-   HERO ROW (Header + Spline)
+   HERO SECTION (Full-width, centered)
    ============================================ */
-.heroRow {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2em;
-  align-items: center;
-
-  @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
-    gap: 2em;
-  }
-}
-
-.header {
+.heroSection {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.5em;
-  max-width: 48em;
-}
-
-/* Hero Image */
-.heroImageWrapper {
-  display: none;
+  align-items: center;
+  text-align: center;
+  gap: 1.75em;
+  max-width: 52em;
+  margin: 0 auto 1em auto;
+  padding-top: 2em;
 
   @media (min-width: 768px) {
-    display: block;
-    position: relative;
-    width: 100%;
-    aspect-ratio: 4/3;
-    border-radius: 1em;
-    overflow: hidden;
-  }
-}
-
-.heroImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-
-  .heroImageWrapper:hover & {
-    transform: scale(1.03);
+    gap: 2em;
+    margin-bottom: 1.5em;
+    padding-top: 3em;
   }
 }
 
 /* ============================================
-   NAV STRIP (moved from header)
+   QUOTE/MISSION BLOCK
    ============================================ */
-.navStrip {
-  position: relative;
+.quoteBlock {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  margin: 1em 0;
 }
 
-.navStripBg {
-  background-color: #0f0e0e;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  width: 100%;
-  max-width: 520px;
-  height: 56px;
-  border-radius: 14px;
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
+.quoteBlockInner {
+  position: relative;
+  padding: 2em;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1em;
+  overflow: hidden;
 
-  @media (max-width: 997px) {
-    max-width: calc(100% - 32px);
-    height: 52px;
-    border-radius: 12px;
+  @media (min-width: 768px) {
+    padding: 2.5em 3em;
   }
 
-  @media (max-width: 767px) {
-    max-width: calc(100% - 24px);
-    height: 48px;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+    pointer-events: none;
   }
+}
+
+.quoteText {
+  position: relative;
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 1em 0;
+  text-wrap: balance;
+
+  @media (min-width: 768px) {
+    font-size: 1.0625em;
+  }
+}
+
+/* ============================================
+   VALUES GRID (Bento Layout)
+   ============================================ */
+.valuesGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1em;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.75em;
+  }
+}
+
+.valueCard {
+  @media (min-width: 768px) {
+    &.valueCardWide {
+      grid-column: span 3;
+    }
+
+    &.valueCardNarrow {
+      grid-column: span 2;
+    }
+  }
+}
+
+.valueCardInner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  padding: 1.5em;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1em;
+  transition: all 0.3s ease;
+
+  @media (min-width: 768px) {
+    padding: 1.75em;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.valueIcon {
+  font-size: 1.25em;
+  color: var(--color-primary, #ecf6d2);
+  opacity: 0.9;
+}
+
+.valueTitle {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-weight: 600;
+  font-size: 1.125em;
+  letter-spacing: -0.01em;
+  color: var(--color-white, #fafafa);
+  margin: 0;
+}
+
+.valueDesc {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.875em;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.valueVisual {
+  margin-top: auto;
+  padding-top: 1em;
+}
+
+.valueMetric {
+  display: block;
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.75em;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.75em;
+}
+
+/* Ownership bars visualization */
+.ownershipBars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375em;
+}
+
+.ownershipBar {
+  height: 0.25em;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 0.125em;
+  overflow: hidden;
+}
+
+.ownershipBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary, #ecf6d2) 0%, rgba(236, 246, 210, 0.5) 100%);
+  border-radius: 0.125em;
+  transition: width 1s ease-out;
+}
+
+/* Iteration timeline visualization */
+.iterationTimeline {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.iterationPhase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  flex: 1;
+  position: relative;
+
+  &:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 0.3125em;
+    left: calc(50% + 0.5em);
+    right: calc(-50% + 0.5em);
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.iterationDot {
+  width: 0.625em;
+  height: 0.625em;
+  border-radius: 50%;
+  background: var(--color-primary, #ecf6d2);
+  opacity: 0.8;
+}
+
+.iterationLabel {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.625em;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 .label {
@@ -121,13 +260,101 @@
 }
 
 .title {
-  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
-  font-weight: 600;
-  font-size: 2.5em; /* ~40px at base, scales fluidly */
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-  color: var(--color-white, #fafafa);
   margin: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Sans-serif Bold - Uppercase strong statement */
+.titleSans {
+  display: block;
+  font-family: 'Inter Tight', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 2.25em;
+  letter-spacing: -0.03em;
+  color: var(--color-white, #fafafa);
+  text-transform: uppercase;
+  line-height: 1.05;
+
+  @media (min-width: 768px) {
+    font-size: 3em;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 3.5em;
+  }
+}
+
+/* Serif Italic - Elegant contrast */
+.titleSerif {
+  display: block;
+  font-family: 'Playfair Display', 'DM Serif Display', serif !important;
+  font-weight: 500 !important;
+  font-style: italic !important;
+  font-size: 2.25em;
+  letter-spacing: -0.01em;
+  color: var(--color-white, #fafafa);
+  line-height: 1.05;
+
+  @media (min-width: 768px) {
+    font-size: 3em;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 3.5em;
+  }
+}
+
+/* Rotating/Highlight Line - Same size as titles */
+.titleLine {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25em;
+  flex-wrap: wrap;
+}
+
+.titlePrefix {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 400;
+  font-size: 2.25em;
+  color: var(--color-white, #fafafa);
+  letter-spacing: -0.02em;
+
+  @media (min-width: 768px) {
+    font-size: 3em;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 3.5em;
+  }
+}
+
+/* Highlight text inside title - serif italic style */
+.titleLine > span {
+  font-family: 'Playfair Display', 'DM Serif Display', serif !important;
+  font-weight: 500 !important;
+  font-style: italic !important;
+  font-size: 2.25em;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+
+  @media (min-width: 768px) {
+    font-size: 3em;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 3.5em;
+  }
+}
+
+/* Override for the prefix which should stay sans */
+.titleLine > .titlePrefix {
+  font-family: 'Inter Tight', sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
 }
 
 .subtitle {
@@ -136,8 +363,9 @@
   font-weight: 400;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.55);
-  margin: 0;
+  margin: 0 auto;
   max-width: 38em;
+  text-wrap: balance;
 
   @media (min-width: 768px) {
     font-size: 1.25em; /* 20px at base */
@@ -199,7 +427,7 @@
   position: relative;
   flex-shrink: 0;
   width: 16em;
-  pointer-events: none;
+  pointer-events: auto;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   @media (min-width: 768px) {
@@ -213,22 +441,28 @@
   display: flex;
   flex-direction: column;
   gap: 0.75em;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 1em;
   padding: 1.75em;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   @media (min-width: 768px) {
     padding: 2em;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
   }
 }
 
 .marqueeCardIcon {
   font-size: 1.5em;
-  color: var(--color-primary, #beff01);
+  color: var(--color-primary, #ecf6d2);
   opacity: 0.8;
 }
 
@@ -299,20 +533,130 @@
 }
 
 /* ============================================
+   CLIENT MARQUEE
+   ============================================ */
+.clientMarqueeWrapper {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding: 2em 0;
+  background: transparent;
+  overflow: hidden;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 6em;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(90deg, #0a0a0a 0%, transparent 100%);
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(270deg, #0a0a0a 0%, transparent 100%);
+  }
+
+  @media (min-width: 768px) {
+    padding: 2.5em 0;
+  }
+}
+
+.clientMarqueeLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75em;
+  margin-bottom: 1.5em;
+  padding: 0 1.5em;
+
+  @media (min-width: 768px) {
+    margin-bottom: 2em;
+    padding: 0;
+  }
+}
+
+.clientMarqueeLabelText {
+  font-family: "Inter Tight", var(--font-family-primary, sans-serif);
+  font-size: 0.75em;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.clientMarqueeLine {
+  flex: 1;
+  max-width: 4em;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.clientMarquee {
+  display: flex;
+  align-items: center;
+  gap: 3em;
+  padding: 0 1.5em;
+
+  @media (min-width: 768px) {
+    gap: 4em;
+    padding: 0 3em;
+  }
+}
+
+.clientLogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 2em;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+  filter: brightness(0) invert(1);
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  @media (min-width: 768px) {
+    height: 2.5em;
+  }
+
+  svg,
+  img {
+    height: 100%;
+    width: auto;
+    max-width: 8em;
+    object-fit: contain;
+  }
+}
+
+/* ============================================
    STATS ROW
    ============================================ */
 .statsRow {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2em;
-  background: var(--color-primary, #beff01);
+  background: var(--color-primary, #ecf6d2);
   padding: 3em 2em;
-  border-radius: 1em;
+  border-radius: 1.25em;
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(4, 1fr);
     gap: 3em;
     padding: 4em 3em;
+    border-radius: 1.5em;
   }
 }
 
@@ -508,7 +852,7 @@
 
   &:hover {
     background: rgba(255, 255, 255, 0.03);
-    border-color: var(--color-primary, #beff01);
+    border-color: var(--color-primary, #ecf6d2);
   }
 
   @media (min-width: 768px) {
@@ -556,7 +900,7 @@
 
 .principleCard:hover .principleLine {
   width: 5em;
-  background: var(--color-primary, #beff01);
+  background: var(--color-primary, #ecf6d2);
 }
 
 /* ============================================
@@ -639,7 +983,7 @@
   transition: border-color 0.3s ease;
 
   &:hover {
-    border-color: var(--color-primary, #beff01);
+    border-color: var(--color-primary, #ecf6d2);
   }
 
   @media (min-width: 768px) {
@@ -680,7 +1024,7 @@
   align-items: center;
   gap: 0.625em;
   padding: 0.875em 1.75em;
-  background: var(--color-primary, #beff01);
+  background: var(--color-primary, #ecf6d2);
   color: #0a0a0a;
   font-family: "Inter Tight", var(--font-family-primary, sans-serif);
   font-size: 0.9375em; /* 15px at base */
@@ -692,7 +1036,7 @@
   &:hover {
     background: #d4ff4d;
     transform: translateY(-1px);
-    box-shadow: 0 0.5em 1.5625em -0.5em rgba(190, 255, 1, 0.4);
+    box-shadow: 0 0.5em 1.5625em -0.5em rgba(236, 246, 210, 0.4);
   }
 
   svg {
@@ -720,9 +1064,9 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(190, 255, 1, 0.05);
-    border-color: var(--color-primary, #beff01);
-    color: var(--color-primary, #beff01);
+    background: rgba(236, 246, 210, 0.05);
+    border-color: var(--color-primary, #ecf6d2);
+    color: var(--color-primary, #ecf6d2);
   }
 
   svg {
@@ -803,7 +1147,7 @@
 
   &:hover {
     background: rgba(255, 255, 255, 0.03);
-    border-color: var(--color-primary, #beff01);
+    border-color: var(--color-primary, #ecf6d2);
   }
 }
 

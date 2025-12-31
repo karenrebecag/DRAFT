@@ -8,7 +8,7 @@ $z-chatbot-container: 9989;
 $z-chatbot-button: 9990;
 
 // Local fallbacks (in case CSS vars not loaded)
-$fallback-primary: #BDFB06;
+$fallback-primary: #ecf6d2;
 $fallback-dark: #1b1e15;
 $fallback-white: #fff;
 
@@ -20,11 +20,11 @@ $font-inter: 'Inter', sans-serif;
 @keyframes pulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(190, 255, 1, 0.4);
+    box-shadow: 0 0 0 0 rgba(236, 246, 210, 0.4);
   }
   50% {
     transform: scale(1.05);
-    box-shadow: 0 0 0 12px rgba(190, 255, 1, 0);
+    box-shadow: 0 0 0 12px rgba(236, 246, 210, 0);
   }
 }
 
@@ -434,7 +434,7 @@ $font-inter: 'Inter', sans-serif;
 .fileIcon {
   width: 40px;
   height: 40px;
-  background: var(--color-primary-light, rgba(190, 255, 1, 0.2));
+  background: var(--color-primary-light, rgba(236, 246, 210, 0.2));
   border: 2px solid var(--color-dark, $fallback-dark);
   border-radius: var(--radius-md, 8px);
   display: flex;
@@ -539,13 +539,13 @@ $font-inter: 'Inter', sans-serif;
 
   &:focus-within {
     border-color: var(--color-primary, $fallback-primary);
-    box-shadow: 0 0 0 3px var(--color-primary-light, rgba(190, 255, 1, 0.2));
+    box-shadow: 0 0 0 3px var(--color-primary-light, rgba(236, 246, 210, 0.2));
   }
 
   &.isDragging {
     border-color: var(--color-primary, $fallback-primary);
     border-style: dashed;
-    background: var(--color-primary-light, rgba(190, 255, 1, 0.1));
+    background: var(--color-primary-light, rgba(236, 246, 210, 0.1));
   }
 
   &.isRecording {
@@ -795,7 +795,7 @@ $font-inter: 'Inter', sans-serif;
   }
 
   &:hover {
-    background: var(--color-primary-light, rgba(190, 255, 1, 0.2));
+    background: var(--color-primary-light, rgba(236, 246, 210, 0.2));
 
     svg {
       color: var(--color-dark, $fallback-dark);
@@ -963,7 +963,7 @@ $font-inter: 'Inter', sans-serif;
 .dragOverlay {
   position: absolute;
   inset: 0;
-  background: var(--color-primary-light, rgba(190, 255, 1, 0.2));
+  background: var(--color-primary-light, rgba(236, 246, 210, 0.2));
   border: 2px dashed var(--color-primary, $fallback-primary);
   border-radius: var(--radius-xl, 24px);
   display: flex;

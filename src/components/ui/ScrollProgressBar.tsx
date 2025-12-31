@@ -97,11 +97,11 @@ const ScrollProgressBar = () => {
         style={{
           transformOrigin: '0%',
           transformStyle: 'preserve-3d',
-          background: 'var(--color-primary, #beff01)',
+          background: 'var(--color-primary, #ecf6d2)',
           width: '100%',
           height: '100%',
           transform: 'scale3d(0, 1, 1)',
-          boxShadow: '0 0 10px rgba(190, 255, 1, 0.5)',
+          boxShadow: '0 0 10px rgba(236, 246, 210, 0.5)',
         }}
       />
     </div>

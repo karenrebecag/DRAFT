@@ -82,7 +82,7 @@ export function HighlightText({
            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
         }
       : {
-           background: "var(--color-primary, #beff01)",
+           background: "var(--color-primary, #ecf6d2)",
            borderRadius: "4px",
         }
 

@@ -40,7 +40,7 @@
     // Pine Tree: #2A2E22
     // More Than A Week: #8C8D8C
     // Mermaid Tears: #D5E5A6
-    // Chartreuse: #BDFB06
+    // Sage Green: #ecf6d2
     // Emptiness: #FCFCFC
     // =============================================
 
@@ -48,12 +48,12 @@
     // Primary Brand Colors
     // =============================================
 
-    // Chartreuse - Main accent color (vibrant lime)
-    --color-primary: #BDFB06;
-    --color-primary-hover: #a8e000;
-    --color-primary-active: #94c700;
-    --color-primary-light: rgba(189, 251, 6, 0.15);
-    --color-primary-lighter: rgba(189, 251, 6, 0.08);
+    // Sage Green - Main accent color (soft mint)
+    --color-primary: #ecf6d2;
+    --color-primary-hover: #dfebc0;
+    --color-primary-active: #d2e0ae;
+    --color-primary-light: rgba(236, 246, 210, 0.15);
+    --color-primary-lighter: rgba(236, 246, 210, 0.08);
 
     // Sage / Mermaid Tears - Soft accent
     --color-sage: #D5E5A6;
@@ -128,7 +128,7 @@
     // Border colors
     --color-border: rgba(27, 30, 21, 0.15);
     --color-border-light: rgba(252, 252, 252, 0.15);
-    --color-border-accent: rgba(189, 251, 6, 0.30);
+    --color-border-accent: rgba(236, 246, 210, 0.30);
 
     // =============================================
     // App Theme Colors (Dark Mode Native - shadcn style)
@@ -246,7 +246,7 @@
     --shadow-md: 0px 4px 6px rgba(27, 30, 21, 0.07);
     --shadow-lg: 0px 4px 40px rgba(27, 30, 21, 0.10);
     --shadow-xl: 0px 20px 25px rgba(27, 30, 21, 0.15);
-    --shadow-glow: 0px 0px 30px rgba(189, 251, 6, 0.30);
+    --shadow-glow: 0px 0px 30px rgba(236, 246, 210, 0.30);
 
     // =============================================
     // CSS Standards - Z-Index Scale

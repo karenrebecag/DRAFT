@@ -155,7 +155,7 @@ const HeaderGlobal = () => {
 
                {/* Logo */}
                <Link to="/" className={styles.logo} onClick={closeNav}>
-                  <span>DRAFT</span>
+                  <span>DRAFT STUDIO</span>
                </Link>
 
                {/* Contact Button */}

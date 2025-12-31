@@ -6,7 +6,7 @@
 // - Pine Tree: #2A2E22
 // - More Than A Week: #8C8D8C
 // - Mermaid Tears: #D5E5A6
-// - Chartreuse: #BDFB06
+// - Sage Green: #ecf6d2
 // - Emptiness: #FCFCFC
 // ==============================================
 
@@ -18,7 +18,7 @@ $colors: (
         'black-2': #000000,
 
         // Brand greens
-        'chartreuse': #BDFB06,
+        'chartreuse': #ecf6d2,
         'sage': #D5E5A6,
         'pine': #2A2E22,
     ),
@@ -30,14 +30,14 @@ $colors: (
         '5': #3d403d,      // Darker gray
     ),
     'theme': (
-        'primary': #BDFB06,       // Chartreuse - main accent
+        'primary': #ecf6d2,       // Sage Green - main accent
         'primary-light': #D5E5A6, // Mermaid Tears - soft accent
         'secondary': #2A2E22,     // Pine Tree - dark accent
         'dark': #1b1e15,          // Darkest black
     ),
     'border': (
         '1': rgba(27, 30, 21, 0.15),    // Black with opacity
-        '2': rgba(189, 251, 6, 0.30),   // Chartreuse with opacity
+        '2': rgba(236, 246, 210, 0.30),   // Sage green with opacity
         '3': rgba(140, 141, 140, 0.30), // Gray with opacity
     )
 );

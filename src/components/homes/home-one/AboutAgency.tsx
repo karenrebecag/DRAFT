@@ -1,15 +1,16 @@
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Observer } from "gsap/Observer"
 import { HighlightText } from "../../ui/HighlightText"
-import { TechMarquee } from "../../ui/TechMarquee"
+import { ClientMarquee } from "../../ui/ClientMarquee"
+import { StackedServiceCards, type ServiceCardData } from "../../ui/StackedServiceCard"
 import { useRevealOnScroll } from "../../../hooks/useRevealOnScroll"
 import { useScrollProgressNumber } from "../../../hooks/useScrollProgressNumber"
 import { useStackingCardsParallax } from "../../../hooks/useStackingCardsParallax"
+import TeamSection from "./TeamSection"
 import styles from "./AboutAgency.module.scss"
 
-gsap.registerPlugin(ScrollTrigger, Observer)
+gsap.registerPlugin(ScrollTrigger)
 
 // Mock data for the agency section
 const STATS = [
@@ -19,48 +20,8 @@ const STATS = [
   { number: 24, suffix: "", label: "Team Members" },
 ]
 
-// Capability cards for the draggable marquee
-const CAPABILITY_CARDS = [
-  {
-    icon: "✦",
-    title: "WebGL & 3D",
-    description: "Immersive experiences with Three.js and WebGPU",
-    tag: "Capability",
-  },
-  {
-    icon: "◈",
-    title: "Design Systems",
-    description: "Scalable component libraries with design tokens",
-    tag: "Methodology",
-  },
-  {
-    icon: "⬡",
-    title: "AI Integration",
-    description: "LLM-powered features and intelligent workflows",
-    tag: "Innovation",
-  },
-  {
-    icon: "◉",
-    title: "Motion Design",
-    description: "GSAP and Framer Motion animations",
-    tag: "Craft",
-  },
-  {
-    icon: "⬢",
-    title: "Headless CMS",
-    description: "Strapi, Sanity, or Payload integrations",
-    tag: "Architecture",
-  },
-  {
-    icon: "✧",
-    title: "Performance",
-    description: "Core Web Vitals optimization at scale",
-    tag: "Engineering",
-  },
-]
-
-// Stacking cards data - Our services (from i18n)
-const SERVICE_CARDS = [
+// Stacking cards data - Our services with video backgrounds
+const SERVICE_CARDS: ServiceCardData[] = [
   {
     id: 1,
     category: "Services",
@@ -69,6 +30,10 @@ const SERVICE_CARDS = [
     titleMain: "Immersive Web Experiences",
     techKey: "webgl",
     colorClass: "isGreen1",
+    videoSrc: "https://pub-2e7dc04d482146c59f472ab28fba09a9.r2.dev/armor-3d-object-rotating-loop-2025-12-09-07-19-41-utc.mp4",
+    ctaText: "Explore WebGL",
+    ctaLink: "/services/webgl",
+    ctaTheme: "primary",
   },
   {
     id: 2,
@@ -78,6 +43,9 @@ const SERVICE_CARDS = [
     titleMain: "Platforms & Web Applications",
     techKey: "platforms",
     colorClass: "isGreen2",
+    ctaText: "Build Platform",
+    ctaLink: "/services/platforms",
+    ctaTheme: "primary",
   },
   {
     id: 3,
@@ -87,6 +55,9 @@ const SERVICE_CARDS = [
     titleMain: "High-Performance E-commerce",
     techKey: "commerce",
     colorClass: "isGreen3",
+    ctaText: "Start Selling",
+    ctaLink: "/services/commerce",
+    ctaTheme: "primary",
   },
   {
     id: 4,
@@ -96,6 +67,10 @@ const SERVICE_CARDS = [
     titleMain: "Mobile Apps",
     techKey: "mobile",
     colorClass: "isGreen4",
+    videoSrc: "https://pub-2e7dc04d482146c59f472ab28fba09a9.r2.dev/2.-E-Pass-16_9.mp4",
+    ctaText: "Go Mobile",
+    ctaLink: "/services/mobile",
+    ctaTheme: "primary",
   },
   {
     id: 5,
@@ -105,6 +80,9 @@ const SERVICE_CARDS = [
     titleMain: "Product Design & Brand",
     techKey: "design",
     colorClass: "isGreen5",
+    ctaText: "Design System",
+    ctaLink: "/services/design",
+    ctaTheme: "primary",
   },
   {
     id: 6,
@@ -114,32 +92,12 @@ const SERVICE_CARDS = [
     titleMain: "Operations & Evolution",
     techKey: "devops",
     colorClass: "isGreen6",
+    ctaText: "Scale Up",
+    ctaLink: "/services/devops",
+    ctaTheme: "primary",
   },
 ]
 
-const PRINCIPLES = [
-  {
-    number: "01",
-    title: "We believe in",
-    highlight: "collaboration",
-    description:
-      "Every project starts with deep understanding. We work alongside you, not just for you. True partnership means shared ownership of both challenges and victories.",
-  },
-  {
-    number: "02",
-    title: "Obsessed with",
-    highlight: "craft",
-    description:
-      "Details matter. The spacing, the timing, the subtle interactions—these small things create the difference between good and exceptional. We sweat the details so you don't have to.",
-  },
-  {
-    number: "03",
-    title: "Driven by",
-    highlight: "results",
-    description:
-      "Beautiful design that doesn't convert is just decoration. We measure success by the impact we create for your business, not just the awards on our shelf.",
-  },
-]
 
 /**
  * AboutAgency - Editorial-style About section
@@ -150,198 +108,130 @@ const PRINCIPLES = [
  * - Logo Wall Cycle for clients
  * - Scroll Progress Numbers for stats
  */
+// Spline Application type
+type SplineApp = {
+  load: (url: string) => Promise<void>
+  dispose: () => void
+  stop?: () => void
+  play?: () => void
+}
+
 const AboutAgency = () => {
   const sectionRef = useRef<HTMLElement>(null)
   const stackingCardsRef = useRef<HTMLDivElement>(null)
-  const marqueeWrapperRef = useRef<HTMLDivElement>(null)
-  const marqueeCollectionRef = useRef<HTMLDivElement>(null)
-  const marqueeListRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const appRef = useRef<SplineApp | null>(null)
+  const [isSplineLoaded, setIsSplineLoaded] = useState(false)
 
   // Enable animations
   useRevealOnScroll({ containerRef: sectionRef, enabled: true })
   useScrollProgressNumber({ containerRef: sectionRef, enabled: true })
   useStackingCardsParallax({ containerRef: stackingCardsRef, enabled: true, parallaxAmount: 50 })
 
-  // Draggable Marquee initialization
+  // Load Spline scene - simplified like HeroSpline
   useEffect(() => {
-    const wrapper = marqueeWrapperRef.current
-    const collection = marqueeCollectionRef.current
-    const list = marqueeListRef.current
+    if (!canvasRef.current) return
 
-    if (!wrapper || !collection || !list) return
+    let app: SplineApp | null = null
 
-    // Wait for DOM to be ready
-    const initMarquee = () => {
-      const wrapperWidth = wrapper.getBoundingClientRect().width
-      const listWidth = list.scrollWidth || list.getBoundingClientRect().width
+    const loadScene = async () => {
+      // Dynamic import with type assertion
+      const SplineModule = await import('@splinetool/runtime') as { Application: new (canvas: HTMLCanvasElement) => SplineApp }
+      if (!canvasRef.current) return
 
-      if (!wrapperWidth || !listWidth) return null
+      app = new SplineModule.Application(canvasRef.current)
+      appRef.current = app
 
-      // Clone lists to fill viewport for seamless loop
-      const minRequiredWidth = wrapperWidth + listWidth + 2
-      while (collection.scrollWidth < minRequiredWidth) {
-        const listClone = list.cloneNode(true) as HTMLElement
-        listClone.setAttribute("data-draggable-marquee-clone", "")
-        listClone.setAttribute("aria-hidden", "true")
-        collection.appendChild(listClone)
+      try {
+        // TODO: Re-export About.splinecode from Spline with 3D object
+        await app.load('/assets/models/Banner.splinecode')
+        console.log('✅ About Spline loaded')
+
+        // Debug: log scene info
+        console.log('Spline canvas size:', canvasRef.current?.width, canvasRef.current?.height)
+
+        // Try to set transparent background if available
+        if (canvasRef.current) {
+          const gl = canvasRef.current.getContext('webgl2') || canvasRef.current.getContext('webgl')
+          if (gl) {
+            gl.clearColor(0, 0, 0, 0) // Transparent background
+            console.log('WebGL context found, set transparent clear color')
+          }
+        }
+
+        setIsSplineLoaded(true)
+      } catch (error) {
+        console.error('Failed to load About Spline:', error)
       }
-
-      const wrapX = gsap.utils.wrap(-listWidth, 0)
-
-      gsap.set(collection, { x: 0 })
-
-      // Create the marquee animation loop
-      const marqueeLoop = gsap.to(collection, {
-        x: -listWidth,
-        duration: 30,
-        ease: "none",
-        repeat: -1,
-        onReverseComplete: () => { marqueeLoop.progress(1) },
-        modifiers: {
-          x: (x: string) => wrapX(parseFloat(x)) + "px",
-        },
-      })
-
-      const timeScale = { value: 1 }
-
-      const applyTimeScale = () => {
-        marqueeLoop.timeScale(timeScale.value)
-        wrapper.setAttribute("data-direction", timeScale.value < 0 ? "right" : "left")
-      }
-
-      applyTimeScale()
-
-      // Drag observer for directional control
-      const marqueeObserver = Observer.create({
-        target: wrapper,
-        type: "pointer,touch",
-        preventDefault: true,
-        debounce: false,
-        onChangeX: (observerEvent) => {
-          let velocityTimeScale = observerEvent.velocityX * -0.008
-          velocityTimeScale = gsap.utils.clamp(-35, 35, velocityTimeScale)
-
-          gsap.killTweensOf(timeScale)
-
-          const restingDirection = velocityTimeScale < 0 ? -1 : 1
-
-          gsap.timeline({ onUpdate: applyTimeScale })
-            .to(timeScale, { value: velocityTimeScale, duration: 0.1, overwrite: true })
-            .to(timeScale, { value: restingDirection, duration: 1.0 })
-        },
-      })
-
-      // ScrollTrigger to pause/resume when out of view
-      const scrollTriggerInstance = ScrollTrigger.create({
-        trigger: wrapper,
-        start: "top bottom",
-        end: "bottom top",
-        onEnter: () => {
-          marqueeLoop.resume()
-          applyTimeScale()
-          marqueeObserver.enable()
-        },
-        onEnterBack: () => {
-          marqueeLoop.resume()
-          applyTimeScale()
-          marqueeObserver.enable()
-        },
-        onLeave: () => {
-          marqueeLoop.pause()
-          marqueeObserver.disable()
-        },
-        onLeaveBack: () => {
-          marqueeLoop.pause()
-          marqueeObserver.disable()
-        },
-      })
-
-      return { marqueeLoop, marqueeObserver, scrollTriggerInstance }
     }
 
-    // Small delay to ensure DOM is ready
-    const timeout = setTimeout(() => {
-      const instances = initMarquee()
-      if (!instances) return
-
-      // Store cleanup function
-      ;(wrapper as any).__marqueeCleanup = () => {
-        instances.marqueeLoop.kill()
-        instances.marqueeObserver.kill()
-        instances.scrollTriggerInstance.kill()
-        const clones = collection.querySelectorAll("[data-draggable-marquee-clone]")
-        clones.forEach((clone) => clone.remove())
-      }
-    }, 100)
+    loadScene()
 
     return () => {
-      clearTimeout(timeout)
-      const cleanup = (wrapper as any).__marqueeCleanup
-      if (cleanup) cleanup()
+      if (app) {
+        app.dispose()
+      }
     }
   }, [])
 
+  // Handle visibility changes
+  useEffect(() => {
+    const app = appRef.current
+    if (!app || !isSplineLoaded) return
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        app.stop?.()
+      } else {
+        app.play?.()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [isSplineLoaded])
+
   return (
     <section ref={sectionRef} id="about-agency" className={styles.aboutAgency}>
-      {/* Hero Header with Image */}
-      <div className={styles.heroRow}>
-        <div data-reveal-group data-stagger="120" className={styles.header}>
-          <span className={styles.label}>About Us</span>
-          <h2 className={styles.title}>
-            We craft digital experiences that{" "}
-            <HighlightText>move people</HighlightText>
-          </h2>
-          <p className={styles.subtitle}>
-            Draft Studio is a design-driven digital agency specializing in brand
-            identity, web experiences, and creative technology. We partner with
-            ambitious brands to build products that stand out.
-          </p>
-        </div>
+      {/* Spline Background - full viewport width */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '100vw',
+          height: '100%',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
 
-        {/* Hero Image */}
-        <div className={styles.heroImageWrapper}>
-          <img
-            src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80"
-            alt="Abstract 3D shapes"
-            className={styles.heroImage}
-          />
-        </div>
+      {/* Hero Header - Full width, centered */}
+      <div data-reveal-group data-stagger="100" className={styles.heroSection}>
+        <span className={styles.label}>About Us</span>
+        <h2 className={styles.title}>
+          <span className={styles.titleSans}>Design-led</span>
+          <span className={styles.titleSerif}>development</span>
+          <span className={styles.titleLine}>
+            <span className={styles.titlePrefix}>for</span>
+            <HighlightText>modern digital products</HighlightText>
+          </span>
+        </h2>
+        <p className={styles.subtitle}>
+          We're a development studio that designs and builds custom digital products,
+          combining visual criteria, solid frontend, and architectures built to scale.
+        </p>
       </div>
 
-      {/* Nav Strip */}
-      <div className={styles.navStrip}>
-        <div className={styles.navStripBg} />
-      </div>
+   
 
-      {/* Draggable Marquee - Capabilities */}
-      <div
-        ref={marqueeWrapperRef}
-        className={styles.marqueeWrapper}
-        data-direction="left"
-      >
-        <div ref={marqueeCollectionRef} className={styles.marqueeCollection}>
-          <div ref={marqueeListRef} className={styles.marqueeList}>
-            {CAPABILITY_CARDS.map((card, index) => (
-              <article key={index} className={styles.marqueeCard} draggable={false}>
-                <div className={styles.marqueeCardInner}>
-                  <span className={styles.marqueeCardIcon}>{card.icon}</span>
-                  <span className={styles.marqueeCardTag}>{card.tag}</span>
-                  <h3 className={styles.marqueeCardTitle}>{card.title}</h3>
-                  <p className={styles.marqueeCardDesc}>{card.description}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Drag hint */}
-      <div className={styles.dragHint}>
-        <span className={styles.dragHintText}>Drag to explore</span>
-        <svg className={styles.dragHintIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M7 16l5 5 5-5M17 8l-5-5-5 5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </div>
+      {/* Client Marquee - Trusted by section */}
+      <ClientMarquee
+        labelText="Trusted by innovative teams"
+        speed={35}
+      />
 
       {/* Stats Row with Animated Numbers */}
       <div
@@ -366,69 +256,15 @@ const AboutAgency = () => {
         ))}
       </div>
 
-      {/* Stacking Cards Section - Services */}
-      <div ref={stackingCardsRef} className={styles.stackingCardsCollection}>
-        <div className={styles.stackingCardsList}>
-          {SERVICE_CARDS.map((card) => (
-            <div
-              key={card.id}
-              data-stacking-cards-item
-              className={`${styles.stackingCardsItem} ${styles[card.colorClass]}`}
-            >
-              {/* Top bar */}
-              <div className={styles.stackingCardsItemTop}>
-                <span className={styles.stackingCardTopSpan}>{card.category}</span>
-                <span className={styles.stackingCardTopSpan}>{card.number}</span>
-              </div>
+      {/* Team Section with Momentum Hover */}
+      <TeamSection />
 
-              {/* Content */}
-              <div data-stacking-cards-content className={styles.stackingCardsContent}>
-                <h2 className={styles.stackingCardsItemH}>
-                  <span className={styles.stackingCardHeadingFaded}>{card.titleFaded}</span>
-                  <br />
-                  {card.titleMain}
-                </h2>
-                <TechMarquee serviceKey={card.techKey} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Principles Section */}
-      <div className={styles.principlesSection}>
-        <div
-          data-reveal-group
-          data-stagger="80"
-          className={styles.principlesHeader}
-        >
-          <span className={styles.label}>Our Philosophy</span>
-          <h3 className={styles.sectionTitle}>
-            Principles that guide our work
-          </h3>
-        </div>
-
-        <div className={styles.principlesGrid}>
-          {PRINCIPLES.map((principle, index) => (
-            <div
-              key={index}
-              data-reveal-group
-              data-stagger="100"
-              data-distance="2.5em"
-              className={styles.principleCard}
-            >
-              <span className={styles.principleNumber}>{principle.number}</span>
-              <h4 className={styles.principleTitle}>
-                {principle.title}{" "}
-                <HighlightText>{principle.highlight}</HighlightText>
-              </h4>
-              <p className={styles.principleDescription}>
-                {principle.description}
-              </p>
-              <div className={styles.principleLine} />
-            </div>
-          ))}
-        </div>
+      {/* Stacking Cards Section - Services with Video Backgrounds */}
+      <div ref={stackingCardsRef}>
+        <StackedServiceCards
+          cards={SERVICE_CARDS}
+          showVideoControls={false}
+        />
       </div>
 
     </section>

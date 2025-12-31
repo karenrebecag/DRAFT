@@ -1,8 +1,9 @@
-import { useEffect, useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Flip } from 'gsap/Flip';
 import styles from './ScalingMediaStrip.module.scss';
+import { BunnyBackgroundVideo } from '@/components/ui/BunnyBackgroundVideo';
 
 gsap.registerPlugin(ScrollTrigger, Flip);
 
@@ -100,18 +101,12 @@ const ScalingMediaStrip = () => {
                <div className={styles.mediaWrapper}>
                   {/* Target element - the scaling media */}
                   <div ref={targetRef} className={styles.media}>
-                     <video
-                        autoPlay
-                        muted
-                        playsInline
-                        loop
+                     <BunnyBackgroundVideo
+                        src="https://vz-516d9498-38c.b-cdn.net/83ae40e8-5c82-41f0-b7bb-3a967b4dbbc6/playlist.m3u8"
                         className={styles.video}
-                     >
-                        <source
-                           src="https://osmo.b-cdn.net/resource-media/scaling-element-resource-185787-876545918_tiny.mp4"
-                           type="video/mp4"
-                        />
-                     </video>
+                        borderRadius="1em"
+                        autoplay
+                     />
                      {/* Decorative SVG overlay */}
                      <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +133,15 @@ const ScalingMediaStrip = () => {
                ref={(el) => { wrapperRefs.current[1] = el; }}
             >
                <div className={styles.aspectRatio} />
-               <div className={styles.mediaWrapper} />
+               <div className={styles.mediaWrapper}>
+                  {/* Background Video */}
+                  <BunnyBackgroundVideo
+                     src="https://vz-516d9498-38c.b-cdn.net/83ae40e8-5c82-41f0-b7bb-3a967b4dbbc6/playlist.m3u8"
+                     className={styles.bgVideo}
+                     borderRadius="1em"
+                     autoplay
+                  />
+               </div>
             </div>
          </section>
       </div>

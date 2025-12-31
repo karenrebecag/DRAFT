@@ -39,6 +39,18 @@
    }
 }
 
+/* Background Video for Video Section */
+.bgVideo {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   border-radius: 1em;
+   pointer-events: none;
+}
+
 /* Small Box - Starting state */
 .smallBox {
    border-radius: 1em;
@@ -74,7 +86,7 @@
 /* Media Element - The scaling target */
 .media {
    will-change: transform;
-   background-color: var(--color-primary, #beff01);
+   background-color: transparent;
    border-radius: 1em;
    justify-content: center;
    align-items: center;
@@ -94,10 +106,10 @@
    object-fit: cover;
    width: 100%;
    height: 100%;
-   padding-bottom: 0;
-   padding-right: 0;
    position: absolute;
+   inset: 0;
    border-radius: inherit;
+   z-index: 1;
 }
 
 /* Decorative SVG Overlay */

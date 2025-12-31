@@ -83,7 +83,7 @@ const Hero = () => {
                            {t.hero.titleLine1Prefix && <span>{t.hero.titleLine1Prefix} </span>}
                            <HeroUnderline
                               isActive={inView}
-                              strokeColor="var(--color-primary, #beff01)"
+                              strokeColor="var(--color-primary, #ecf6d2)"
                               strokeWidth={10}
                               top="30%"
                               className="d-none d-md-block"

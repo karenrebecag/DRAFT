@@ -35,7 +35,7 @@ const pricing_data: DataType[] = [
       price: 7500,
       list: ["API integrations and automation", "Dedicated account manager", "UX/UI design for digital products", "Ongoing support & maintenance",],
       active: "greens",
-      bgColor: "#BDFB07", // Chartreuse - main accent for custom
+      bgColor: "#ecf6d2", // Sage green - main accent for custom
    },
 ];
 

@@ -1,0 +1,209 @@
+.strip {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 6em 1.5em;
+
+  @media (min-width: 768px) {
+    padding: 8em 3em;
+  }
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5em;
+  max-width: 52em;
+  margin-bottom: 3em;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Row for inline titles */
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25em;
+  flex-wrap: nowrap;
+}
+
+/* Sans-serif Bold - Uppercase strong statement */
+.titleSans {
+  display: block;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: clamp(42px, 7vw, 72px);
+  letter-spacing: -0.02em;
+  color: #fafafa;
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+
+/* Serif Italic - Elegant contrast */
+.titleSerif {
+  display: block;
+  font-family: 'Playfair Display', 'DM Serif Display', serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(42px, 7vw, 72px);
+  letter-spacing: -0.01em;
+  color: #fafafa;
+  line-height: 1.05;
+}
+
+/* Rotating/Highlight Line - Same size as titles */
+.titleLine {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.2em;
+  flex-wrap: wrap;
+}
+
+.titlePrefix {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(42px, 7vw, 72px);
+  color: #fafafa;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+/* Highlight text inside title - serif italic style */
+.titleLine > span:not(.titlePrefix) {
+  font-family: 'Playfair Display', 'DM Serif Display', serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(42px, 7vw, 72px);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+.subtitle {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 auto;
+  text-wrap: balance;
+
+  @media (min-width: 768px) {
+    font-size: 22px;
+  }
+}
+
+/* Marquee Wrapper */
+.marqueeWrapper {
+  width: 100%;
+  margin: 2em 0;
+}
+
+/* Stats Row */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2em;
+  background: var(--color-primary, #ecf6d2);
+  padding: 3em 2em;
+  border-radius: 1.25em;
+  width: 100%;
+  max-width: 75em;
+  margin-top: 2em;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3em;
+    padding: 4em 3em;
+    border-radius: 1.5em;
+  }
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5em;
+}
+
+.statNumber {
+  font-family: 'Inter Tight', sans-serif !important;
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 600 !important;
+  font-style: normal !important;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #0a0a0a;
+}
+
+.statLabel {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(10, 10, 10, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+
+  @media (min-width: 768px) {
+    font-size: 14px;
+  }
+}
