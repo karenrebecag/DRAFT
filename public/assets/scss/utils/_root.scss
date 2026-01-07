@@ -180,6 +180,56 @@
     --font-family-heading: 'Plus Jakarta Sans', -apple-system, sans-serif;
     --font-family-display: 'DM Serif Display', serif;
     --font-family-accent: 'Bebas Neue', sans-serif;
+    --font-family-poppins: 'Poppins', sans-serif;
+    --font-family-arapey: 'Arapey', serif;
+
+    // =============================================
+    // Display Typography System (Poppins + Arapey)
+    // All sizes use clamp() for fluid responsive scaling
+    // =============================================
+
+    // --- Arapey Display Sizes ---
+    // Based on CSS_STANDARDS.md typography scale (max ~48-50px)
+    --font-size-arapey-heading: clamp(28px, 3.5vw, 50px);
+    --line-height-arapey-heading: 1.1;
+
+    --font-size-arapey-card: clamp(24px, 3vw, 42px);
+    --line-height-arapey-card: 1.1;
+
+    // --- Poppins Display Sizes ---
+    // Slightly smaller than Arapey for hierarchy
+    --font-size-poppins-heading: clamp(24px, 3vw, 44px);
+    --line-height-poppins-heading: 1.15;
+
+    // --- Poppins Body Sizes ---
+    // Based on CSS_STANDARDS: --font-size-lg: 18px
+    --font-size-poppins-body: clamp(14px, 1.1vw, 18px);
+    --line-height-poppins-body: 1.6;
+
+    --font-size-poppins-body-sm: clamp(16px, 1.5vw, 24px);
+    --line-height-poppins-body-sm: clamp(24px, 2.2vw, 35px);
+
+    // --- Poppins UI Sizes ---
+    --font-size-poppins-button: clamp(16px, 1.5vw, 24px);
+    --font-size-poppins-tag: clamp(14px, 1.25vw, 20px);
+    --font-size-poppins-small: clamp(12px, 1vw, 16px);
+    --line-height-poppins-small: clamp(18px, 1.5vw, 25px);
+
+    // --- Poppins Pricing Sizes ---
+    --font-size-poppins-pricing: clamp(36px, 4vw, 64px);
+    --line-height-poppins-pricing: clamp(50px, 5.5vw, 90px);
+
+    --font-size-poppins-currency: clamp(24px, 2.5vw, 40px);
+
+    --font-size-poppins-review: clamp(20px, 2vw, 32px);
+    --line-height-poppins-review: clamp(32px, 3.5vw, 55px);
+
+    --font-size-poppins-card-desc: clamp(14px, 1.25vw, 20px);
+    --line-height-poppins-card-desc: clamp(22px, 2vw, 30px);
+
+    // --- Section Tags & Labels ---
+    --font-size-section-tag: clamp(14px, 1.25vw, 18px);
+    --line-height-section-tag: 1.4;
 
     // Font Sizes (Desktop-first scale)
     --font-size-xs: 12px;

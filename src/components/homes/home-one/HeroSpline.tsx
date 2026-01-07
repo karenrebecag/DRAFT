@@ -1,16 +1,10 @@
 import { useEffect, useRef } from 'react';
-import { useInView } from 'react-intersection-observer';
 import { Application } from '@splinetool/runtime';
-import { useI18n } from '../../../i18n';
-import { MorphingTextReveal } from '../../ui/MorphingTextReveal';
-import { HeroUnderline } from '../../ui/HeroUnderline';
+import { ChevronDown } from 'lucide-react';
+import ButtonPrimary from '../../ui/ButtonPrimary';
+import ButtonSecondary from '../../ui/ButtonSecondary';
 
 const HeroSpline = () => {
-   const { t } = useI18n();
-   const { ref: heroRef, inView } = useInView({
-      threshold: 0.3,
-      triggerOnce: false,
-   });
    const canvasRef = useRef<HTMLCanvasElement>(null);
 
    useEffect(() => {
@@ -24,65 +18,74 @@ const HeroSpline = () => {
       };
    }, []);
 
+   const scrollToNextSection = () => {
+      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+   };
+
    return (
-      <div className="td-hero-area td-hero-spacing p-relative fix z-index-1" style={{ overflow: 'hidden', minHeight: '100vh' }}>
+      <div
+         className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center"
+         style={{
+            background: 'linear-gradient(205deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.05) 20%, rgba(0, 0, 0, 0.05) 63%, rgba(0, 0, 0, 0.10) 100%), black',
+         }}
+      >
          {/* Spline Background */}
          <canvas
             ref={canvasRef}
-            style={{
-               position: 'absolute',
-               top: 0,
-               left: 0,
-               width: '100%',
-               height: '100%',
-               zIndex: 0,
-               pointerEvents: 'none',
-            }}
+            className="absolute inset-0 w-full h-full z-0 pointer-events-none"
          />
 
-         <div className="container" style={{ position: 'relative', zIndex: 3 }}>
-            <div className="row justify-content-center">
-               <div className="col-lg-10">
-                  <div className="td-hero-content">
-                     <div ref={heroRef} className="td-hero-title text-center wow fadeInUp" data-wow-delay=".5s" data-wow-duration="1s" style={{ position: 'relative' }}>
+         {/* Content Container */}
+         <div className="relative z-10 flex flex-col items-center justify-end gap-[260px] px-[74px] py-[135px] max-w-[1600px] w-full min-h-screen">
 
+            {/* Main Content */}
+            <div className="flex flex-col items-center gap-[70px]">
 
+               {/* Title Section */}
+               <div className="max-w-[1240px] text-center">
+                  <h1>
+                     <span className="arapey-heading-italic text-white block">
+                        Where High Design Meets
+                     </span>
+                     <span className="poppins-heading-light text-white block">
+                        High Performance
+                     </span>
+                  </h1>
+               </div>
 
-                        <h2 className="title" style={{ position: 'relative', zIndex: 1, lineHeight: 1.1, whiteSpace: 'nowrap', fontWeight: 600 }}>
-                           {t.hero.titleLine1Prefix && <span>{t.hero.titleLine1Prefix} </span>}
-                           <HeroUnderline
-                              isActive={inView}
-                              strokeColor="var(--color-primary)"
-                              strokeWidth={10}
-                              top="40%"
-                              className="d-none d-md-block"
-                           >
-                              {t.hero.titleLine1Highlight}
-                           </HeroUnderline>
-                           <span className="d-md-none">{t.hero.titleLine1Highlight}</span>
-                        </h2>
-                        <h2 className="title mb-0" style={{ position: 'relative', marginTop: 'clamp(-5px, -1.5vw, -30px)', zIndex: 1, lineHeight: 1.1, fontWeight: 600 }}>
-                           {t.hero.titleLine2}
-                        </h2>
-                        <h2 className="title" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '0.25em', whiteSpace: 'nowrap', position: 'relative', zIndex: 1, marginTop: 'clamp(0px, -0.5vw, -15px)', lineHeight: 1.1, fontWeight: 600 }}>
-                           <span>{t.hero.titleLine3Prefix}</span>
-                           <MorphingTextReveal texts={[...t.hero.rotatingWords]} interval={3000} glitchOnHover={true} />
-                        </h2>
-                     </div>
-                  </div>
+               {/* Description */}
+               <p className="poppins-body-light text-[#999999] max-w-[1240px] text-center">
+                  A premier development studio specializing in high-end UI/UX, motion graphics, and modern tech stacks for global innovators.
+               </p>
+
+               {/* Buttons */}
+               <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full max-w-[940px] px-4 sm:px-[150px]">
+                  <ButtonPrimary
+                     to="/contact"
+                     className="flex-1 w-full sm:w-auto min-w-[200px]"
+                  >
+                     Start a Project
+                  </ButtonPrimary>
+                  <ButtonSecondary
+                     to="/portfolio"
+                     className="flex-1 w-full sm:w-auto min-w-[200px]"
+                  >
+                     Explore Work
+                  </ButtonSecondary>
                </div>
             </div>
-         </div>
 
-       
-         <div className="container container-1680" style={{ position: 'relative', zIndex: 2 }}>
-            <div className="row">
-               <div className="col-12">
-                  <div className="td-hero-bottom-thumb">
-                     <img data-speed="0.6" className="w-100 round-2" src="/assets/img/hero/bg-thumb.jpg" alt="" />
-                  </div>
-               </div>
-            </div>
+            {/* Scroll Down Button */}
+            <button
+               onClick={scrollToNextSection}
+               className="flex items-center justify-center p-2 rounded-[15px] transition-transform hover:scale-105"
+               style={{
+                  background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.06) 100%)',
+               }}
+               aria-label="Scroll down"
+            >
+               <ChevronDown className="w-6 h-6 text-white" />
+            </button>
          </div>
       </div>
    )

@@ -1,0 +1,337 @@
+/* =============================================
+   CrystalCard - Glassmorphism Service Card
+   Layered card with animated blobs + dynamic 3D
+   ============================================= */
+
+/* ===========================================
+   3D Wrapper - Perspective Container
+   =========================================== */
+.cardWrapper {
+  perspective: 1000px;
+  isolation: isolate;
+}
+
+.crystalCard {
+  --mouse-x: 0;
+  --mouse-y: 0;
+  --x: 50%;
+  --y: 50%;
+
+  position: relative;
+  border-radius: 50px;
+  border: 0.73px solid rgb(111 111 111 / 23%);
+  overflow: hidden;
+  width: 100%;
+  max-width: 450px;
+  height: 580px;
+  background-color: #131313;
+
+  // Glassmorphism effect
+  -webkit-backdrop-filter: blur(10px);
+
+  // 3D Transform setup
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+
+  // Dynamic 3D transform based on mouse position
+  transform:
+    rotateY(calc(var(--mouse-x) * 8deg))
+    rotateX(calc(var(--mouse-y) * -8deg));
+}
+
+/* ===========================================
+   Dynamic Shine Layer - Follows cursor
+   =========================================== */
+.shine {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--x) var(--y),
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.1) 25%,
+    transparent 50%
+  );
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+
+  .crystalCard:hover & {
+    opacity: 1;
+  }
+}
+
+/* ===========================================
+   Background Layers - Animated Blobs
+   =========================================== */
+.blobContainer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 9999px;
+  filter: blur(60px);
+}
+
+.blobRight {
+  top: -20%;
+  right: -15%;
+  background: linear-gradient(
+    180deg,
+    rgba(230, 159, 1, 0.85) 0%,
+    rgba(164, 170, 183, 0.70) 100%
+  );
+  animation: floatRight 8s ease-in-out infinite;
+}
+
+.blobLeft {
+  bottom: -20%;
+  left: -15%;
+  background: linear-gradient(
+    180deg,
+    rgba(153, 176, 130, 0.85) 0%,
+    rgba(164, 170, 183, 0.70) 100%
+  );
+  animation: floatLeft 10s ease-in-out infinite;
+}
+
+/* ===========================================
+   Inner Stroke - Top only rounded
+   =========================================== */
+.innerStroke {
+  position: absolute;
+  inset: 8px;
+  border-radius: 726px 726px 0 0;
+  border: 0.73px solid rgba(255, 255, 255, 0.30);
+  border-bottom: none;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===========================================
+   Content Container
+   =========================================== */
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+/* ===========================================
+   Service Card - Image
+   =========================================== */
+.imageWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 24px 32px 0;
+  flex: 1;
+  align-items: center;
+}
+
+.image {
+  max-width: 80%; // 20% más pequeña
+  max-height: 220px; // Altura máxima consistente
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* ===========================================
+   Service Card - Info Section
+   =========================================== */
+.serviceInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 32px 40px;
+  text-align: center;
+  width: 100%;
+}
+
+/* Badge with gradient background */
+.badge {
+  padding: 6px 16px;
+  background: linear-gradient(
+    250deg,
+    #7A96AC 0%,
+    #EAEFF3 18%,
+    #C2D4E1 31%,
+    white 49%,
+    #D4DEE5 62%,
+    #ABBDC8 79%,
+    #BCCAD7 95%
+  );
+  box-shadow: 0px 2px 34px rgba(215, 226, 236, 0.31);
+  border-radius: 10px;
+
+  // 15px Poppins 500 uppercase
+  font-family: var(--font-family-poppins, 'Poppins', sans-serif);
+  font-weight: 500;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #363636;
+}
+
+.category {
+  font-family: var(--font-family-poppins, 'Poppins', sans-serif);
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8C8D8C;
+}
+
+/* Title - 48px Arapey italic */
+.title {
+  margin: 0;
+  padding-bottom: 0;
+  font-family: var(--font-family-arapey, 'Arapey', serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1.1;
+  color: white;
+}
+
+/* Description - 16px Poppins 400, line-height 21px */
+.description {
+  margin: 0;
+  font-family: var(--font-family-poppins, 'Poppins', sans-serif);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 380px;
+}
+
+/* ===========================================
+   Animations
+   =========================================== */
+@keyframes floatRight {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-10px, 15px) scale(1.05);
+  }
+  66% {
+    transform: translate(5px, -10px) scale(0.95);
+  }
+}
+
+@keyframes floatLeft {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(15px, -10px) scale(0.95);
+  }
+  66% {
+    transform: translate(-5px, 15px) scale(1.05);
+  }
+}
+
+/* ===========================================
+   Reduced Motion Support
+   =========================================== */
+@media (prefers-reduced-motion: reduce) {
+  .blob {
+    animation: none;
+  }
+
+  .crystalCard {
+    transition: none;
+    transform: none;
+  }
+
+  .shine {
+    transition: none;
+  }
+}
+
+/* ===========================================
+   Responsive Breakpoints
+   =========================================== */
+@media (max-width: 768px) {
+  .crystalCard {
+    height: 520px;
+  }
+
+  .imageWrapper {
+    padding: 20px 24px 0;
+  }
+
+  .image {
+    max-height: 180px;
+  }
+
+  .serviceInfo {
+    padding: 20px 24px 32px;
+  }
+
+  .title {
+    font-size: 40px;
+  }
+
+  .description {
+    font-size: 14px;
+    line-height: 19px;
+  }
+
+  .badge {
+    font-size: 13px;
+    padding: 5px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .crystalCard {
+    height: 460px;
+  }
+
+  .imageWrapper {
+    padding: 16px 16px 0;
+  }
+
+  .image {
+    max-height: 150px;
+  }
+
+  .serviceInfo {
+    padding: 16px 16px 24px;
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .description {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .badge {
+    font-size: 11px;
+    padding: 4px 12px;
+  }
+}

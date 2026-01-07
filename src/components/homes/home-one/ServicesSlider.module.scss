@@ -1,0 +1,252 @@
+/* =============================================
+   ServicesSlider - Flick Cards Slider
+   Elastic card stacking animation
+   ============================================= */
+
+.servicesSection {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 0 0 60px 0; // Sin padding superior
+
+  // Gradient fade on sides
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 15%;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, #000000 0%, transparent 100%);
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, #000000 0%, transparent 100%);
+  }
+}
+
+/* ===========================================
+   Section Header
+   =========================================== */
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 0; // Sin margen inferior
+  padding: 0 24px;
+  text-align: center;
+}
+
+.tagline {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #8C8D8C;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: 'Arapey', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 1.1;
+  color: white;
+}
+
+/* ===========================================
+   Flick Cards Slider Structure
+   =========================================== */
+.flickGroup {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Invisible sizing element */
+.relativeObject {
+  opacity: 0;
+  pointer-events: none;
+  width: 100%;
+  position: relative;
+}
+
+.relativeObjectBefore {
+  padding-top: 62%; // Reduced from 95% - keeps curve, less empty space below
+}
+
+/* Collection - absolute positioned over relative object */
+.collection {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  // No overflow - let section clip at edges
+}
+
+/* List - flex container for stacked cards */
+.list {
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  padding-top: 40px; // Space for center card at top of arc
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+/* Individual card item - positioned absolutely for stacking */
+.item {
+  position: absolute;
+  width: 500px;
+  will-change: transform, opacity;
+  pointer-events: auto;
+}
+
+/* ===========================================
+   Card Status Styling
+   =========================================== */
+
+/* Default state */
+[data-flick-cards-item-status] {
+  transition: filter 0.3s ease;
+}
+
+/* Active card - full visibility */
+[data-flick-cards-item-status="active"] {
+  z-index: 5;
+}
+
+/* Adjacent cards */
+[data-flick-cards-item-status="2-before"],
+[data-flick-cards-item-status="2-after"] {
+  z-index: 4;
+}
+
+/* Outer cards */
+[data-flick-cards-item-status="3-before"],
+[data-flick-cards-item-status="3-after"] {
+  z-index: 3;
+}
+
+/* Hidden cards - completely invisible */
+[data-flick-cards-item-status="hidden"] {
+  z-index: 1;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* ===========================================
+   Drag Status (on container)
+   =========================================== */
+[data-flick-drag-status="grab"] .list {
+  cursor: grab;
+}
+
+[data-flick-drag-status="grabbing"] .list {
+  cursor: grabbing;
+}
+
+/* ===========================================
+   Responsive Breakpoints
+   =========================================== */
+@media (max-width: 1280px) {
+  .sectionTitle {
+    font-size: 56px;
+  }
+
+  .item {
+    width: 460px;
+  }
+}
+
+@media (max-width: 992px) {
+  .servicesSection {
+    padding: 0 0 50px 0;
+  }
+
+  .sectionTitle {
+    font-size: 48px;
+  }
+
+  .item {
+    width: 420px;
+  }
+
+  .relativeObjectBefore {
+    padding-top: 72%;
+  }
+}
+
+@media (max-width: 768px) {
+  .servicesSection {
+    padding: 0 0 40px 0;
+  }
+
+  .sectionTitle {
+    font-size: 40px;
+  }
+
+  .item {
+    width: 380px;
+  }
+
+  .relativeObjectBefore {
+    padding-top: 85%;
+  }
+}
+
+@media (max-width: 480px) {
+  .servicesSection {
+    padding: 0 0 32px 0;
+  }
+
+  .sectionHeader {
+    gap: 12px;
+  }
+
+  .tagline {
+    font-size: 12px;
+  }
+
+  .sectionTitle {
+    font-size: 32px;
+  }
+
+  .item {
+    width: 340px;
+  }
+
+  .relativeObjectBefore {
+    padding-top: 100%;
+  }
+}
+
+/* ===========================================
+   Reduced Motion Support
+   =========================================== */
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    transition: none !important;
+  }
+}

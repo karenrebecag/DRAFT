@@ -1,4 +1,8 @@
+// Root CSS variables (must be first to define :root)
+@use 'utils/root';
+
 @forward 'components/theme';
+@forward 'components/display-typography';
 @forward 'components/buttons';
 @forward 'components/preloader';
 @forward 'components/background';

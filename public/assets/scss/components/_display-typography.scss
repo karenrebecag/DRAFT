@@ -1,0 +1,165 @@
+/*=============================
+  Display Typography System
+  Connected to CSS variables in _root.scss
+  All classes consume global design tokens
+  Using !important to override Bootstrap/Tailwind resets
+===============================*/
+
+/* ===========================
+   ARAPEY STYLES
+   =========================== */
+
+/* Arapey Heading Italic - Hero titles */
+.arapey-heading-italic {
+  font-family: var(--font-family-arapey) !important;
+  font-weight: var(--font-weight-regular) !important;
+  font-style: italic !important;
+  font-size: var(--font-size-arapey-heading) !important;
+  line-height: var(--line-height-arapey-heading) !important;
+}
+
+/* Arapey Card Title Italic - Card/section titles */
+.arapey-card-title-italic {
+  font-family: var(--font-family-arapey) !important;
+  font-weight: var(--font-weight-regular) !important;
+  font-style: italic !important;
+  font-size: var(--font-size-arapey-card) !important;
+  line-height: var(--line-height-arapey-card) !important;
+}
+
+/* ===========================
+   POPPINS DISPLAY STYLES
+   =========================== */
+
+/* Poppins Heading Light - Hero subtitles */
+.poppins-heading-light {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-light) !important;
+  font-size: var(--font-size-poppins-heading) !important;
+  line-height: var(--line-height-poppins-heading) !important;
+}
+
+/* ===========================
+   POPPINS BODY STYLES
+   =========================== */
+
+/* Poppins Body Light - Body text */
+.poppins-body-light {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-light) !important;
+  font-size: var(--font-size-poppins-body) !important;
+  line-height: var(--line-height-poppins-body) !important;
+}
+
+/* Poppins Body Small - Smaller body text */
+.poppins-body-sm {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-regular) !important;
+  font-size: var(--font-size-poppins-body-sm) !important;
+  line-height: var(--line-height-poppins-body-sm) !important;
+}
+
+/* ===========================
+   POPPINS UI STYLES
+   =========================== */
+
+/* Poppins Button Medium */
+.poppins-button-medium {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-medium) !important;
+  font-size: var(--font-size-poppins-button) !important;
+  line-height: normal !important;
+}
+
+/* Poppins Tag Medium */
+.poppins-tag-medium {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-medium) !important;
+  font-size: var(--font-size-poppins-tag) !important;
+  line-height: normal !important;
+}
+
+/* Poppins Category Tag SemiBold */
+.poppins-category-tag-semibold {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  font-size: var(--font-size-poppins-tag) !important;
+  line-height: normal !important;
+}
+
+/* ===========================
+   POPPINS PRICING STYLES
+   =========================== */
+
+/* Poppins Pricing Medium - Large price display */
+.poppins-pricing-medium {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-medium) !important;
+  font-size: var(--font-size-poppins-pricing) !important;
+  line-height: var(--line-height-poppins-pricing) !important;
+}
+
+/* Poppins Currency Medium - Currency symbol */
+.poppins-currency-medium {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-medium) !important;
+  font-size: var(--font-size-poppins-currency) !important;
+  line-height: var(--line-height-poppins-pricing) !important;
+}
+
+/* Poppins Pricing SubTitle Regular */
+.poppins-pricing-subtitle-regular {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-regular) !important;
+  font-size: var(--font-size-poppins-small) !important;
+  line-height: var(--line-height-poppins-small) !important;
+}
+
+/* Pricing Feature Regular */
+.pricing-feature-regular {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-regular) !important;
+  font-size: var(--font-size-poppins-tag) !important;
+  line-height: normal !important;
+}
+
+/* ===========================
+   POPPINS CARD STYLES
+   =========================== */
+
+/* Poppins Review Title SemiBold */
+.poppins-review-title-semibold {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  font-size: var(--font-size-poppins-review) !important;
+  line-height: var(--line-height-poppins-review) !important;
+}
+
+/* Poppins Pricing Card Description Small */
+.poppins-pricing-card-desc-sm {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-medium) !important;
+  font-size: var(--font-size-poppins-card-desc) !important;
+  line-height: var(--line-height-poppins-card-desc) !important;
+}
+
+/* Poppins Pricing Card Description */
+.poppins-pricing-card-desc {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-regular) !important;
+  font-size: var(--font-size-poppins-body-sm) !important;
+  line-height: var(--line-height-poppins-body-sm) !important;
+}
+
+/* ===========================
+   SECTION TAGS & LABELS
+   =========================== */
+
+/* Poppins Section Tag - For "01 — Section Name" style labels */
+.poppins-section-tag {
+  font-family: var(--font-family-poppins) !important;
+  font-weight: var(--font-weight-regular) !important;
+  font-size: var(--font-size-section-tag) !important;
+  line-height: var(--line-height-section-tag) !important;
+  letter-spacing: 0.02em;
+}

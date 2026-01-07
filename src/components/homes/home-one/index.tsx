@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react"
-import SplineStrip from "./SplineStrip"
-import ScalingMediaStrip from "./ScalingMediaStrip"
-import AboutSplineStrip from "./AboutSplineStrip"
+import Banner from "./Banner"
+import About from "./About"
+import Methodology from "./Methodology"
 import ServicesStrip from "./ServicesStrip"
 import Pricing from "./Pricing"
 import PortfolioTwo from "./PortfolioTwo"
@@ -14,6 +14,7 @@ import ContactStrip from "./ContactStrip"
 import HeaderGlobal from "../../../layouts/headers/HeaderGlobal"
 import FooterGlobal from "../../../layouts/footers/FooterGlobal"
 import WelcomeLoader from "../../ui/WelcomeLoader"
+import LogoMarquee from "../../ui/LogoMarquee"
 
 const HomeOne = () => {
    const [isSplineLoaded, setIsSplineLoaded] = useState(false)
@@ -94,12 +95,13 @@ const HomeOne = () => {
             />
             <div id="smooth-content" style={{ position: 'relative', zIndex: 1 }}>
                <main>
-                  <SplineStrip onLoaded={handleSplineLoaded} isLoading={isLoaderVisible} />
-                  <ScalingMediaStrip />
-                  {/* About Section with Spline Background */}
-                  <AboutSplineStrip />
-                  {/* Team & Services Stacking Cards */}
-                  <ServicesStrip />
+                  <Banner onLoaded={handleSplineLoaded} isLoading={isLoaderVisible} />
+                  <LogoMarquee />
+                  {/* About Section */}
+                  <About />
+                  {/* Methodology Section */}
+                  <Methodology />
+
                   {/* Original sections */}
                   <PortfolioTwo />
                   <Process />
@@ -119,3 +121,4 @@ const HomeOne = () => {
 }
 
 export default HomeOne
+   

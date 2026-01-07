@@ -1,0 +1,60 @@
+/* Button Primary - White solid button */
+.button {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   padding: 12px 24px;
+   background: #F3F3F3;
+   border-radius: 100px;
+   border: 1px solid rgba(70, 70, 70, 0.15);
+   font-family: 'Poppins', sans-serif;
+   font-weight: 500;
+   font-size: 14px;
+   line-height: 1;
+   text-transform: uppercase;
+   letter-spacing: 0.02em;
+   color: #000;
+   text-decoration: none;
+   cursor: pointer;
+   white-space: nowrap;
+   transition:
+      background-color 0.25s ease,
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+
+   &:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+   }
+
+   &:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+   }
+
+   /* Focus visible for keyboard navigation - WCAG AA */
+   &:focus-visible {
+      outline: 2px solid #BDFB06;
+      outline-offset: 3px;
+   }
+
+   &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+   }
+}
+
+.icon {
+   width: 20px;
+   height: 20px;
+   flex-shrink: 0;
+   transition: transform 0.25s ease;
+
+   .button:hover & {
+      transform: translate(2px, -2px);
+   }
+}

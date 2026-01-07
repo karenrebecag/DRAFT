@@ -66,13 +66,7 @@ const Service = () => {
    return (
       <div className="td-service-area hover-section td-btn-trigger">
          <div className="container">
-            <div className="row align-items-center">
-               <div className="col-lg-9 col-md-9">
-                  <div className="td-service-2-title-wrap mb-40  wow fadeInLeft" data-wow-delay=".5s" data-wow-duration="1s">
-                     <span className="td-section-2-subtitle mb-25 d-inline-block">//  Our services</span>
-                     <h2 className="td-section-2-title">Our full creative <br />startup <span>agency<br /> service</span></h2>
-                  </div>
-               </div>
+            <div className="row align-items-center"> 
                <div className="col-lg-3 col-md-3 d-none d-md-block">
                   <div className="td-service-2-shape mb-40  td-btn-bounce">
                      <img src="/assets/img/service/service-2/ok.png" alt="" />
