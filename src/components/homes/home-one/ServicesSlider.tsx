@@ -18,56 +18,42 @@ const ARC_HEIGHT = 280; // How much the arc curves down at edges (increased for 
 const CARD_SPACING = 520; // Distance between card centers along the arc
 const MAX_ROTATION = 25; // Max rotation at edges (degrees)
 
-// Services data - 7 items for optimal flick effect
+// Services data - 5 items with unique Spline models
 const services = [
   {
     id: 1,
-    image: 'https://pub-3ed7c563bcaa4c7c8ed703c87bbc1631.r2.dev/15%204.webp',
+    splineModel: '/assets/models/Coin.splinecode',
     badge: 'Systems & Research',
     title: 'Design Systems',
     description: 'Atomic design libraries and rigorous UX documentation to ensure pixel-perfect consistency and scalability across every digital touchpoint.',
   },
   {
     id: 2,
-    image: 'https://pub-3ed7c563bcaa4c7c8ed703c87bbc1631.r2.dev/15%204.webp',
+    splineModel: '/assets/models/Cube.splinecode',
     badge: 'Web & Native Apps',
     title: 'Product Engineering',
     description: 'Bespoke web and mobile applications built for global scale, performance, and long-term maintainability.',
   },
   {
     id: 3,
-    image: 'https://pub-3ed7c563bcaa4c7c8ed703c87bbc1631.r2.dev/15%204-1.webp',
+    splineModel: '/assets/models/Helix.splinecode',
     badge: 'Immersive Experiences',
     title: 'WEBGL & Interactive',
     description: 'Pushing the boundaries of the browser with high-fidelity 3D models, custom shaders, and fluid motion that captivate users instantly.',
   },
   {
     id: 4,
-    image: 'https://pub-3ed7c563bcaa4c7c8ed703c87bbc1631.r2.dev/15%204-2.webp',
+    splineModel: '/assets/models/Rings.splinecode',
     badge: 'Headless & Shopify',
     title: 'Advanced E-Commerce',
     description: 'High-performance shopping ecosystems using Shopify Hydrogen and headless architectures designed for maximum conversion and speed.',
   },
   {
     id: 5,
-    image: 'https://pub-3ed7c563bcaa4c7c8ed703c87bbc1631.r2.dev/15%204-3.webp',
+    splineModel: '/assets/models/Pyramid.splinecode',
     badge: 'AI & Intelligent Ops',
     title: 'Agents Automation',
     description: 'Integrating custom AI agents and intelligent workflows to automate complex business logic and streamline your internal operations.',
-  },
-  {
-    id: 6,
-    image: 'https://pub-3ed7c563bcaa4c7c8ed703c87bbc1631.r2.dev/15%204-1.webp',
-    badge: 'Brand & Identity',
-    title: 'Creative Direction',
-    description: 'Strategic brand positioning and visual identity systems that communicate your unique value and resonate with your target audience.',
-  },
-  {
-    id: 7,
-    image: 'https://pub-3ed7c563bcaa4c7c8ed703c87bbc1631.r2.dev/15%204-2.webp',
-    badge: 'Growth & Analytics',
-    title: 'Performance Marketing',
-    description: 'Data-driven marketing strategies and conversion optimization to maximize ROI and accelerate sustainable business growth.',
   },
 ];
 
@@ -261,7 +247,7 @@ const ServicesSlider = () => {
               >
                 {/* Crystal Card with hover effect preserved */}
                 <CrystalCard
-                  image={service.image}
+                  splineModel={service.splineModel}
                   badge={service.badge}
                   title={service.title}
                   description={service.description}

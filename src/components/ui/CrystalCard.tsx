@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect, useState } from 'react';
 import styles from './CrystalCard.module.scss';
 
 interface CrystalCardProps {
@@ -8,6 +8,7 @@ interface CrystalCardProps {
   onClick?: () => void;
   // Service card props
   image?: string;
+  splineModel?: string; // Path to .splinecode file
   badge?: string;
   category?: string;
   title?: string;
@@ -20,13 +21,17 @@ const CrystalCard: React.FC<CrystalCardProps> = ({
   style,
   onClick,
   image,
+  splineModel,
   badge,
   category,
   title,
   description,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isServiceCard = image || badge || title;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const appRef = useRef<import('@splinetool/runtime').Application | null>(null);
+  const [splineLoaded, setSplineLoaded] = useState(false);
+  const isServiceCard = image || splineModel || badge || title;
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
@@ -55,6 +60,40 @@ const CrystalCard: React.FC<CrystalCardProps> = ({
     card.style.setProperty('--mouse-y', '0');
   }, []);
 
+  // Load Spline model
+  useEffect(() => {
+    if (!splineModel || !canvasRef.current) return;
+
+    let mounted = true;
+
+    const loadSpline = async () => {
+      try {
+        const { Application } = await import('@splinetool/runtime');
+        if (!canvasRef.current || !mounted) return;
+
+        const app = new Application(canvasRef.current);
+        appRef.current = app;
+
+        await app.load(splineModel);
+        if (mounted) {
+          setSplineLoaded(true);
+        }
+      } catch (error) {
+        console.error('Failed to load Spline model:', error);
+      }
+    };
+
+    loadSpline();
+
+    return () => {
+      mounted = false;
+      if (appRef.current) {
+        appRef.current.dispose();
+        appRef.current = null;
+      }
+    };
+  }, [splineModel]);
+
   return (
     <div className={styles.cardWrapper}>
       <div
@@ -65,24 +104,25 @@ const CrystalCard: React.FC<CrystalCardProps> = ({
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Gooey blobs */}
-        <div className={styles.blobContainer}>
-          <div className={`${styles.blob} ${styles.blobRight}`} />
-          <div className={`${styles.blob} ${styles.blobLeft}`} />
-        </div>
-
-        {/* Inner stroke */}
-        <div className={styles.innerStroke} />
-
-        {/* Dynamic shine layer */}
-        <div className={styles.shine} />
+        {/* Subtle border glow on hover */}
+        <div className={styles.borderGlow} />
 
         {/* Content */}
         <div className={styles.content}>
           {isServiceCard ? (
             <>
-              {/* Service Image */}
-              {image && (
+              {/* Spline 3D Model */}
+              {splineModel && (
+                <div className={styles.splineWrapper}>
+                  <canvas
+                    ref={canvasRef}
+                    className={`${styles.splineCanvas} ${splineLoaded ? styles.loaded : ''}`}
+                  />
+                </div>
+              )}
+
+              {/* Service Image (fallback if no spline model) */}
+              {image && !splineModel && (
                 <div className={styles.imageWrapper}>
                   <img
                     src={image}
