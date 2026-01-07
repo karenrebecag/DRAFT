@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
+import { AnimatedText } from '@/hooks/useCharacterStagger'
 import styles from './ButtonSecondary.module.scss'
 
 interface ButtonSecondaryProps {
-   children: React.ReactNode
+   children: string
    href?: string
    to?: string
    onClick?: () => void
    className?: string
    type?: 'button' | 'submit' | 'reset'
    disabled?: boolean
-   icon?: React.ReactNode
    showIcon?: boolean
 }
 
@@ -22,17 +22,13 @@ const ButtonSecondary = ({
    className = '',
    type = 'button',
    disabled = false,
-   icon,
    showIcon = true,
 }: ButtonSecondaryProps) => {
-   const iconElement = showIcon && (
-      icon || <ArrowUpRight className={styles.icon} strokeWidth={2} />
-   )
-
    const content = (
       <>
-         <span>{children}</span>
-         {iconElement}
+         <div className={styles.bg} />
+         <AnimatedText className={styles.text}>{children}</AnimatedText>
+         {showIcon && <ArrowUpRight className={styles.icon} strokeWidth={2} />}
       </>
    )
 
@@ -46,6 +42,7 @@ const ButtonSecondary = ({
             className={buttonClass}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={children}
          >
             {content}
          </a>
@@ -55,7 +52,7 @@ const ButtonSecondary = ({
    // Internal link (React Router)
    if (to) {
       return (
-         <Link to={to} className={buttonClass} onClick={onClick}>
+         <Link to={to} className={buttonClass} onClick={onClick} aria-label={children}>
             {content}
          </Link>
       )
@@ -68,6 +65,7 @@ const ButtonSecondary = ({
          className={buttonClass}
          onClick={onClick}
          disabled={disabled}
+         aria-label={children}
       >
          {content}
       </button>

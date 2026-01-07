@@ -1,7 +1,18 @@
 import { Link, useLocation } from "react-router-dom"
 import { useState, useEffect, useCallback, useRef } from "react"
 import gsap from "gsap"
+import { ArrowUpRight, Send } from "lucide-react"
 import { useI18n, type LanguageCode } from "../../i18n"
+import { AnimatedText } from "@/hooks/useCharacterStagger"
+import ButtonPrimary from "@/components/ui/ButtonPrimary"
+import {
+   LinkedInIcon,
+   GitHubIcon,
+   DiscordIcon,
+   WebflowIcon,
+   TikTokIcon,
+   InstagramIcon
+} from "@/components/ui/SocialIcons"
 import styles from "./HeaderGlobal.module.scss"
 
 // Navigation items
@@ -153,15 +164,16 @@ const HeaderGlobal = () => {
                   <div className={styles.toggleBar} />
                </button>
 
-               {/* Logo */}
+               {/* Logo with hover animation */}
                <Link to="/" className={styles.logo} onClick={closeNav}>
-                  <span>DRAFT STUDIO</span>
+                  <AnimatedText className={styles.logoDraft}>DRAFT</AnimatedText>
+                  <AnimatedText className={styles.logoStudio}>STUDIO</AnimatedText>
                </Link>
 
-               {/* Contact Button */}
-               <Link to="/contact" className={styles.contactBtn} onClick={closeNav}>
-                  <SendIcon />
-               </Link>
+               {/* Contact Button - Using ButtonPrimary */}
+               <ButtonPrimary to="/contact" className={styles.contactBtn} icon={<Send size={16} />}>
+                  Go
+               </ButtonPrimary>
             </div>
 
             {/* Expandable Content */}
@@ -180,31 +192,60 @@ const HeaderGlobal = () => {
                               className={`${styles.navLink} ${isActiveRoute(item.link) ? styles.active : ''}`}
                               onClick={closeNav}
                            >
-                              <p className={styles.navText}>{item.title}</p>
+                              <AnimatedText className={styles.navText}>{item.title}</AnimatedText>
                            </Link>
                         </div>
                      ))}
                   </ul>
 
-                  {/* Language Selector */}
+                  {/* Bottom Section: Language + Socials */}
                   <div
-                     className={styles.langSection}
+                     className={styles.bottomSection}
                      ref={el => { if (el) navItemsRef.current[navItems.length] = el }}
                   >
-                     <div className={styles.langButtons}>
-                        {languages.map((lang) => (
-                           <button
-                              key={lang.code}
-                              className={`${styles.langBtn} ${lang.code === locale ? styles.active : ''}`}
-                              onClick={() => handleLangSelect(lang.code)}
-                           >
-                              {lang.code.toUpperCase()}
-                           </button>
-                        ))}
+                     {/* Language Selector */}
+                     <div className={styles.langSection}>
+                        <span className={styles.sectionLabel}>Language</span>
+                        <div className={styles.langButtons}>
+                           {languages.map((lang) => (
+                              <button
+                                 key={lang.code}
+                                 className={`${styles.langBtn} ${lang.code === locale ? styles.active : ''}`}
+                                 onClick={() => handleLangSelect(lang.code)}
+                              >
+                                 <span className={styles.langText}>{lang.code.toUpperCase()}</span>
+                              </button>
+                           ))}
+                        </div>
+                     </div>
+
+                     {/* Social Icons */}
+                     <div className={styles.socialSection}>
+                        <span className={styles.sectionLabel}>Socials</span>
+                        <div className={styles.socialLinks}>
+                           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                              <LinkedInIcon />
+                           </a>
+                           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                              <GitHubIcon />
+                           </a>
+                           <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                              <DiscordIcon />
+                           </a>
+                           <a href="https://webflow.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                              <WebflowIcon />
+                           </a>
+                           <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                              <TikTokIcon />
+                           </a>
+                           <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                              <InstagramIcon />
+                           </a>
+                        </div>
                      </div>
                   </div>
 
-                  {/* Contact Banner with Marquee */}
+                  {/* Contact Banner with Marquee - Always at bottom */}
                   <div
                      className={styles.bannerWrapper}
                      ref={el => { if (el) navItemsRef.current[navItems.length + 1] = el }}
@@ -214,6 +255,7 @@ const HeaderGlobal = () => {
                            <div className={styles.bannerTrack}>
                               {[...Array(5)].map((_, i) => (
                                  <div key={i} className={styles.bannerItem}>
+                                    <ArrowUpRight className={styles.bannerIcon} />
                                     <p className={styles.bannerText}>{t.header.letsTalk}</p>
                                  </div>
                               ))}
@@ -221,6 +263,7 @@ const HeaderGlobal = () => {
                            <div className={styles.bannerTrack} aria-hidden="true">
                               {[...Array(5)].map((_, i) => (
                                  <div key={i} className={styles.bannerItem}>
+                                    <ArrowUpRight className={styles.bannerIcon} />
                                     <p className={styles.bannerText}>{t.header.letsTalk}</p>
                                  </div>
                               ))}

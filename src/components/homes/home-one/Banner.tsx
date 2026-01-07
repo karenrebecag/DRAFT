@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { ChevronDown } from 'lucide-react';
 import ButtonPrimary from '../../ui/ButtonPrimary';
 import ButtonSecondary from '../../ui/ButtonSecondary';
+import SectionHeading from '../../ui/SectionHeading';
 import styles from './Banner.module.scss';
 
 interface BannerProps {
@@ -128,7 +129,6 @@ const Banner = ({ onLoaded, isLoading = false }: BannerProps) => {
                   transition: 'opacity 0.8s ease-in-out',
                }}
             />
-            <div className={styles.overlay} />
 
             {/* Hero Content - Only visible after loading */}
             <div
@@ -140,16 +140,17 @@ const Banner = ({ onLoaded, isLoading = false }: BannerProps) => {
                }}
             >
                <div className={styles.heroInner}>
-                  {/* Main Title */}
-                  <h1 className={styles.title}>
-                     <span className="arapey-heading-italic text-white block">Where High Design Meets</span>
-                     <span className="poppins-heading-light text-white block">High Performance</span>
-                  </h1>
-
-                  {/* Description */}
-                  <p className="poppins-body-light text-[#999999] text-center max-w-[800px] m-0">
-                     A premier development studio specializing in high-end UI/UX, motion graphics, and modern tech stacks for global innovators.
-                  </p>
+                  {/* Main Title + Description */}
+                  <SectionHeading
+                     as="h1"
+                     titleLine1="Where High Design Meets"
+                     titleLine1Style="arapey"
+                     titleLine2="High Performance"
+                     titleLine2Style="poppins"
+                     description="A premier development studio specializing in high-end UI/UX, motion graphics, and modern tech stacks for global innovators."
+                     descriptionMaxWidth="800px"
+                     descriptionColor="#999999"
+                  />
 
                   {/* CTA Buttons */}
                   <div className={styles.ctaGroup}>

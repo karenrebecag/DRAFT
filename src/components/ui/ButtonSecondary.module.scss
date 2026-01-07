@@ -1,42 +1,22 @@
-/* Button Secondary - Glassy transparent button */
+/* Button Secondary - Glassy transparent button with character stagger animation */
 .button {
+   color: #fff;
+   cursor: pointer;
+   border-radius: 100px;
    display: inline-flex;
-   align-items: center;
    justify-content: center;
+   align-items: center;
    gap: 8px;
    padding: 12px 24px;
-   background: linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
-   border-radius: 100px;
-   border: 1px solid rgba(255, 255, 255, 0.1);
    font-family: 'Poppins', sans-serif;
    font-weight: 500;
    font-size: 14px;
    line-height: 1;
    text-transform: uppercase;
    letter-spacing: 0.02em;
-   color: #fff;
    text-decoration: none;
-   cursor: pointer;
+   position: relative;
    white-space: nowrap;
-   backdrop-filter: blur(8px);
-   -webkit-backdrop-filter: blur(8px);
-   transition:
-      background 0.25s ease,
-      transform 0.25s ease,
-      border-color 0.25s ease,
-      box-shadow 0.25s ease;
-
-   &:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.10) 100%);
-      border-color: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-   }
-
-   &:active {
-      transform: translateY(0);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-   }
 
    /* Focus visible for keyboard navigation - WCAG AA */
    &:focus-visible {
@@ -47,16 +27,60 @@
    &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
    }
 }
 
+/* Background layer - glassy */
+.bg {
+   background: linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   border-radius: 100px;
+   position: absolute;
+   inset: 0;
+   backdrop-filter: blur(8px);
+   -webkit-backdrop-filter: blur(8px);
+   transition:
+      inset 0.6s cubic-bezier(0.625, 0.05, 0, 1),
+      background 0.6s cubic-bezier(0.625, 0.05, 0, 1),
+      border-color 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+
+   .button:hover & {
+      inset: 3px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.10) 100%);
+      border-color: rgba(255, 255, 255, 0.2);
+   }
+}
+
+/* Text with character animation */
+.text {
+   white-space: nowrap;
+   line-height: 1.3;
+   overflow: hidden;
+   position: relative;
+   display: inline-block;
+   z-index: 1;
+
+   :global(span) {
+      display: inline-block;
+      position: relative;
+      text-shadow: 0 1.3em currentColor;
+      transform: translateY(0) rotate(0.001deg);
+      transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+   }
+
+   .button:hover & :global(span) {
+      transform: translateY(-1.3em) rotate(0.001deg);
+   }
+}
+
+/* Icon */
 .icon {
    width: 20px;
    height: 20px;
    flex-shrink: 0;
-   transition: transform 0.25s ease;
+   position: relative;
+   z-index: 1;
+   transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
 
    .button:hover & {
       transform: translate(2px, -2px);

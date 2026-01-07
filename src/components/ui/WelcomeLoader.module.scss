@@ -21,29 +21,29 @@
 }
 
 .loadingWords {
-   gap: 1.5em;
+   gap: 1em;
    align-items: center;
    display: flex;
    opacity: 0;
 }
 
 .loadingWordsDot {
-   background-color: #a3e635; // Lime accent to match brand
+   background-color: var(--color-primary, #ecf6d2); // Brand accent
    border-radius: 50%;
-   width: 0.65em;
-   height: 0.65em;
+   width: 0.5em;
+   height: 0.5em;
    animation: pulse 1.5s ease-in-out infinite;
 }
 
 .loadingWordsWord {
-   font-family: var(--td-ff-body), system-ui, sans-serif;
-   font-size: clamp(2.5rem, 8vw, 5rem);
-   font-weight: 500;
+   font-family: var(--font-family-poppins, 'Poppins'), system-ui, sans-serif;
+   font-size: clamp(1.75rem, 4vw, 2.5rem); // 28-40px - more refined
+   font-weight: var(--font-weight-medium, 500);
    line-height: 1;
    margin: 0;
-   letter-spacing: -0.02em;
+   letter-spacing: -0.01em;
    color: #fff;
-   min-width: 5ch; // Prevent layout shift
+   min-width: 5ch;
 }
 
 @keyframes pulse {
@@ -61,11 +61,11 @@
 // Responsive adjustments
 @media screen and (max-width: 767px) {
    .loadingWords {
-      gap: 1em;
+      gap: 0.75em;
    }
 
    .loadingWordsDot {
-      width: 0.5em;
-      height: 0.5em;
+      width: 0.4em;
+      height: 0.4em;
    }
 }

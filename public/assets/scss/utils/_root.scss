@@ -189,31 +189,32 @@
     // =============================================
 
     // --- Arapey Display Sizes ---
-    // Based on CSS_STANDARDS.md typography scale (max ~48-50px)
-    --font-size-arapey-heading: clamp(28px, 3.5vw, 50px);
+    // Based on CSS_STANDARDS.md typography scale
+    // Heading: max 48px (--font-size-5xl), Card: max 30px (--font-size-3xl)
+    --font-size-arapey-heading: clamp(30px, 3vw, 48px);
     --line-height-arapey-heading: 1.1;
 
-    --font-size-arapey-card: clamp(24px, 3vw, 42px);
-    --line-height-arapey-card: 1.1;
+    --font-size-arapey-card: clamp(18px, 1.5vw, 24px);
+    --line-height-arapey-card: 1.15;
 
     // --- Poppins Display Sizes ---
-    // Slightly smaller than Arapey for hierarchy
-    --font-size-poppins-heading: clamp(24px, 3vw, 44px);
+    // Heading: max 54px (between --font-size-5xl and --font-size-6xl)
+    --font-size-poppins-heading: clamp(36px, 2.5vw, 54px);
     --line-height-poppins-heading: 1.15;
 
     // --- Poppins Body Sizes ---
-    // Based on CSS_STANDARDS: --font-size-lg: 18px
-    --font-size-poppins-body: clamp(14px, 1.1vw, 18px);
+    // Body: refined smaller sizes for luxury feel
+    --font-size-poppins-body: clamp(12px, 0.75vw, 14px);
     --line-height-poppins-body: 1.6;
 
-    --font-size-poppins-body-sm: clamp(16px, 1.5vw, 24px);
-    --line-height-poppins-body-sm: clamp(24px, 2.2vw, 35px);
+    --font-size-poppins-body-sm: clamp(10px, 0.7vw, 12px);
+    --line-height-poppins-body-sm: 1.5;
 
     // --- Poppins UI Sizes ---
-    --font-size-poppins-button: clamp(16px, 1.5vw, 24px);
-    --font-size-poppins-tag: clamp(14px, 1.25vw, 20px);
-    --font-size-poppins-small: clamp(12px, 1vw, 16px);
-    --line-height-poppins-small: clamp(18px, 1.5vw, 25px);
+    --font-size-poppins-button: clamp(11px, 0.75vw, 13px);
+    --font-size-poppins-tag: clamp(10px, 0.7vw, 12px);
+    --font-size-poppins-small: clamp(9px, 0.65vw, 11px);
+    --line-height-poppins-small: 1.4;
 
     // --- Poppins Pricing Sizes ---
     --font-size-poppins-pricing: clamp(36px, 4vw, 64px);
@@ -228,7 +229,7 @@
     --line-height-poppins-card-desc: clamp(22px, 2vw, 30px);
 
     // --- Section Tags & Labels ---
-    --font-size-section-tag: clamp(14px, 1.25vw, 18px);
+    --font-size-section-tag: clamp(10px, 0.75vw, 12px);
     --line-height-section-tag: 1.4;
 
     // Font Sizes (Desktop-first scale)

@@ -1,0 +1,67 @@
+/* =============================================
+   Team Section - Light background strip
+   ============================================= */
+
+.section {
+  position: relative;
+  padding: 160px 0;
+  background: #FAFAFA;
+  overflow: hidden;
+
+  @media (max-width: 1200px) {
+    padding: 120px 0;
+  }
+
+  @media (max-width: 768px) {
+    padding: 80px 0;
+  }
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 70px;
+
+  @media (max-width: 1200px) {
+    padding: 0 60px;
+    gap: 50px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 24px;
+    gap: 40px;
+  }
+}
+
+/* Team Cards Placeholder */
+.teamCardsPlaceholder {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+
+  @media (max-width: 768px) {
+    min-height: 150px;
+    flex-direction: column;
+  }
+}
+
+/* Override SectionHeading colors for light background */
+.section {
+  :global(.poppins-heading-light),
+  :global(.arapey-heading-italic) {
+    color: var(--bgBlue, #060314) !important;
+  }
+
+  :global(.poppins-section-tag) {
+    color: #808080 !important;
+  }
+}

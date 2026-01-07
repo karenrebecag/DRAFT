@@ -7,6 +7,8 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  max-height:800px;
+  overflow: hidden;
   padding: 0 0 60px 0; // Sin padding superior
 
   // Gradient fade on sides
@@ -41,7 +43,7 @@
   align-items: center;
   gap: 16px;
   margin-bottom: 0; // Sin margen inferior
-  padding: 0 24px;
+  padding: 0 24px 70px 24px ;
   text-align: center;
 }
 
@@ -84,7 +86,7 @@
 }
 
 .relativeObjectBefore {
-  padding-top: 62%; // Reduced from 95% - keeps curve, less empty space below
+  padding-top: 55%; // Compact for smaller cards
 }
 
 /* Collection - absolute positioned over relative object */
@@ -118,7 +120,7 @@
 /* Individual card item - positioned absolutely for stacking */
 .item {
   position: absolute;
-  width: 500px;
+  width: clamp(260px, 28vw, 380px);
   will-change: transform, opacity;
   pointer-events: auto;
 }
@@ -169,76 +171,59 @@
 
 /* ===========================================
    Responsive Breakpoints
+   Note: Card width uses clamp() for fluid scaling
    =========================================== */
-@media (max-width: 1280px) {
-  .sectionTitle {
-    font-size: 56px;
-  }
-
-  .item {
-    width: 460px;
-  }
-}
-
 @media (max-width: 992px) {
   .servicesSection {
-    padding: 0 0 50px 0;
-  }
-
-  .sectionTitle {
-    font-size: 48px;
-  }
-
-  .item {
-    width: 420px;
+    padding: 0 0 40px 0;
   }
 
   .relativeObjectBefore {
-    padding-top: 72%;
+    padding-top: 65%;
   }
 }
 
 @media (max-width: 768px) {
   .servicesSection {
-    padding: 0 0 40px 0;
-  }
-
-  .sectionTitle {
-    font-size: 40px;
-  }
-
-  .item {
-    width: 380px;
+    padding: 0 0 32px 0;
   }
 
   .relativeObjectBefore {
-    padding-top: 85%;
+    padding-top: 80%;
   }
 }
 
 @media (max-width: 480px) {
   .servicesSection {
-    padding: 0 0 32px 0;
-  }
-
-  .sectionHeader {
-    gap: 12px;
-  }
-
-  .tagline {
-    font-size: 12px;
-  }
-
-  .sectionTitle {
-    font-size: 32px;
-  }
-
-  .item {
-    width: 340px;
+    padding: 0 0 24px 0;
   }
 
   .relativeObjectBefore {
-    padding-top: 100%;
+    padding-top: 95%;
+  }
+}
+
+/* ===========================================
+   CTA Button Wrapper
+   =========================================== */
+.ctaWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  position: relative;
+  z-index: 20;
+}
+
+@media (max-width: 768px) {
+  .ctaWrapper {
+    margin-top: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ctaWrapper {
+    margin-top: 24px;
   }
 }
 

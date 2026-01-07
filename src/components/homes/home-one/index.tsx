@@ -2,14 +2,11 @@ import { useState, useCallback, useEffect } from "react"
 import Banner from "./Banner"
 import About from "./About"
 import Methodology from "./Methodology"
-import ServicesStrip from "./ServicesStrip"
-import Pricing from "./Pricing"
-import PortfolioTwo from "./PortfolioTwo"
-import Process from "./Process"
-import Testimonial from "./Testimonial"
+import Portfolio from "./Portfolio"
+import OurData from "./OurData"
+import Team from "./Team"
 import FeatureTwo from "./FeatureTwo"
 import BlogTwo from "./BlogTwo"
-import Faq from "./Faq"
 import ContactStrip from "./ContactStrip"
 import HeaderGlobal from "../../../layouts/headers/HeaderGlobal"
 import FooterGlobal from "../../../layouts/footers/FooterGlobal"
@@ -102,15 +99,15 @@ const HomeOne = () => {
                   {/* Methodology Section */}
                   <Methodology />
 
-                  {/* Original sections */}
-                  <PortfolioTwo />
-                  <Process />
-                  <Testimonial />
+                  {/* Portfolio Section */}
+                  <Portfolio />
+                  {/* Our Data Section */}
+                  <OurData />
+                  {/* Team Section */}
+                  <Team />
                   <FeatureTwo />
-                  <Pricing />
                   <BlogTwo />
                   <ContactStrip />
-                  <Faq />
                </main>
                {/* Footer with parallax effect */}
                <FooterGlobal />

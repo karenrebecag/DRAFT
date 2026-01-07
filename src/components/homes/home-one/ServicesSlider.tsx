@@ -1,22 +1,30 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import gsap from 'gsap';
 import { Observer } from 'gsap/Observer';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CrystalCard from '../../ui/CrystalCard';
+import ButtonPrimary from '../../ui/ButtonPrimary';
 import styles from './ServicesSlider.module.scss';
 
 // Register GSAP plugins
-gsap.registerPlugin(Observer);
+gsap.registerPlugin(Observer, ScrollTrigger);
 
 // Curved Marquee Configuration
 const MARQUEE_SPEED = 80; // Pixels per second
 const DRAG_MULTIPLIER = 35; // Max speed multiplier when dragging
 const DRAG_SENSITIVITY = 0.006; // Lower = smoother drag feel
 
-// Arc/Curve Configuration
-const ARC_WIDTH = 1800; // Total width of the arc path
-const ARC_HEIGHT = 280; // How much the arc curves down at edges (increased for visible fan effect)
-const CARD_SPACING = 520; // Distance between card centers along the arc
-const MAX_ROTATION = 25; // Max rotation at edges (degrees)
+// Arc/Curve Configuration - Desktop defaults
+const ARC_WIDTH_DESKTOP = 1400;
+const ARC_HEIGHT_DESKTOP = 220;
+const CARD_SPACING_DESKTOP = 420;
+const MAX_ROTATION_DESKTOP = 22;
+
+// Arc/Curve Configuration - Mobile (tighter spacing)
+const ARC_WIDTH_MOBILE = 900;
+const ARC_HEIGHT_MOBILE = 140;
+const CARD_SPACING_MOBILE = 280;
+const MAX_ROTATION_MOBILE = 18;
 
 // Services data - 5 items with unique Spline models
 const services = [
@@ -59,31 +67,41 @@ const services = [
 
 const ServicesSlider = () => {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const progressRef = useRef({ value: 0 });
   const marqueeRef = useRef<gsap.core.Tween | null>(null);
   const timeScaleRef = useRef({ value: 1 });
   const observerRef = useRef<Observer | null>(null);
+  const [hasEntered, setHasEntered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Responsive arc configuration
+  const ARC_WIDTH = isMobile ? ARC_WIDTH_MOBILE : ARC_WIDTH_DESKTOP;
+  const ARC_HEIGHT = isMobile ? ARC_HEIGHT_MOBILE : ARC_HEIGHT_DESKTOP;
+  const CARD_SPACING = isMobile ? CARD_SPACING_MOBILE : CARD_SPACING_DESKTOP;
+  const MAX_ROTATION = isMobile ? MAX_ROTATION_MOBILE : MAX_ROTATION_DESKTOP;
 
   const total = services.length;
-  const totalLength = total * CARD_SPACING; // Total loop length
+  const totalLength = total * CARD_SPACING;
 
-  // Calculate position on arc curve - simplified direct calculation
-  // X is the horizontal position, Y and rotation derived from X
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Calculate position on arc curve
   const getArcPosition = useCallback((xPos: number) => {
-    // Normalize X to -1 to 1 range (center = 0)
     const normalizedX = xPos / (ARC_WIDTH / 2);
     const clampedX = Math.max(-1, Math.min(1, normalizedX));
-
-    // Parabolic Y: center at 0, edges drop down by ARC_HEIGHT
     const y = ARC_HEIGHT * clampedX * clampedX;
-
-    // Rotation: proportional to X position (tilt outward at edges)
     const rotation = clampedX * MAX_ROTATION;
-
     return { x: xPos, y, rotation };
-  }, []);
+  }, [ARC_WIDTH, ARC_HEIGHT, MAX_ROTATION]);
 
   // Update all cards based on current progress
   const updateCards = useCallback((progress: number) => {
@@ -97,7 +115,6 @@ const ServicesSlider = () => {
       const rawPosition = (cardOffset - progress + totalLength * 10) % totalLength;
 
       // Convert to X position centered on screen (0 = center)
-      // Position wraps from 0 to totalLength, center should be at totalLength/2
       let xPos = rawPosition - (totalLength / 2);
 
       // Wrap around for seamless loop
@@ -139,7 +156,7 @@ const ServicesSlider = () => {
       else if (distanceFromCenter < 0.7) status = xPos > 0 ? '3-after' : '3-before';
       card.setAttribute('data-flick-cards-item-status', status);
     });
-  }, [total, totalLength, getArcPosition]);
+  }, [total, totalLength, getArcPosition, CARD_SPACING, ARC_WIDTH]);
 
   // Apply current timeScale to marquee
   const applyTimeScale = useCallback(() => {
@@ -148,16 +165,71 @@ const ServicesSlider = () => {
     }
   }, []);
 
-  // Initialize on mount
+  // Scroll-triggered entrance animation for individual cards
+  useEffect(() => {
+    const section = sectionRef.current;
+    const cards = cardsRef.current;
+    if (!section || !cards.length || hasEntered) return;
+
+    // Position cards in their final arc positions first
+    updateCards(0);
+
+    // Store the final opacity values that the marquee calculated
+    const finalOpacities: number[] = [];
+    cards.forEach((card, i) => {
+      if (card) {
+        // Get the computed opacity from updateCards
+        const computedStyle = card.style.opacity;
+        finalOpacities[i] = parseFloat(computedStyle) || 1;
+
+        // Now hide cards for entrance animation
+        gsap.set(card, {
+          yPercent: 30,
+          opacity: 0,
+          visibility: 'visible',
+        });
+      }
+    });
+
+    const trigger = ScrollTrigger.create({
+      trigger: section,
+      start: 'top 75%',
+      once: true,
+      onEnter: () => {
+        // Staggered entrance animation - slide up from bottom
+        const tl = gsap.timeline({
+          onComplete: () => {
+            setHasEntered(true);
+          },
+        });
+
+        cards.forEach((card, index) => {
+          if (!card) return;
+          tl.to(
+            card,
+            {
+              yPercent: 0,
+              opacity: finalOpacities[index], // Use the correct final opacity
+              duration: 0.8,
+              ease: 'power4.out',
+            },
+            index * 0.1 // Stagger timing
+          );
+        });
+      },
+    });
+
+    return () => trigger.kill();
+  }, [hasEntered, updateCards]);
+
+  // Initialize marquee only after entrance animation
   useEffect(() => {
     const slider = sliderRef.current;
-    if (!slider) return;
+    if (!slider || !hasEntered) return;
 
     // Calculate duration based on speed
     const duration = totalLength / MARQUEE_SPEED;
 
-    // Initial card positions
-    updateCards(0);
     slider.setAttribute('data-flick-drag-status', 'grab');
 
     // Create the main marquee animation - animates progress through total loop length
@@ -211,10 +283,10 @@ const ServicesSlider = () => {
       if (marqueeRef.current) marqueeRef.current.kill();
       if (observerRef.current) observerRef.current.kill();
     };
-  }, [totalLength, updateCards, applyTimeScale]);
+  }, [hasEntered, totalLength, updateCards, applyTimeScale]);
 
   return (
-    <section className={styles.servicesSection}>
+    <section ref={sectionRef} className={styles.servicesSection}>
       <div
         ref={sliderRef}
         data-flick-cards-init=""
@@ -256,6 +328,13 @@ const ServicesSlider = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* CTA Button */}
+      <div className={styles.ctaWrapper}>
+        <ButtonPrimary to="/services">
+          Read More
+        </ButtonPrimary>
       </div>
     </section>
   );

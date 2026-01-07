@@ -1,0 +1,78 @@
+/* =============================================
+   SectionHeading - Reusable section header component
+   Used across Banner, About, Methodology strips
+   ============================================= */
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  width: 100%;
+
+
+}
+
+/* Section Tag (e.g. "02 — About Us") */
+.sectionTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.tagLine {
+  width: 24px;
+  height: 1px;
+  background: #808080;
+}
+
+/* Title container */
+.title {
+  margin: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Description */
+.description {
+  margin: 0;
+  text-align: center;
+}
+
+/* Alignment variants */
+.alignLeft {
+  align-items: flex-start;
+  text-align: left;
+
+  .sectionTag {
+    justify-content: flex-start;
+  }
+
+  .title {
+    text-align: left;
+  }
+
+  .description {
+    text-align: left;
+  }
+}
+
+.alignRight {
+  align-items: flex-end;
+  text-align: right;
+
+  .sectionTag {
+    justify-content: flex-end;
+  }
+
+  .title {
+    text-align: right;
+  }
+
+  .description {
+    text-align: right;
+  }
+}

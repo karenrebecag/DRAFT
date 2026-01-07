@@ -2,8 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import ServicesSlider from './ServicesSlider'
-import SectionHeading from '../../ui/SectionHeading'
-import styles from './About.module.scss'
+import styles from './AboutSplineStrip.module.scss'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -14,7 +13,7 @@ const STATS = [
   { number: 24, suffix: '', label: 'Team Members' },
 ]
 
-const About = () => {
+const AboutSplineStrip = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const appRef = useRef<import('@splinetool/runtime').Application | null>(null)
   const statsRef = useRef<HTMLDivElement>(null)
@@ -117,17 +116,23 @@ const About = () => {
         <div className={styles.content}>
           {/* Hero Section */}
           <div className={styles.hero}>
-            <SectionHeading
-              sectionNumber="02"
-              sectionLabel="About Us"
-              titleLine1="Engineering Digital Excellence"
-              titleLine1Style="poppins"
-              titleLine2="Designing Human Experiences."
-              titleLine2Style="arapey"
-              description="Based in Mexico City and operating worldwide, we are a specialized studio dedicated to architecting high-performance digital products. From bespoke MVPs to massive, scalable ecosystems, we combine rigorous engineering with cutting-edge aesthetics."
-              descriptionMaxWidth="1240px"
-              descriptionColor="#CACACA"
-            />
+            {/* Section Tag: 02 — About Us */}
+            <div className={styles.sectionTag}>
+              <span className="poppins-section-tag text-[#808080]">02</span>
+              <div className={styles.tagLine} />
+              <span className="poppins-section-tag text-[#808080]">About Us</span>
+            </div>
+
+            {/* Main Title */}
+            <h2 className={styles.title}>
+              <span className="poppins-heading-light text-white block">Engineering Digital Excellence</span>
+              <span className="arapey-heading-italic text-white block">Designing Human Experiences.</span>
+            </h2>
+
+            {/* Description */}
+            <p className="poppins-body-light text-[#CACACA] text-center max-w-[1240px] m-0">
+               digital products. From bespoke MVPs to massive, scalable ecosystems, we combine rigorous engineering with cutting-edge aesthetics.
+            </p>
           </div>
 
           {/* Curved Services Marquee */}
@@ -139,4 +144,4 @@ const About = () => {
   )
 }
 
-export default About
+export default AboutSplineStrip

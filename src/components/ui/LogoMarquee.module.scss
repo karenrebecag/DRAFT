@@ -1,9 +1,14 @@
 /* Logo Marquee - Scroll direction responsive */
 .logoMarqueeSection {
    width: 100%;
-   padding: 60px 0;
-   background: transparent;
+   background-color: #0a0a0a;
+   padding: 30px 0;
    overflow: hidden;
+
+   &.transparent {
+      background-color: transparent;
+      padding: 0;
+   }
 }
 
 .marquee {
@@ -36,8 +41,8 @@
    align-items: center;
    justify-content: center;
    flex-shrink: 0;
-   width: 80px;
-   height: 40px;
+   width: 60px;
+   height: 30px;
    color: rgba(255, 255, 255, 0.35);
    transition: color 0.3s ease, transform 0.3s ease;
 

@@ -27,6 +27,7 @@ interface LogoMarqueeProps {
   speed?: number;
   scrollSpeed?: number;
   direction?: 'left' | 'right';
+  transparent?: boolean;
 }
 
 const LogoMarquee = ({
@@ -34,6 +35,7 @@ const LogoMarquee = ({
   speed = 30,
   scrollSpeed = 5,
   direction = 'left',
+  transparent = false,
 }: LogoMarqueeProps) => {
   const marqueeRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -133,7 +135,7 @@ const LogoMarquee = ({
   };
 
   return (
-    <section className={`${styles.logoMarqueeSection} ${className}`}>
+    <section className={`${styles.logoMarqueeSection} ${transparent ? styles.transparent : ''} ${className}`}>
       <div
         ref={marqueeRef}
         className={styles.marquee}

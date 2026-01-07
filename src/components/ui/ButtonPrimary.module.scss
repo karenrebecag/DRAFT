@@ -1,38 +1,22 @@
-/* Button Primary - White solid button */
+/* Button Primary - White solid button with character stagger animation */
 .button {
+   color: #000 !important;
+   cursor: pointer;
+   border-radius: 100px;
    display: inline-flex;
-   align-items: center;
    justify-content: center;
+   align-items: center;
    gap: 8px;
    padding: 12px 24px;
-   background: #F3F3F3;
-   border-radius: 100px;
-   border: 1px solid rgba(70, 70, 70, 0.15);
    font-family: 'Poppins', sans-serif;
    font-weight: 500;
    font-size: 14px;
    line-height: 1;
    text-transform: uppercase;
    letter-spacing: 0.02em;
-   color: #000;
    text-decoration: none;
-   cursor: pointer;
+   position: relative;
    white-space: nowrap;
-   transition:
-      background-color 0.25s ease,
-      transform 0.25s ease,
-      box-shadow 0.25s ease;
-
-   &:hover {
-      background: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-   }
-
-   &:active {
-      transform: translateY(0);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-   }
 
    /* Focus visible for keyboard navigation - WCAG AA */
    &:focus-visible {
@@ -43,18 +27,91 @@
    &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
+   }
+
+   &:hover {
+      color: #000 !important;
    }
 }
 
+/* Background layer */
+.bg {
+   background-color: #F3F3F3;
+   border: 1px solid rgba(70, 70, 70, 0.15);
+   border-radius: 100px;
+   position: absolute;
+   inset: 0;
+   transition: inset 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+
+   .button:hover & {
+      inset: 3px;
+   }
+}
+
+/* Text with character animation */
+.text {
+   color: #000 !important;
+   white-space: nowrap;
+   line-height: 1.3;
+   overflow: hidden;
+   position: relative;
+   display: inline-block;
+   z-index: 1;
+
+   :global(span) {
+      color: #000 !important;
+      display: inline-block;
+      position: relative;
+      text-shadow: 0 1.3em #000;
+      transform: translateY(0) rotate(0.001deg);
+      transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+   }
+
+   .button:hover & :global(span) {
+      transform: translateY(-1.3em) rotate(0.001deg);
+   }
+}
+
+/* Icon */
 .icon {
    width: 20px;
    height: 20px;
    flex-shrink: 0;
-   transition: transform 0.25s ease;
+   position: relative;
+   z-index: 1;
+   color: #000 !important;
+   stroke: #000 !important;
+   transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
 
    .button:hover & {
       transform: translate(2px, -2px);
+   }
+}
+
+/* Inverted variant - Dark button with white text */
+.inverted {
+   color: #fff !important;
+
+   &:hover {
+      color: #fff !important;
+   }
+
+   .bg {
+      background-color: #191919;
+      border-color: #464646;
+   }
+
+   .text {
+      color: #fff !important;
+
+      :global(span) {
+         color: #fff !important;
+         text-shadow: 0 1.3em #fff;
+      }
+   }
+
+   .icon {
+      color: #fff !important;
+      stroke: #fff !important;
    }
 }

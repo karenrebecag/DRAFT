@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import MethodologyWorkflow from './MethodologyWorkflow'
+import SectionHeading from '../../ui/SectionHeading'
 import styles from './Methodology.module.scss'
 
 const Methodology = () => {
@@ -78,23 +79,17 @@ const Methodology = () => {
         <div className={styles.content}>
           {/* Hero Section */}
           <div className={styles.hero}>
-            {/* Section Tag: 03 — Our Methodology */}
-            <div className={styles.sectionTag}>
-              <span className="poppins-section-tag text-[#808080]">03</span>
-              <div className={styles.tagLine} />
-              <span className="poppins-section-tag text-[#808080]">Our Methodology</span>
-            </div>
-
-            {/* Main Title */}
-            <h2 className={styles.title}>
-              <span className="poppins-heading-light text-white block">A rigorous approach to</span>
-              <span className="arapey-heading-italic text-white block">Digital Engineering</span>
-            </h2>
-
-            {/* Description */}
-            <p className="poppins-body-light text-[#CACACA] text-center max-w-[1240px] m-0">
-              Select a specialized service to explore our dedicated workflow.
-            </p>
+            <SectionHeading
+              sectionNumber="03"
+              sectionLabel="Our Methodology"
+              titleLine1="A rigorous approach to"
+              titleLine1Style="poppins"
+              titleLine2="Digital Engineering"
+              titleLine2Style="arapey"
+              description="Select a specialized service to explore our dedicated workflow."
+              descriptionMaxWidth="1240px"
+              descriptionColor="#CACACA"
+            />
           </div>
 
           {/* Spline Sphere Element - Large & Responsive */}

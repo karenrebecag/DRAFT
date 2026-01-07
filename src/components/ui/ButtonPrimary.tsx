@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
+import { AnimatedText } from '@/hooks/useCharacterStagger'
 import styles from './ButtonPrimary.module.scss'
 
 interface ButtonPrimaryProps {
-   children: React.ReactNode
+   children: string
    href?: string
    to?: string
    onClick?: () => void
    className?: string
    type?: 'button' | 'submit' | 'reset'
    disabled?: boolean
-   icon?: React.ReactNode
    showIcon?: boolean
+   variant?: 'default' | 'inverted'
 }
 
 const ButtonPrimary = ({
@@ -22,21 +23,20 @@ const ButtonPrimary = ({
    className = '',
    type = 'button',
    disabled = false,
-   icon,
    showIcon = true,
+   variant = 'default',
 }: ButtonPrimaryProps) => {
-   const iconElement = showIcon && (
-      icon || <ArrowUpRight className={styles.icon} strokeWidth={2} />
-   )
+   const variantClass = variant === 'inverted' ? styles.inverted : ''
 
    const content = (
       <>
-         <span>{children}</span>
-         {iconElement}
+         <div className={styles.bg} />
+         <AnimatedText className={styles.text}>{children}</AnimatedText>
+         {showIcon && <ArrowUpRight className={styles.icon} strokeWidth={2} />}
       </>
    )
 
-   const buttonClass = `${styles.button} ${className}`.trim()
+   const buttonClass = `${styles.button} ${variantClass} ${className}`.trim()
 
    // External link
    if (href) {
@@ -46,6 +46,7 @@ const ButtonPrimary = ({
             className={buttonClass}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={children}
          >
             {content}
          </a>
@@ -55,7 +56,7 @@ const ButtonPrimary = ({
    // Internal link (React Router)
    if (to) {
       return (
-         <Link to={to} className={buttonClass} onClick={onClick}>
+         <Link to={to} className={buttonClass} onClick={onClick} aria-label={children}>
             {content}
          </Link>
       )
@@ -68,6 +69,7 @@ const ButtonPrimary = ({
          className={buttonClass}
          onClick={onClick}
          disabled={disabled}
+         aria-label={children}
       >
          {content}
       </button>

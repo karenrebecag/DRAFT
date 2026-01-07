@@ -4,6 +4,7 @@ import useLenisSmoother from "../hooks/useLenisSmoother";
 import useImageRevealAnimation from "../hooks/useImageRevealAnimation";
 import useSplitTextTitleAnim from "../hooks/useSplitTextTitleAnim";
 import useSplitTextBgAnim from "../hooks/useSplitTextBgAnim";
+import useMaskedTextReveal from "../hooks/useMaskedTextReveal";
 import ScrollToTop from "../components/common/ScrollToTop";
 import CustomCursor from "../components/common/CustomCursor";
 import "lenis/dist/lenis.css";
@@ -18,6 +19,7 @@ const Wrapper = ({ children }: WrapperProps) => {
   useImageRevealAnimation();
   useSplitTextTitleAnim();
   useSplitTextBgAnim();
+  useMaskedTextReveal();
 
   return (
     <>
