@@ -58,3 +58,18 @@ const menu_data: MenuItem[] = [
 ];
 
 export default menu_data;
+
+// Navigation items for HeaderGlobal (with i18n support)
+export interface NavItem {
+    id: number;
+    titleKey: string;
+    link: string;
+}
+
+export const headerNavItems: NavItem[] = [
+    { id: 1, titleKey: 'home', link: '/' },
+    { id: 2, titleKey: 'aboutUs', link: '/about' },
+    { id: 3, titleKey: 'services', link: '/service' },
+    { id: 4, titleKey: 'portfolio', link: '/portfolio' },
+    { id: 5, titleKey: 'blog', link: '/blog' },
+];

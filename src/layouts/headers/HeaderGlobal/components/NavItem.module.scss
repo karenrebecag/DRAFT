@@ -1,0 +1,105 @@
+/* NavItem - Single navigation link */
+
+.item {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: clip;
+}
+
+.link {
+  color: var(--header-text-muted, #888888);
+  text-decoration: none;
+  display: block;
+  position: relative;
+  transition: color var(--transition-fast, 150ms ease);
+  padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+
+  @media (min-width: 768px) {
+    padding: var(--spacing-3, 12px) 18px;
+  }
+
+  @media (min-width: 998px) {
+    padding: 14px var(--spacing-5, 20px);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 1px;
+    background: var(--header-border, rgba(255, 255, 255, 0.1));
+    transform: scaleX(0);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: inherit;
+    left: var(--spacing-4, 16px);
+    right: var(--spacing-4, 16px);
+
+    @media (min-width: 998px) {
+      left: var(--spacing-5, 20px);
+      right: var(--spacing-5, 20px);
+    }
+  }
+
+  &:hover {
+    color: var(--header-accent, #ecf6d2);
+  }
+
+  &.active {
+    color: var(--header-accent, #ecf6d2);
+
+    &::after {
+      background: var(--header-accent, #ecf6d2);
+    }
+  }
+}
+
+[data-navigation-status='active'] .link::after {
+  transform: scaleX(1);
+}
+
+/* Text with character stagger */
+.text {
+  font-family: var(--font-family-poppins, 'Poppins'), sans-serif;
+  font-weight: var(--font-weight-regular, 400);
+  margin: 0;
+  transform: translateY(120%);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: inherit;
+  color: #fff !important;
+  white-space: nowrap;
+  line-height: 1.3;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  font-size: var(--font-size-xs, 12px);
+
+  @media (min-width: 998px) {
+    font-size: var(--font-size-sm, 13px);
+  }
+
+  :global(span) {
+    color: #fff !important;
+    display: inline-block;
+    position: relative;
+    text-shadow: 0 1.3em #fff;
+    transform: translateY(0) rotate(0.001deg);
+    transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+  }
+}
+
+.link:hover .text :global(span) {
+  transform: translateY(-1.3em) rotate(0.001deg);
+}
+
+[data-navigation-status='active'] .text {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link,
+  .text,
+  .text :global(span) {
+    transition: none;
+  }
+}

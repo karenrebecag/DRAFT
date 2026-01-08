@@ -1,10 +1,23 @@
 import SectionHeading from '../../ui/SectionHeading'
 import ButtonPrimary from '../../ui/ButtonPrimary'
+import MomentumCard from '../../ui/MomentumCard'
+import VerifiedBadge from '../../ui/VerifiedBadge'
+import useMomentumHover from '../../../hooks/useMomentumHover'
+import team_data from '../../../data/TeamData'
 import styles from './Team.module.scss'
 
+// Filter team members for home_1
+const teamMembers = team_data.filter((member) => member.page === 'home_1')
+
 const Team = () => {
+  const { containerRef, handleHover } = useMomentumHover()
+
   return (
-    <section className={styles.section}>
+    <section
+      ref={containerRef as React.RefObject<HTMLElement>}
+      className={styles.section}
+      data-momentum-hover-init
+    >
       <div className={styles.container}>
         {/* Header */}
         <SectionHeading
@@ -20,9 +33,27 @@ const Team = () => {
           align="center"
         />
 
-        {/* Team Cards Placeholder - Special component will be created later */}
-        <div className={styles.teamCardsPlaceholder}>
-          {/* Team member cards will be implemented as a special component */}
+        {/* Team Cards */}
+        <div className={styles.teamCollection}>
+          <div className={styles.teamList}>
+            {teamMembers.map((member) => (
+              <div key={member.id} className={styles.teamItem}>
+                <MomentumCard
+                  image={member.thumb}
+                  imageAlt={`${member.name}, ${member.designation}`}
+                  onHover={handleHover}
+                >
+                  <div className={styles.cardName}>
+                    <h3 className={styles.cardH3}>{member.name}</h3>
+                    {member.verified && (
+                      <VerifiedBadge className={styles.checkSvg} />
+                    )}
+                  </div>
+                  <p className={styles.cardJobTitle}>{member.designation}</p>
+                </MomentumCard>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* CTA Button */}

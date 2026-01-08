@@ -39,21 +39,6 @@
   }
 }
 
-/* Team Cards Placeholder */
-.teamCardsPlaceholder {
-  width: 100%;
-  min-height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-
-  @media (max-width: 768px) {
-    min-height: 150px;
-    flex-direction: column;
-  }
-}
-
 /* Override SectionHeading colors for light background */
 .section {
   :global(.poppins-heading-light),
@@ -64,4 +49,77 @@
   :global(.poppins-section-tag) {
     color: #808080 !important;
   }
+}
+
+/* =============================================
+   Team Cards Layout
+   ============================================= */
+
+.teamCollection {
+  flex: 1;
+  justify-content: center;
+  max-width: 80em;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 100%;
+}
+
+.teamList {
+  grid-column-gap: 2em;
+  grid-row-gap: 2em;
+  flex-flow: row wrap;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.teamItem {
+  width: calc(25% - 0.25px - 1.5em);
+  position: relative;
+
+  @media screen and (max-width: 991px) {
+    width: calc(50% - 0.5px - 1em);
+  }
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+/* =============================================
+   Card Content Styles
+   ============================================= */
+
+.cardName {
+  grid-column-gap: 0.25em;
+  grid-row-gap: 0.25em;
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+}
+
+.checkSvg {
+  width: 1.5em;
+  flex-shrink: 0;
+}
+
+.cardH3 {
+  margin-top: 0;
+  margin-bottom: 0.0625em;
+  font-size: 1.5em;
+  font-weight: 500;
+  line-height: 1;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+}
+
+.cardJobTitle {
+  opacity: 0.85;
+  margin-bottom: 0;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
 }

@@ -1,0 +1,87 @@
+/* MenuToggle - Hamburger/X button */
+
+.toggle {
+  pointer-events: auto;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  position: relative;
+  flex-shrink: 0;
+  transition: opacity var(--transition-fast, 150ms ease);
+  width: 36px;
+  height: 36px;
+
+  @media (min-width: 998px) {
+    width: 40px;
+    height: 40px;
+  }
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--header-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm, 4px);
+  }
+}
+
+.bar {
+  background-color: var(--header-text, #ededed);
+  position: absolute;
+  width: 18px;
+  height: 1px;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:first-child {
+    transform: translateY(-4px) rotate(0.001deg);
+  }
+
+  &:nth-child(2) {
+    transform: translateY(4px) rotate(0.001deg);
+  }
+
+  @media (min-width: 998px) {
+    width: 20px;
+
+    &:first-child {
+      transform: translateY(-5px) rotate(0.001deg);
+    }
+
+    &:nth-child(2) {
+      transform: translateY(5px) rotate(0.001deg);
+    }
+  }
+}
+
+/* Hover expand - Desktop only */
+@media (min-width: 998px) {
+  .toggle:hover .bar:first-child {
+    transform: translateY(-6px) rotate(0.001deg);
+  }
+
+  .toggle:hover .bar:nth-child(2) {
+    transform: translateY(6px) rotate(0.001deg);
+  }
+}
+
+/* Active state (X shape) - controlled by parent data attribute */
+[data-navigation-status='active'] .bar:first-child {
+  transform: translateY(0) rotate(45deg);
+}
+
+[data-navigation-status='active'] .bar:nth-child(2) {
+  transform: translateY(0) rotate(-45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .bar {
+    transition: none;
+  }
+}

@@ -1,0 +1,88 @@
+/* LanguageSelector - Language switch buttons */
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-family: var(--font-family-poppins, 'Poppins'), sans-serif;
+  font-weight: var(--font-weight-medium, 500);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: var(--spacing-2, 8px);
+  display: block;
+
+  @media (min-width: 998px) {
+    font-size: 10px;
+  }
+}
+
+.buttons {
+  display: flex;
+  gap: var(--spacing-2, 8px);
+}
+
+.btn {
+  font-family: var(--font-family-poppins, 'Poppins'), sans-serif;
+  font-weight: var(--font-weight-medium, 500);
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full, 100px);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+  font-size: 10px;
+  padding: 8px 14px;
+
+  @media (min-width: 998px) {
+    font-size: 11px;
+    padding: 10px 16px;
+  }
+
+  &:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &.active {
+    color: #000;
+    background: #fff;
+    border-color: #fff;
+  }
+}
+
+.text {
+  display: inline-block;
+  position: relative;
+  text-shadow: 0 1.3em currentColor;
+  transform: translateY(0) rotate(0.001deg);
+  transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+  line-height: 1.3;
+}
+
+.btn:hover .text {
+  transform: translateY(-1.3em) rotate(0.001deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .text {
+    transition: none;
+  }
+}
